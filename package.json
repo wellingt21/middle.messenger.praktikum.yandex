@@ -1,7 +1,7 @@
 {
   "name": "praktikum",
   "version": "1.0.0",
-  "description": "### Откройте pull request в ветку main из ветки, где вы разрабатывали проект, и добавьте ссылку на этот pr в README.md в ветке main.  ### ВАЖНО: pull request должен называться “Sprint i” (i — номер спринта).",
+  "description": " Sprint I ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +11,23 @@
     "url": "git+https://github.com/wellingt21/middle.messenger.praktikum.yandex.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "didar shayarov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/wellingt21/middle.messenger.praktikum.yandex/issues"
   },
   "homepage": "https://github.com/wellingt21/middle.messenger.praktikum.yandex#readme",
   "dependencies": {
+    "base": "^3.0.0",
     "handlebars": "^4.7.7",
     "parcel": "^2.8.2"
+  },
+  "devDependencies": {
+    "parcel-transformer-hbs": "^1.0.4",
+    "postcss": "^8.4.20",
+    "postcss-css-variables": "^0.18.0",
+    "postcss-import": "^15.1.0",
+    "postcss-mixins": "^9.0.4",
+    "postcss-nesting": "^10.2.0"
   }
 }
