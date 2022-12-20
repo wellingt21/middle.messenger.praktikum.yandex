@@ -1,8 +1,12 @@
 {
-  "extends": "@parcel/config-default",
-  "transformers": {
-    "*.hbs": [
-      "parcel-transformer-hbs"
-    ]
-  }
+	"extends": "@parcel/config-default"
+	"transformers": {
+		"*.hbs": [
+		  "parcel-transformer-hbs"
+		],
+		"*.css": ["@parcel/optimizer-css"]
+	},
+	"optimizers": {
+		"*.css": ["@parcel/optimizer-css"]
+	}
 }

@@ -1,1 +1,2 @@
-@import 'base/base.css';
+@import './base/normalization.css';
+@import "./variables/colors.css";

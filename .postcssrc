@@ -1,12 +1,11 @@
 {
   "plugins": {
-    "postcss-import": {
-      "path": "./src/styles"
-    },
-    "postcss-nesting": {},
+    "postcss-import":  true,
     "postcss-mixins":{},
     "postcss-css-variables": {
       "preserveInjectedVariables": true
-    }
+    },
+    "postcss-nested": true
+
   }
 }
