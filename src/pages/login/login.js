@@ -1,8 +1,8 @@
-import signup from "src/pages/login/login.hbs"
+import login from "./login.hbs"
 
 const component = {
-    path: "/signup",
-    template: signup
+    path: "/login",
+    template: login
 }
 
 export default component;

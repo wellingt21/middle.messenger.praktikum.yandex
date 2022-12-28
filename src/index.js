@@ -3,34 +3,25 @@
 
 
 import Auth from "./pages/auth/auth.js"
-// import signup from "./pages/auth/signup.hbs"
+import Login from "./pages/login/login"
 
 // import "./partials";
 
-const router = [Auth]
+const router = [Auth, Login]
+const root = document.querySelector('#app')
 
-
-class Render {
-    constructor(component) {
-        this.template = component.template;
-        this.path = component.path;
-        this.states = component.state || {};
-    }
-    render() {
-        return this.template(this.states);
-    }
-}
+const renderPage = ({template, state}) => template(state)
 
 window.onload = () => {
     const path = window.location.pathname;
+    console.log(`path is ${path}`);
+
     const page =
         router.find((route) => route.path === path) ||
         router.find((route) => route.path === "*");
-    console.log(`page: ${JSON.stringify(page)}`)
-    const component = new Render(page);
-    console.log(component)
-    console.log(component.render())
-    document.getElementById("app").innerHTML = component.render();
+    // console.log(`page: ${JSON.stringify(page)}`)
+    // const component = new Render(page);renderPage
+    root.innerHTML = renderPage(page);
 };
 
-console.log("shit")
+console.log("shit on src/index.js")

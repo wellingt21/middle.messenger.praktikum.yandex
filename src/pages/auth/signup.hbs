@@ -2,8 +2,11 @@
     <section class="signup-form__wrapper">
         <form class="signup-form">
             <h1 class="signup-form__title">Регистрация</h1>
+            <div>
+                test shit
+            </div>
             {{#each signupFields}}
-                {{> input placeholder=placeholder id=id type=type errorMesage=errorMessage}}
+                {{> input placeholder=placeholder id=id type=type errorMessage=errorMessage}}
             {{/each}}
             {{> button text="Зарегистрироваться" modificator="blue"}}
             <a class="signup-form__registration-link" href="/">Или все-таки есть аккаунт?</a>

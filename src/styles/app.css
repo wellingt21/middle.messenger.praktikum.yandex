@@ -1,2 +1,5 @@
 @import './base/normalization.css';
 @import "./variables/colors.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
