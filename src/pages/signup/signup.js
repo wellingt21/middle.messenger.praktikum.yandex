@@ -1,10 +1,10 @@
 import signup from "./signup.hbs"
-import state from "./state.js"
+import options from "./options.js"
 
 const component = {
     path: "/signup",
     template: signup,
-    state: state
+    options
 }
 
 export default component;

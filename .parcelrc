@@ -4,7 +4,7 @@
 	],
 	"transformers": {
 		"*.hbs": [
-		  "@anikin/parcel-transformer-handlebars-precompile"
+		  "parcel-transformer-hbs"
 		],
 	},
 	"optimizers": {

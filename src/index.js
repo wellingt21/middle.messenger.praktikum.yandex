@@ -1,26 +1,27 @@
-// import { router } from "./pages/router";
-// import svgSprites from "./layouts/svg-sprites.hbs";
+import hbs from "handlebars"
+import "normalize.css";
 
+import Auth from "./pages/signup/signup"
+import Login from "./pages/signin/login"
+import notFound from "./pages/404/404"
 
-import Auth from "./pages/auth/auth.js"
-import Login from "./pages/login/login"
+import button from "./partials/button.hbs"
+import input from "./partials/input.hbs"
 
-// import "./partials";
-
-const router = [Auth, Login]
+const router = [Auth, Login, notFound]
 const root = document.querySelector('#app')
 
-const renderPage = ({template, state}) => template(state)
+hbs.registerPartial("button", button)
+hbs.registerPartial("input", input)
+
+const renderPage = ({template, options}) => template(options)
 
 window.onload = () => {
     const path = window.location.pathname;
     console.log(`path is ${path}`);
 
-    const page =
-        router.find((route) => route.path === path) ||
-        router.find((route) => route.path === "*");
-    // console.log(`page: ${JSON.stringify(page)}`)
-    // const component = new Render(page);renderPage
+    const page = router.find((route) => route.path === path) || notFound
+
     root.innerHTML = renderPage(page);
 };
 

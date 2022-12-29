@@ -6,6 +6,6 @@
     "postcss-css-variables": {
       "preserveInjectedVariables": true
     },
-    "postcss-nested": true
+    "postcss-nested": true,
   }
 }
