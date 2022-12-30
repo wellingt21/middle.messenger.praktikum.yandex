@@ -24,3 +24,9 @@
 - `server`: запуск экспресс-сервера,
 - `start`: запуск продакшн-версии
 - `dev`: запуск версии в режиме разработчика для отладки в браузере "на лету"
+
+
+## Ссылки
+
+- https://cheery-zabaione-d06e0f.netlify.app/
+- https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1&t=oa4yLODIO7kvF70t-0
