@@ -1,11 +1,11 @@
 {
   "name": "praktikum",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": " Sprint I ",
   "source": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist && rimraf .parcel-cache && parcel build src/index.html",
+    "build": "rimraf dist && rimraf .parcel-cache && npm install && parcel build src/index.html",
     "rebuild": "rimraf dist && rimraf node_modules && npm install && parcel build src/index.html",
     "server": "node server.js",
     "start": "npm run build && npm run server",
@@ -27,23 +27,20 @@
     "handlebars": "4.7.7"
   },
   "devDependencies": {
+    "@parcel/transformer-html": "2.8.2",
     "@parcel/transformer-postcss": "2.6.2",
     "@parcel/transformer-sass": "2.8.2",
     "normalize.css": "8.0.1",
     "parcel-transformer-hbs": "1.0.4",
     "postcss": "8.4.20",
-    "postcss-css-variables": "^0.18.0",
+    "postcss-css-variables": "0.18.0",
     "postcss-import": "15.1.0",
     "postcss-mixins": "9.0.4",
     "postcss-nested": "6.0.0",
     "postcss-normalize": "10.0.1",
     "postcss-preset-env": "7.8.3",
-    "process": "0.11.10",
-    "punycode": "1.4.1",
-    "querystring-es3": "0.2.1",
     "rimraf": "3.0.2",
-    "tailwindcss": "3.2.4",
-    "url": "0.11.0"
+    "tailwindcss": "3.2.4"
   },
   "type": "commonjs",
   "browserslist": [
