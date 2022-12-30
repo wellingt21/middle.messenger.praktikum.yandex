@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-weight: normal;
+  overflow-x: hidden;
+  font-size: 16px;
+  font-family: "Arial", sans-serif;
+}
 // TODO: decompose stylesheets
 .signup-form {
     border-radius: 13px;

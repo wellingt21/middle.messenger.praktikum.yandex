@@ -46,5 +46,8 @@
   "browserslist": [
     ">= 0.1% in RU",
     "defaults"
-  ]
+  ],
+  "engines": {
+    "node": ">=16.16.0"
+  }
 }
