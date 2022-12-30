@@ -1,9 +1,12 @@
-<div >
-    test my signin page
-    <h1 class="text-3xl font-bold underline"> hello tailwindo  </h1>
-    <h1 class="text-3xl font-bold underline"> check  </h1>
-    <p>
-       not bullshit but login shit
-    </p>
-
-</div>
+<main class="login-page">
+    <section class="login-form-wrapper">
+        <form class="login-form">
+            <h1 class="login-form-title">Вход</h1>
+            {{#each loginFields}}
+                {{> input placeholder=placeholder id=id type=type}}
+            {{/each}}
+            {{> button text="Авторизоваться" modificator="primary"}}
+            <a class="login-form-registration-link" href="/signup">Нет аккаунта?</a>
+        </form>
+    </section>
+</main>

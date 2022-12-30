@@ -1,17 +1,18 @@
-@import "./variables/colors.css";
+@import "utilities/colors.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+// TODO: decompose stylesheets
 .signup-form {
     border-radius: 13px;
     box-shadow: var(--shadow);
     padding: 32px 30px 42px;
 
-    &.signup-form__title {
+    &.signup-form-title {
          text-align: center;
          font-size: 1.25rem;
-         color: var(--black-l);
+         color: var(--black);
          margin-bottom: 36px;
     }
 
@@ -19,10 +20,353 @@
         margin-top: 100px;
     }
 
-    &.signup-form__registration-link {
+    &.signup-form-registration-link {
         margin-top: 15px;
-        color: var(--blue);
+        color: var(--primary);
         display: block;
         text-align: center;
     }
 }
+
+.input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  & .input-label {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    font-size: 1rem;
+    color: var(--secondary-t-l);
+    height: 2rem;
+    background: #fff;
+    padding: 0 7px;
+    transition: 0.15s ease-in-out;
+    display: flex;
+    align-items: center;
+    border-radius: 100%;
+    cursor: pointer;
+  }
+
+  & .input-input {
+    border: 1px solid var(--secondary-l);
+    padding: 14px 16px;
+    border-radius: 13px;
+    margin-bottom: 2px;
+    transition: 0.1s ease-in border;
+    cursor: pointer;
+    &:hover,
+    &:focus,
+    &:not(:placeholder-shown) {
+      border-color: var(--secondary-m);
+    }
+    &:focus ~ .input-label,
+    &:not(:placeholder-shown) ~ .input-label {
+      top: -15px;
+      left: 11px;
+      font-size: 0.8rem;
+      color: var(--secondary-m);
+    }
+  }
+
+  & .input-error-message {
+    visibility: hidden;
+    opacity: 0;
+    height: 13px;
+    transition: 0.1s ease-in opacity;
+    color: var(--error);
+    font-size: 0.8rem;
+    margin-top: 5px;
+    margin-left: 14px;
+  }
+}
+.input_error {
+  & .input-input {
+    border-color: var(--error);
+    &:focus,
+    &:not(:placeholder-shown) {
+      border-color: var(--error);
+    }
+    &:focus ~ .input-label,
+    &:not(:placeholder-shown) ~ .input-label {
+      color: var(--error);
+    }
+  }
+  & .input-label {
+    color: var(--error);
+  }
+  & .input-error-message {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.button_primary {
+  padding: 15px 0;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 13px;
+  display: block;
+  width: 100%;
+
+  color: var(--white);
+  background-color: var(--primary);
+  transition: ease-in 0.1s;
+  &:hover {
+    background-color: var(--primary-h);
+  }
+  &:focus{
+    background-color: var(--primary-f);
+  }
+  &:disabled{
+    background-color: var(--primary-d);
+  }
+}
+
+.login-page{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form-wrapper{
+  width:340px;
+}
+
+.login-form{
+  border-radius: 13px;
+  box-shadow: var(--shadow-card);
+  padding: 32px 30px 42px;
+  & .login-form-title{
+    text-align: center;
+    font-size: 1.25rem;
+    color: var(--black-l);
+    margin-bottom: 36px;
+  }
+  & .button{
+    margin-top: 100px;
+  }
+  & .login-form-registration-link{
+    margin-top: 15px;
+    color: var(--primary);
+    display: block;
+    text-align: center;
+  }
+}
+
+.chats-page {
+  height: 100vh;
+  overflow: hidden;
+  & .left-panel {
+    width: 390px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--secondary-l);
+  }
+  & .search {
+    padding: 25px 15px;
+    & .search-input {
+      background: var(--secondary-l);
+      border-radius: 5px;
+      padding: 10px;
+      width: 100%;
+    }
+  }
+  & .users-list-container {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+  & .users-list{
+    overflow: auto;
+    height: calc(100vh - 83px - 73px);
+  }
+  & .user {
+    display: flex;
+    padding: 9px 8px 9px 15px;
+    border-top:1px solid var(--secondary-l) ;
+    & .user-img {
+      width: 55px;
+      height: 55px;
+      flex-shrink: 0;
+      background: var(--primary);
+      border-radius: 100%;
+      margin-right: 15px;
+    }
+    & .user-name {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      color: var(--black);
+    }
+    & .user-last-message {
+      color: var(--secondary-m);
+      font-size: 0.8rem;
+    }
+    & .user-message-info{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    & .user-last-time {
+      font-size: 0.7rem;
+      color: var(--secondary-m);
+    }
+    & .user-not-readed-messages{
+      background: var(--primary);
+      width: 20px;
+      height: 20px;
+      font-size: 0.5rem;
+      border-radius: 100%;
+      font-weight: 500;
+      color: var(--white);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  & .navigation-bar-container{
+    flex-shrink: 0;
+  }
+  & .navigation-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 50px;
+    border-top: 1px solid var(--secondary-l);
+    & .navigation-bar-link {
+      color: var(--secondary-s-s);
+      cursor: pointer;
+      &:hover {
+        color: var(--secondary-t-l);
+      }
+      & .svg-icon {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+}
+
+.profile-page {
+  height: 100%;
+  display: flex;
+  & .profile-page-back {
+    width: 70px;
+    height: 100%;
+    background: var(--secondary-bg-l);
+    border-right: 1px solid var(--secondary-s-l);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s ease-in-out background;
+    & .profile-page-back-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & .profile-page-back-arrow {
+        width: 11px;
+        height: 10px;
+        background-image: url("/static/images/arrow_back.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
+    &:hover{
+      background: var(--secondary-bg-el);
+    }
+  }
+  & .profile-info-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & .profile-info-picture {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    & .profile-info-name {
+      text-align: center;
+      font-weight: 500;
+      margin-bottom: 60px;
+    }
+    & .profile-info {
+      width: 500px;
+    }
+    & .profile-info-info-list {
+      margin-bottom: 60px;
+      & .profile-info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--secondary-s-l);
+        & .profile-info-label {
+          font-size: 0.8125rem;
+        }
+        & .profile-info-input {
+          background-color: #fff;
+          text-align: end;
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+    & .profile-info-change-info {
+      & .profile-info-item {
+        border-bottom: 1px solid var(--secondary-s-l);
+        padding: 10px 0;
+        color: var(--primary);
+        &:last-child {
+          border-bottom: none;
+        }
+        & .profile-info-item-link {
+          color: var(--primary);
+        }
+      }
+      & .profile-info-item-error {
+        & .profile-info-item-link {
+          color: var(--error);
+        }
+      }
+    }
+  }
+}
+
+.photo-wrapper {
+  height: 130px;
+  width: 130px;
+  border-radius: 100%;
+  background-color: var(--secondary-bg-el);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  & .photo-change {
+    opacity: 0;
+    transition: 0.2s opacity ease-in-out;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    backdrop-filter: brightness(50%);
+    width: 100%;
+    height: 100%;
+  }
+  &:hover > .photo-change {
+    opacity: 1;
+  }
+}
+
