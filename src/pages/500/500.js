@@ -1,7 +1,7 @@
-import pageNotFound from './404.hbs'
+import fixingPage from './500.hbs'
 
 const component = {
-  template: pageNotFound,
+  template: fixingPage,
   options: {}
 }
 

@@ -9,7 +9,7 @@
     "rebuild": "rimraf dist && rimraf node_modules && rimraf .parcel-cache && npm install && parcel build src/index.html",
     "server": "node server.js",
     "start": "npm run build && npm run server",
-    "dev": "npm run build && parcel --port 5555 src/index.html",
+    "dev": "npm run build && parcel --port 5555 src/index.html --open",
     "lint": "eslint . --ext .js,.hbs --ignore-pattern \"/node_modules/\" --ignore-pattern \"/dist/\" --fix"
   },
   "repository": {

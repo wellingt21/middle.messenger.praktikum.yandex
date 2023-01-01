@@ -1,0 +1,23 @@
+<main class="profile-page">
+    <nav class="profile-page-back">
+        <a href="/" class="profile-page-link">
+            <div class="profile-page-back-icon">
+                <div class="profile-page-back-arrow"></div>
+            </div>
+        </a>
+    </nav>
+    <section class="profile-info-wrapper">
+        <div class="profile-info">
+            <div class="profile-info-picture">
+                {{> photo src=img}}
+            </div>
+            <div class="profile-info-name">{{name}}</div>
+            <ul class="profile-info-info-list">
+                {{#each editFields}}
+                    {{> input placeholder=placeholder id=id type=type}}
+                {{/each}}
+            </ul>
+            {{> button text="Сохранить" modificator="primary"}}
+        </div>
+    </section>
+</main>

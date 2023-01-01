@@ -5,18 +5,21 @@ import Auth from './pages/signup/signup'
 import Login from './pages/login/login'
 import Chat from './pages/chat/chat'
 import Profile from './pages/profile/profile'
+import Edit from './pages/edit/edit'
 
 import notFound from './pages/404/404'
-
-import button from './partials/button.hbs'
-import input from './partials/input.hbs'
-import photo from './partials/photo.hbs'
+import fixingPage from './pages/500/500'
+import button from './components/button.hbs'
+import input from './components/input.hbs'
+import photo from './components/photo.hbs'
 
 const pages = {
   signup: Auth,
   login: Login,
   chat: Chat,
-  profile: Profile
+  profile: Profile,
+  edit: Edit,
+  fix: fixingPage
 }
 
 hbs.registerPartial('button', button)

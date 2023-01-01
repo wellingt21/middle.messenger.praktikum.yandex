@@ -9,7 +9,7 @@ body {
   font-size: 16px;
   font-family: "Arial", sans-serif;
 }
-// TODO: decompose stylesheets
+
 .signup-form {
     border-radius: 13px;
     box-shadow: var(--shadow);
@@ -221,7 +221,7 @@ body {
       font-size: 0.7rem;
       color: var(--secondary-m);
     }
-    & .user-not-readed-messages{
+    & .user-not-read-messages{
       background: var(--primary);
       width: 20px;
       height: 20px;
