@@ -1,17 +1,17 @@
-import chat from "./chat.hbs"
+import chat from './chat.hbs'
 
 const component = {
-    template: chat,
-    options: {
-        chatFields: [
-            {
+  template: chat,
+  options: {
+    chatFields: [
+      {
 
-            },
-            {
+      },
+      {
 
-            },
-        ],
-    }
+      }
+    ]
+  }
 }
 
-export default component;
+export default component
