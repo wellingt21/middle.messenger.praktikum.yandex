@@ -11,6 +11,13 @@
         "strictNullChecks": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
+        "lib": [
+            "dom",
+            "es5",
+            "scripthost",
+            "es2015.proxy",
+            "es2017"
+        ]
     },
     "exclude": [
         "node_modules"
