@@ -4,10 +4,13 @@
     "color-hex-case": "lower",
     "selector-class-pattern": null,
     "string-quotes": "single",
-      "max-empty-lines": 1
+      "max-empty-lines": 1,
+      "at-rule-no-unknown": null,
+      "no-descending-specificity": null
   },
   "ignoreFiles": [
     "dist/*",
-    "node_modules/*"
+    "node_modules/*",
+      "src/styles/utilities/*"
   ]
 }
