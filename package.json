@@ -1,62 +1,63 @@
 {
-  "name": "praktikum",
-  "version": "0.0.1",
-  "description": " Sprint I ",
-  "source": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build src/index.html",
-    "rebuild": "rimraf dist && rimraf node_modules && rimraf .parcel-cache && npm install && parcel build src/index.html",
-    "server": "node server.js",
-    "start": "npm run build && npm run server",
-    "dev": "npm run build && parcel --port 5555 src/index.html --open",
-    "lint": "eslint . --ext .js,.hbs --ignore-pattern \"/node_modules/\" --ignore-pattern \"/dist/\" --fix"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wellingt21/middle.messenger.praktikum.yandex.git"
-  },
-  "keywords": [],
-  "author": "didar shayarov",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/wellingt21/middle.messenger.praktikum.yandex/issues"
-  },
-  "homepage": "https://github.com/wellingt21/middle.messenger.praktikum.yandex#readme",
-  "dependencies": {
-    "express": "4.18.1",
-    "handlebars": "4.7.7"
-  },
-  "devDependencies": {
-    "@parcel/transformer-html": "2.8.2",
-    "@parcel/transformer-postcss": "2.6.2",
-    "@parcel/transformer-sass": "2.8.2",
-    "@typescript-eslint/eslint-plugin": "5.47.1",
-    "eslint": "8.30.0",
-    "eslint-config-standard-with-typescript": "24.0.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-n": "15.6.0",
-    "eslint-plugin-promise": "6.1.1",
-    "normalize.css": "8.0.1",
-    "parcel-transformer-hbs": "1.0.4",
-    "postcss": "8.4.20",
-    "postcss-css-variables": "0.18.0",
-    "postcss-import": "15.1.0",
-    "postcss-mixins": "9.0.4",
-    "postcss-nested": "6.0.0",
-    "postcss-normalize": "10.0.1",
-    "postcss-preset-env": "7.8.3",
-    "rimraf": "3.0.2",
-    "sass": "1.57.1",
-    "tailwindcss": "3.2.4",
-    "typescript": "4.9.4"
-  },
-  "type": "commonjs",
-  "browserslist": [
-    ">= 0.1% in RU",
-    "defaults"
-  ],
-  "engines": {
-    "node": ">=16.16.0"
-  }
+    "name": "praktikum",
+    "version": "0.0.1",
+    "description": " Sprint II ",
+    "source": "index.html",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "parcel build src/index.html",
+        "rebuild": "rimraf dist && rimraf node_modules && rimraf .parcel-cache && npm install && parcel build src/index.html",
+        "server": "node server.js",
+        "start": "npm run build && npm run server",
+        "dev": "npm run build && parcel --port 5555 src/index.html --open",
+        "lint": "eslint . --ext .js,.hbs --ignore-pattern \"/node_modules/\" --ignore-pattern \"/dist/\" --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wellingt21/middle.messenger.praktikum.yandex.git"
+    },
+    "keywords": [],
+    "author": "didar shayarov",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wellingt21/middle.messenger.praktikum.yandex/issues"
+    },
+    "homepage": "https://github.com/wellingt21/middle.messenger.praktikum.yandex#readme",
+    "dependencies": {
+        "express": "4.18.1",
+        "handlebars": "4.7.7"
+    },
+    "devDependencies": {
+        "@parcel/transformer-html": "2.8.2",
+        "@parcel/transformer-postcss": "2.6.2",
+        "@parcel/transformer-sass": "2.8.2",
+        "@types/handlebars": "4.1.0",
+        "@typescript-eslint/eslint-plugin": "5.47.1",
+        "eslint": "8.30.0",
+        "eslint-config-standard-with-typescript": "24.0.0",
+        "eslint-plugin-import": "2.26.0",
+        "eslint-plugin-n": "15.6.0",
+        "eslint-plugin-promise": "6.1.1",
+        "normalize.css": "8.0.1",
+        "parcel-transformer-hbs": "1.0.4",
+        "postcss": "8.4.20",
+        "postcss-css-variables": "0.18.0",
+        "postcss-import": "15.1.0",
+        "postcss-mixins": "9.0.4",
+        "postcss-nested": "6.0.0",
+        "postcss-normalize": "10.0.1",
+        "postcss-preset-env": "7.8.3",
+        "rimraf": "3.0.2",
+        "sass": "1.57.1",
+        "tailwindcss": "3.2.4",
+        "typescript": "4.9.4"
+    },
+    "type": "commonjs",
+    "browserslist": [
+        ">= 0.1% in RU",
+        "defaults"
+    ],
+    "engines": {
+        "node": ">=16.16.0"
+    }
 }

@@ -1,9 +1,12 @@
-import signup from './signup.hbs'
+// @ts-expect-error
+import edit from './edit.hbs'
+import componentType from '../../types'
+import editFieldType from './types'
 
-const component = {
-  template: signup,
+const component: componentType<string, editFieldType> = {
+  template: edit,
   options: {
-    signupFields: [
+    fields: [
       {
         placeholder: 'Почта',
         id: 'email',
@@ -25,21 +28,18 @@ const component = {
         type: 'text'
       },
       {
-        placeholder: 'Телефон',
-        id: 'phone',
+        placeholder: 'Имя в чате',
+        id: 'display_name',
         type: 'text'
       },
       {
-        placeholder: 'Пароль',
-        id: 'password',
-        type: 'password'
-      },
-      {
-        placeholder: 'Пароль (ещё раз)',
-        id: 'password_repeat',
-        type: 'password'
+        placeholder: 'Телефон',
+        id: 'phone',
+        type: 'text'
       }
-    ]
+    ],
+    // img: null,
+    name: 'Иван'
   }
 }
 

@@ -1,9 +1,11 @@
+// @ts-expect-error
 import chat from './chat.hbs'
+import componentType from '../../types'
 
-const component = {
+const component: componentType<string, {}> = {
   template: chat,
   options: {
-    chatFields: [
+    fields: [
       {
 
       },

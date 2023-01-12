@@ -1,10 +1,12 @@
+// @ts-expect-error
 import profile from './profile.hbs'
+import componentType from '../../types'
+import profileInfoFieldType from './types'
 
-// TODO: форматрование номера телефона по шаблону (регекс)
-const component = {
+const component: componentType<string, profileInfoFieldType> = {
   template: profile,
   options: {
-    profileInfo: [
+    fields: [
       { label: 'Почта', value: 'pochta@yandex.ru' },
       { label: 'Логин', value: 'ivanivanov' },
       { label: 'Имя', value: 'Иван' },
@@ -12,7 +14,7 @@ const component = {
       { label: 'Имя в чате', value: 'Иван' },
       { label: 'Телефон', value: '+7 (909) 9773030' }
     ],
-    img: null,
+    // img: null,
     name: 'Иван'
   }
 }

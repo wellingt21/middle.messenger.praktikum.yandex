@@ -1,9 +1,12 @@
+// @ts-expect-error
 import login from './login.hbs'
+import componentType from '../../types'
+import loginFieldType from './types'
 
-const component = {
+const component: componentType<string, loginFieldType> = {
   template: login,
   options: {
-    loginFields: [
+    fields: [
       {
         placeholder: 'Логин',
         id: 'login',
