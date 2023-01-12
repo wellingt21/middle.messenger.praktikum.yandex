@@ -3,7 +3,8 @@
   "rules": {
     "color-hex-case": "lower",
     "selector-class-pattern": null,
-    "string-quotes": "single"
+    "string-quotes": "single",
+      "max-empty-lines": 1
   },
   "ignoreFiles": [
     "dist/*",
