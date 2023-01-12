@@ -1,6 +1,6 @@
 // @ts-expect-error
 import signup from './signup.hbs'
-import componentType from '../../types'
+import { componentType } from '../../types'
 import signupFieldType from './types'
 
 const component: componentType<string, signupFieldType> = {

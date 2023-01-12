@@ -1,6 +1,6 @@
 // @ts-expect-error
 import edit from './edit.hbs'
-import componentType from '../../types'
+import { componentType } from '../../types'
 import editFieldType from './types'
 
 const component: componentType<string, editFieldType> = {
