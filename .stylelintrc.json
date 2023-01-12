@@ -1,5 +1,4 @@
 {
-  "extends": "stylelint-config-standard",
   "rules": {
     "color-hex-case": "lower",
     "selector-class-pattern": null,
