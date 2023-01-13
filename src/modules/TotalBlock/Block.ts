@@ -1,13 +1,12 @@
-import { nanoid } from 'nanoid'
 // @ts-expect-error
 import Handlebars from 'handlebars'
-import { EventBus } from '../EventBus/EventBus'
+import EventBus from '../EventBus/EventBus'
 
-const enum BLOCK_EVENTS {
-  INIT = 'init',
-  FLOW_CDM = 'flow:component-did-mount',
-  FLOW_RENDER = 'flow:render',
-  FLOW_UPDATE = 'flow:componentd-did-update',
+interface IEvents {
+  INIT: 'init'
+  FLOW_CDM: 'flow:component-did-mount'
+  FLOW_RENDER: 'flow:render'
+  FLOW_UPDATE: 'flow:componentd-did-update'
 }
 
 export default abstract class Block<P extends BlockProps> {
@@ -28,6 +27,8 @@ export default abstract class Block<P extends BlockProps> {
 
   id: string
 
+  static EVENTS: IEvents
+
   protected constructor (props: any) {
     this._meta = {
       props,
@@ -39,9 +40,9 @@ export default abstract class Block<P extends BlockProps> {
     this.props = this._makePropsProxy(props)
     this.state = this._makePropsProxy(this.state)
     this._element = null
-    this.id = nanoid(6)
+    this.id = Math.random().toString()
     this._registerEvents()
-    this.eventBus.emit(BLOCK_EVENTS.INIT)
+    this.eventBus.emit(Block.EVENTS.INIT)
   }
 
   protected getStateFromProps (props?: P): void {
@@ -51,10 +52,10 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   _registerEvents (): void {
-    this.eventBus.on(BLOCK_EVENTS.INIT, this.init.bind(this))
-    this.eventBus.on(BLOCK_EVENTS.FLOW_RENDER, this._render.bind(this))
+    this.eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
+    this.eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
     this.eventBus.on(
-      BLOCK_EVENTS.FLOW_UPDATE,
+      Block.EVENTS.FLOW_UPDATE,
       this._componentDidUpdate.bind(this)
     )
   }
@@ -62,7 +63,7 @@ export default abstract class Block<P extends BlockProps> {
   init (): void {
     const { eventBus: eventBus1, props, _meta } = this
     this._element = document.createElement(_meta.tagName)
-    eventBus1.emit(BLOCK_EVENTS.FLOW_RENDER, props)
+    eventBus1.emit(Block.EVENTS.FLOW_RENDER, props)
   }
 
   protected _componentDidUpdate (): void {
@@ -146,7 +147,7 @@ export default abstract class Block<P extends BlockProps> {
 
       set: (target: P, name: string, value: typeof target[keyof P]) => {
         target[name as keyof P] = value
-        this.eventBus.emit(BLOCK_EVENTS.FLOW_UPDATE)
+        this.eventBus.emit(Block.EVENTS.FLOW_UPDATE)
         return true
       },
       deleteProperty () {
@@ -165,7 +166,7 @@ export default abstract class Block<P extends BlockProps> {
         if (
           this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
         ) {
-          this.eventBus.emit(BLOCK_EVENTS.FLOW_CDM)
+          this.eventBus.emit(Block.EVENTS.FLOW_CDM)
         }
       }, 100)
     }

@@ -4,43 +4,50 @@ import { componentType } from '../../types'
 import signupFieldType from './types'
 
 const component: componentType<string, signupFieldType> = {
-  template: () => signup(),
+  template: signup,
   options: {
     fields: [
       {
         placeholder: 'Почта',
         id: 'email',
-        type: 'text'
+        type: 'email',
+        error: 'something'
       },
       {
         placeholder: 'Логин',
         id: 'login',
-        type: 'text'
+        type: 'text',
+        error: 'something'
       },
       {
         placeholder: 'Имя',
         id: 'first_name',
-        type: 'text'
+        type: 'text',
+        error: 'something'
       },
       {
         placeholder: 'Фамилия',
         id: 'second_name',
-        type: 'text'
+        type: 'text',
+        error: 'something'
       },
       {
         placeholder: 'Телефон',
         id: 'phone',
-        type: 'text'
+        type: 'text',
+        error: 'something'
       },
       {
         placeholder: 'Пароль',
         id: 'password',
-        type: 'password'
+        type: 'password',
+        error: 'something'
       },
       {
         placeholder: 'Пароль (ещё раз)',
         id: 'password_repeat',
-        type: 'password'
+        type: 'password',
+        error: 'something'
       }
     ]
   }

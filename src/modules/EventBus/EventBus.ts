@@ -1,4 +1,4 @@
-export class EventBus implements IEventBus {
+export default class EventBus implements IEventBus {
   protected listeners: Record<string, EventBusListener[]>
 
   constructor () {

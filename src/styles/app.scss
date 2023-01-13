@@ -1,5 +1,6 @@
 @import url('utilities/colors.css');
 
+// TODO: check stylelint tailwind at rule policy and styles import on prod version
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
