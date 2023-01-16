@@ -20,11 +20,11 @@ import signupFieldType from './pages/signup/types'
 import profileInfoFieldType from './pages/profile/types'
 import editFieldType from './pages/edit/types'
 import loginFieldType from './pages/login/types'
-import SignUpPage from "./pages/signup/SignUp";
+import SignUpPage from './pages/signup/SignUp'
 
-import registerComponent from "./core/registerComponent";
-import Button from "./components/button/button";
-import Input from "./components/input/input";
+import registerComponent from './core/registerComponent'
+import Button from './components/button/button'
+import Input from './components/input/input'
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
@@ -39,7 +39,6 @@ export type fieldTypes =
 
 // const pages: pagesArray = {
 // TODO: type ComponentType should be refactored due to issues with type of options and template
-
 
 // TODO: fix manual registration
 hbs.registerPartial('button', button)
@@ -58,7 +57,7 @@ const pages: any = {
 }
 
 // registerComponents with handlebars
-function componentsRegistration() {
+function componentsRegistration (): void {
   registerComponent(Button)
   registerComponent(Input)
 }
@@ -69,6 +68,7 @@ function componentsRegistration() {
 document.addEventListener('DOMContentLoaded', () => {
   const path: string = window.location.pathname.replace(/\//, '')
   componentsRegistration()
+  // eslint-ignore-next-line
   const page: any = pages[path] || pages.notfound
   // const page: componentType<string, fieldTypes> = pages[path] || pages.notfound TODO: typings
 

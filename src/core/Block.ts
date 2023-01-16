@@ -1,6 +1,6 @@
 // @ts-expect-error
 import Handlebars from 'handlebars'
-import EventBus from '../modules/EventBus/EventBus'
+import EventBus from './EventBus'
 
 const enum EVENTS {
   INIT = 'init',
@@ -10,23 +10,15 @@ const enum EVENTS {
 }
 
 export default abstract class Block<P extends BlockProps> {
-  private _element: HTMLElement | null
-
+  readonly eventBus: IEventBus
+  id: string
   protected readonly _meta: BlockMeta<P>
-
   protected readonly props: any
-
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   protected state: any
-
-  readonly eventBus: IEventBus
-
   protected refs: Record<string, HTMLElement> = {}
 
   protected children: Record<string, Block<P>> = {}
-
-  id: string
-
   protected template = ''
   protected options: {} | null = {}
 
@@ -50,10 +42,18 @@ export default abstract class Block<P extends BlockProps> {
     this.eventBus.emit(EVENTS.INIT)
   }
 
-  protected getStateFromProps (props?: P): void {
-    if (props != null) {
-      this.state = props
+  private _element: HTMLElement | null
+
+  get element (): any {
+    return this._element
+  }
+
+  setState = (nextState: unknown): void => {
+    if (!nextState) {
+      return
     }
+
+    Object.assign(this.state, nextState)
   }
 
   _registerEvents (): void {
@@ -69,6 +69,26 @@ export default abstract class Block<P extends BlockProps> {
     const { eventBus: eventBus1, props, _meta } = this
     this._element = document.createElement(_meta.tagName)
     eventBus1.emit(EVENTS.FLOW_RENDER, props)
+  }
+
+  getContent (): HTMLElement | null {
+    if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+      setTimeout(() => {
+        if (
+          this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
+        ) {
+          this.eventBus.emit(EVENTS.FLOW_CDM)
+        }
+      }, 100)
+    }
+
+    return this.element
+  }
+
+  protected getStateFromProps (props?: P): void {
+    if (props != null) {
+      this.state = props
+    }
   }
 
   protected _componentDidUpdate (): void {
@@ -159,23 +179,5 @@ export default abstract class Block<P extends BlockProps> {
         throw new Error('Отказано в доступе')
       }
     })
-  }
-
-  get element (): any {
-    return this._element
-  }
-
-  getContent (): HTMLElement | null {
-    if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      setTimeout(() => {
-        if (
-          this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
-        ) {
-          this.eventBus.emit(EVENTS.FLOW_CDM)
-        }
-      }, 100)
-    }
-
-    return this.element
   }
 }
