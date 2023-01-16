@@ -5,8 +5,8 @@ export interface IInput {
   value: string
   error: string
   isError: boolean
-  focus: (e: Event) => void
-  blur: (e: Event) => void
+  onFocus: (e: Event) => void
+  onBlur: (e: Event) => void
 }
 
 export interface InputProps {

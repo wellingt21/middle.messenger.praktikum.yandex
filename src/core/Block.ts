@@ -1,5 +1,5 @@
 // @ts-expect-error
-import Handlebars from 'handlebars'
+import Handlebars, {log} from 'handlebars'
 import EventBus from './EventBus'
 
 const enum EVENTS {
@@ -22,14 +22,11 @@ export default abstract class Block<P extends BlockProps> {
   protected template = ''
   protected options: {} | null = {}
 
-  protected constructor (props: any) {
+  protected constructor (props: any = {}) {
     this._meta = {
       props,
       tagName: 'div'
     }
-    console.log(props)
-    this.options = props.options
-    this.template = props.template
 
     this.eventBus = new EventBus()
     this.getStateFromProps(props)
@@ -118,7 +115,7 @@ export default abstract class Block<P extends BlockProps> {
   private _compile (): DocumentFragment {
     const fragment = document.createElement('template')
     const template = Handlebars.compile(this.render())
-    console.log(template)
+
     fragment.innerHTML = template({
       ...this.state,
       ...this.props,
@@ -170,6 +167,7 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   private _makePropsProxy (props: P): P {
+
     return new Proxy(props, {
       get (target: P, name: string) {
         const value = target[name as keyof P]

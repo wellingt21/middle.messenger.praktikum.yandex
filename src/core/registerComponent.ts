@@ -9,7 +9,7 @@ import Handlebars, {HelperOptions} from 'handlebars'
 
 export default function registerComponent<Props extends any>(Component: any) {
   const {_name} = Component
-  console.log(Component)
+
   Handlebars.registerHelper(
     _name,
     function (this: any, {hash: {ref, ...hash}, data, fn}: HelperOptions) {

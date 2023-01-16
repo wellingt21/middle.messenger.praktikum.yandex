@@ -1,4 +1,3 @@
-import SignUpTmpl from '../signup/SignUpTmpl'
 import { IInput } from '../../components/input/types'
 
 import Block from '../../core/Block'
@@ -33,8 +32,8 @@ const email =
 
 const VALIDATORS_REG_EXP: Record<string, RegExp> = {
   email,
-  firstName: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
-  lastName: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
+  firstName: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/) ,
+  lastName: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/),
   login: /^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/,
   password: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/
 }
@@ -131,12 +130,12 @@ export default class SignUp extends Block<any> {
     const state: SignupProps = {
       fields: [
         {
-          placeholder: 'Почsssта',
+          placeholder: 'Почта',
           id: 'email',
           type: 'text',
           value: '',
-          isError: false,
-          error: '',
+          isError: true,
+          error: 'asdasd',
           onFocus,
           onBlur
         },
@@ -155,7 +154,7 @@ export default class SignUp extends Block<any> {
           id: 'firstName',
           type: 'text',
           value: '',
-          isError: false,
+          isError: true,
           error: '',
           onFocus,
           onBlur
@@ -249,67 +248,80 @@ export default class SignUp extends Block<any> {
           return field
         })
         this.setState({ signupFields: nextInputFields })
-        console.log(inputValues)
+
       }
     }
 
     this.state = state
   }
 
-  constructor () {
-    super({
-      template: SignUpTmpl,
-      // options: {
-      //   fields: [
-      //     {
-      //       placeholder: 'pochta fuck you',
-      //       id: 'email',
-      //       type: 'email',
-      //       error: 'something'
-      //     },
-      //     {
-      //       placeholder: 'Логин',
-      //       id: 'login',
-      //       type: 'text',
-      //       error: 'something'
-      //     },
-      //     {
-      //       placeholder: 'Имя',
-      //       id: 'first_name',
-      //       type: 'text',
-      //       error: 'something'
-      //     },
-      //     {
-      //       placeholder: 'Фамилия',
-      //       id: 'second_name',
-      //       type: 'text',
-      //       error: 'something'
-      //     },
-      //     {
-      //       placeholder: 'Телефон',
-      //       id: 'phone',
-      //       type: 'text',
-      //       error: 'something'
-      //     },
-      //     {
-      //       placeholder: 'Пароль',
-      //       id: 'password',
-      //       type: 'password',
-      //       error: 'something'
-      //     },
-      //     {
-      //       placeholder: 'Пароль (ещё раз)',
-      //       id: 'password_repeat',
-      //       type: 'password',
-      //       error: 'something'
-      //     }
-      //   ]
-      // },
-
-    })
-  }
+  // constructor () {
+  //   super({
+  //     template: SignUpTmpl,
+  //     // options: {
+  //     //   fields: [
+  //     //     {
+  //     //       placeholder: 'pochta fuck you',
+  //     //       id: 'email',
+  //     //       type: 'email',
+  //     //       error: 'something'
+  //     //     },
+  //     //     {
+  //     //       placeholder: 'Логин',
+  //     //       id: 'login',
+  //     //       type: 'text',
+  //     //       error: 'something'
+  //     //     },
+  //     //     {
+  //     //       placeholder: 'Имя',
+  //     //       id: 'first_name',
+  //     //       type: 'text',
+  //     //       error: 'something'
+  //     //     },
+  //     //     {
+  //     //       placeholder: 'Фамилия',
+  //     //       id: 'second_name',
+  //     //       type: 'text',
+  //     //       error: 'something'
+  //     //     },
+  //     //     {
+  //     //       placeholder: 'Телефон',
+  //     //       id: 'phone',
+  //     //       type: 'text',
+  //     //       error: 'something'
+  //     //     },
+  //     //     {
+  //     //       placeholder: 'Пароль',
+  //     //       id: 'password',
+  //     //       type: 'password',
+  //     //       error: 'something'
+  //     //     },
+  //     //     {
+  //     //       placeholder: 'Пароль (ещё раз)',
+  //     //       id: 'password_repeat',
+  //     //       type: 'password',
+  //     //       error: 'something'
+  //     //     }
+  //     //   ]
+  //     // },
+  //
+  //   })
+  // }
 
   protected render (): string {
-    return SignUpTmpl
+    return `
+      <main class="flex justify-around m-3">
+          <section class="w-340">
+              <form class="signup-form">
+                  <h1 class="signup-form-title">Регистрация</h1>
+                  {{#each fields}}
+                      {{> input placeholder=placeholder id=id type=type error=error isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}
+                  {{/each}}
+                    {{> button text="Рега" modificator="primary" onClick=onSignup}}
+                  <a class="signup-form-registration-link flex justify-center mt-2" href="/login">выйти</a>
+              </form>
+          </section>
+      </main>
+    `
   }
 }

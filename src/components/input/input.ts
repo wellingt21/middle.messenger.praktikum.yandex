@@ -6,21 +6,22 @@ import { IInput, InputProps } from './types'
 export default class Input extends Block<InputProps> {
   static _name = 'input'
 
-  constructor ({ focus, blur, ...restProps }: IInput) {
+  constructor ({ onFocus, onBlur, ...restProps }: IInput) {
     super({
       ...restProps,
-      events: { focusin: focus, focusout: blur }
+      events: { focusin: onFocus, focusout: onBlur }
     } as unknown as InputProps)
   }
 
   render (): string {
+    console.log('input rendered')
     return `<div class="input {{#if isError}}p-input_error{{/if}}">
               <input
                 class="input__input"
                 type="{{type}}"
                 id="{{id}}"
                 value="{{value}}"
-                placeholder=" "
+                placeholder="фывфыв "
               />
               <label class="input_label" for="{{id}}">
                 {{placeholder}}

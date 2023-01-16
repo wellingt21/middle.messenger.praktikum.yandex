@@ -1,11 +1,12 @@
-<div class="input">
+<div class="input {{#if isError}}input_error{{/if}}" >
     <input
             class="input-input"
             type="{{type}}"
             id="{{id}}"
             value="{{value}}"
             name="{{id}}"
-            placeholder=" "
+            placeholder=""
+            ref="{{id}}"
     />
     <label class="input-label" for="{{id}}">
         {{ placeholder }}
