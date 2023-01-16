@@ -1,6 +1,5 @@
 // @ts-expect-error
 import profile from './profile.hbs'
-import { componentType } from '../../types'
 import profileInfoFieldType from './types'
 
 const component: componentType<string, profileInfoFieldType> = {

@@ -3,6 +3,7 @@
         "module": "commonjs",
         "target": "esnext",
         "rootDir": "./src",
+        "typeRoots": ["node_modules/@types", "types/app.d.ts"],
         "strict": true,
         "sourceMap": true,
         "noImplicitAny": true,

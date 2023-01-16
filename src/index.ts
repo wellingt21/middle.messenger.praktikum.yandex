@@ -16,33 +16,67 @@ import button from './components/button.hbs'
 import input from './components/input.hbs'
 // @ts-expect-error
 import photo from './components/photo.hbs'
-import { componentType, fieldTypes, pagesArray } from './types'
+// import { fieldTypes } from './index.d.ts'
+import signupFieldType from './pages/signup/types'
+import profileInfoFieldType from './pages/profile/types'
+import editFieldType from './pages/edit/types'
+import loginFieldType from './pages/login/types'
 
-const pages: pagesArray = {
+export type pagesArray = Record<string, componentType<string, fieldTypes>>
+
+export type fieldTypes =
+  signupFieldType
+  | loginFieldType
+  | profileInfoFieldType
+  | editFieldType
+  | null
+  | {}
+  | any
+
+// const pages: pagesArray = {
+// TODO: type ComponentType should be refactored due to issues with type of options and template
+
+const pages: any = {
   signup: Auth,
   login: Login,
   chat: Chat,
   profile: Profile,
   edit: Edit,
   fix: fixingPage,
-  notfound: notFound
+  notfound: notFound,
+  newsignup: 'test'
 }
 
 hbs.registerPartial('button', button)
 hbs.registerPartial('input', input)
 hbs.registerPartial('photo', photo)
 
-const renderPage = ({ template, options }: componentType<string, fieldTypes>): string => {
-  return template(options)
-}
+// const renderPage = ({ template, options }: componentType<string, fieldTypes>): any => {
+//   console.log(template, options)
+//
+//   if (options !== null) {
+//     return template(options)
+//   }
+//   // console.log(`index ${template}`)
+//   return template
+// }
+//
+// window.onload = () => {
+//   const path: string = window.location.pathname.replace(/\//, '')
+//   const page: componentType<string, fieldTypes> = pages[path] || pages.notfound
+//   const root = document.querySelector('#app')
+//
+//   if (root !== null) {
+//     console.log(page)
+//     root.innerHTML = renderPage(page)
+//   }
+// }
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
   const path: string = window.location.pathname.replace(/\//, '')
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  const page: componentType<string, fieldTypes> = pages[path] || pages.notfound
-  const root = document.querySelector('#app')
-
-  if (root !== null) {
-    root.innerHTML = renderPage(page)
-  }
-}
+  const page: any = pages[path] || pages.notfound
+  // const page: componentType<string, fieldTypes> = pages[path] || pages.notfound TODO: typings
+  console.log(page)
+  // renderDOM(page)
+})
