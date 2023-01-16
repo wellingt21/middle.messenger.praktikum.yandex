@@ -1,11 +1,11 @@
-import signUpTmpl from './SignUpTmpl'
-import TestBlock from '../../modules/TestBlock'
+import signUpTmpl from '../signup/SignUpTmpl'
 
-// import { template } from '../../components/button/template'
+import Block from "../../core/Block";
+import SignUpTmpl from "../signup/SignUpTmpl";
 
-export class Signup_new extends TestBlock {
+export default class SignUp extends Block<any> {
   constructor () {
-    super('signup', {
+    super( {
       template: signUpTmpl,
       options: {
         fields: [
@@ -55,4 +55,10 @@ export class Signup_new extends TestBlock {
       }
     })
   }
+
+
+  protected render(): string {
+    return SignUpTmpl
+  }
 }
+

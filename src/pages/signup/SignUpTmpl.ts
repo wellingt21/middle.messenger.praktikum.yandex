@@ -6,7 +6,7 @@ const templateSignUp = `
               {{#each fields}}
                   {{> input placeholder=placeholder id=id type=type}}
               {{/each}}
-              {{> button text="Зарегистрироваться" modificator="primary"}}
+                {{> button text="Зарегистрироваться" modificator="primary"}}
               <a class="signup-form-registration-link flex justify-center mt-2" href="/login">Войти</a>
           </form>
       </section>
@@ -15,3 +15,4 @@ const templateSignUp = `
 export default templateSignUp
 
 // TODO: make buttons works
+//

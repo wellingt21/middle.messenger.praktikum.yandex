@@ -2,7 +2,6 @@
 import hbs from 'handlebars'
 import 'normalize.css'
 
-import Auth from './pages/signup/signup'
 import Login from './pages/login/login'
 import Chat from './pages/chat/chat'
 import Profile from './pages/profile/profile'
@@ -11,9 +10,9 @@ import Edit from './pages/edit/edit'
 import notFound from './pages/404/404'
 import fixingPage from './pages/500/500'
 // @ts-expect-error
-import button from './components/button.hbs'
+import button from './components/button/button.hbs'
 // @ts-expect-error
-import input from './components/input.hbs'
+import input from './components/input/input.hbs'
 // @ts-expect-error
 import photo from './components/photo.hbs'
 // import { fieldTypes } from './index.d.ts'
@@ -21,6 +20,11 @@ import signupFieldType from './pages/signup/types'
 import profileInfoFieldType from './pages/profile/types'
 import editFieldType from './pages/edit/types'
 import loginFieldType from './pages/login/types'
+import SignUpPage from "./pages/signup/SignUp";
+
+import registerComponent from "./core/registerComponent";
+import Button from "./components/button/button";
+import Input from "./components/input/input";
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
@@ -36,47 +40,43 @@ export type fieldTypes =
 // const pages: pagesArray = {
 // TODO: type ComponentType should be refactored due to issues with type of options and template
 
+
+// TODO: fix manual registration
+hbs.registerPartial('button', button)
+hbs.registerPartial('input', input)
+hbs.registerPartial('photo', photo)
+
 const pages: any = {
-  signup: Auth,
+  // signup: Auth,
   login: Login,
   chat: Chat,
   profile: Profile,
   edit: Edit,
   fix: fixingPage,
   notfound: notFound,
-  newsignup: 'test'
+  signup: new SignUpPage()
 }
 
-hbs.registerPartial('button', button)
-hbs.registerPartial('input', input)
-hbs.registerPartial('photo', photo)
+// registerComponents with handlebars
+function componentsRegistration() {
+  registerComponent(Button)
+  registerComponent(Input)
+}
 
-// const renderPage = ({ template, options }: componentType<string, fieldTypes>): any => {
-//   console.log(template, options)
-//
-//   if (options !== null) {
-//     return template(options)
-//   }
-//   // console.log(`index ${template}`)
-//   return template
-// }
-//
-// window.onload = () => {
-//   const path: string = window.location.pathname.replace(/\//, '')
-//   const page: componentType<string, fieldTypes> = pages[path] || pages.notfound
-//   const root = document.querySelector('#app')
-//
-//   if (root !== null) {
-//     console.log(page)
-//     root.innerHTML = renderPage(page)
-//   }
-// }
-
+/**
+ * render page on top level with inner html
+ */
 document.addEventListener('DOMContentLoaded', () => {
   const path: string = window.location.pathname.replace(/\//, '')
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  componentsRegistration()
   const page: any = pages[path] || pages.notfound
   // const page: componentType<string, fieldTypes> = pages[path] || pages.notfound TODO: typings
-  console.log(page)
-  // renderDOM(page)
+
+  const root = document.querySelector('#app')
+
+  const compiledPage = hbs.compile(page.template)(page.options)
+
+  if (root !== null) {
+    root.innerHTML = compiledPage
+  }
 })

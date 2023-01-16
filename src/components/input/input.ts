@@ -1,10 +1,10 @@
-import Block from '../../modules/TotalBlock/Block'
-import './input.css'
+import Block from '../../core/Block'
+
 import { IInput, InputProps } from './types'
 
 // @ts-expect-error
 export default class Input extends Block<InputProps> {
-  static _name = 'Input'
+  static _name = 'input'
 
   constructor ({ focus, blur, ...restProps }: IInput) {
     super({

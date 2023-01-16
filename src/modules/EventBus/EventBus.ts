@@ -6,14 +6,15 @@ export default class EventBus implements IEventBus {
   }
 
   on (event: string, listener: EventBusListener): void {
-    if (this.listeners[event] === null) {
+    if (!this.listeners[event]) {
       this.listeners[event] = []
     }
+
     this.listeners[event].push(listener)
   }
 
   off (event: string, listener: EventBusListener): void {
-    if (this.listeners[event] === null) {
+    if (!this.listeners[event]) {
       throw new Error(`Нет такого события "${event}"`)
     }
     this.listeners[event] = this.listeners[event].filter(
@@ -22,7 +23,7 @@ export default class EventBus implements IEventBus {
   }
 
   emit (event: string, ...args: unknown[]): void {
-    if (this.listeners[event] === null) {
+    if (!this.listeners[event]) {
       throw new Error(`Нет такого события "${event}"`)
     }
     this.listeners[event].forEach((listener) => {
