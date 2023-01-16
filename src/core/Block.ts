@@ -1,68 +1,96 @@
-import { nanoid } from 'nanoid'
 // @ts-expect-error
-import Handlebars from 'handlebars'
-import { EventBus } from '../EventBus/EventBus'
+import Handlebars, {log} from 'handlebars'
+import EventBus from './EventBus'
 
-const enum BLOCK_EVENTS {
+const enum EVENTS {
   INIT = 'init',
   FLOW_CDM = 'flow:component-did-mount',
   FLOW_RENDER = 'flow:render',
-  FLOW_UPDATE = 'flow:componentd-did-update',
+  FLOW_UPDATE = 'flow:component-did-update'
 }
 
 export default abstract class Block<P extends BlockProps> {
-  private _element: HTMLElement | null
-
+  readonly eventBus: IEventBus
+  id: string
   protected readonly _meta: BlockMeta<P>
-
   protected readonly props: any
-
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   protected state: any
-
-  readonly eventBus: IEventBus
-
   protected refs: Record<string, HTMLElement> = {}
 
   protected children: Record<string, Block<P>> = {}
+  protected template = ''
+  protected options: {} | null = {}
 
-  id: string
-
-  protected constructor (props: any) {
+  protected constructor (props: any = {}) {
     this._meta = {
       props,
       tagName: 'div'
     }
+
     this.eventBus = new EventBus()
     this.getStateFromProps(props)
 
     this.props = this._makePropsProxy(props)
     this.state = this._makePropsProxy(this.state)
     this._element = null
-    this.id = nanoid(6)
+    this.id = Math.random().toString()
     this._registerEvents()
-    this.eventBus.emit(BLOCK_EVENTS.INIT)
+    this.eventBus.emit(EVENTS.INIT)
+  }
+
+  private _element: HTMLElement | null
+
+  get element (): any {
+    return this._element
+  }
+
+  setState = (nextState: unknown): void => {
+    if (!nextState) {
+      return
+    }
+
+    Object.assign(this.state, nextState)
+  }
+
+  _registerEvents (): void {
+    this.eventBus.on(EVENTS.INIT, this.init.bind(this))
+    this.eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this))
+    this.eventBus.on(
+      EVENTS.FLOW_UPDATE,
+      this._componentDidUpdate.bind(this)
+    )
+    this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
+  }
+
+  _componentDidMount() {
+
+  }
+
+  init (): void {
+    const { eventBus: eventBus1, props, _meta } = this
+    this._element = document.createElement(_meta.tagName)
+    eventBus1.emit(EVENTS.FLOW_RENDER, props)
+  }
+
+  getContent (): HTMLElement | null {
+    if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+      setTimeout(() => {
+        if (
+          this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
+        ) {
+          this.eventBus.emit(EVENTS.FLOW_CDM)
+        }
+      }, 100)
+    }
+
+    return this.element
   }
 
   protected getStateFromProps (props?: P): void {
     if (props != null) {
       this.state = props
     }
-  }
-
-  _registerEvents (): void {
-    this.eventBus.on(BLOCK_EVENTS.INIT, this.init.bind(this))
-    this.eventBus.on(BLOCK_EVENTS.FLOW_RENDER, this._render.bind(this))
-    this.eventBus.on(
-      BLOCK_EVENTS.FLOW_UPDATE,
-      this._componentDidUpdate.bind(this)
-    )
-  }
-
-  init (): void {
-    const { eventBus: eventBus1, props, _meta } = this
-    this._element = document.createElement(_meta.tagName)
-    eventBus1.emit(BLOCK_EVENTS.FLOW_RENDER, props)
   }
 
   protected _componentDidUpdate (): void {
@@ -87,6 +115,7 @@ export default abstract class Block<P extends BlockProps> {
   private _compile (): DocumentFragment {
     const fragment = document.createElement('template')
     const template = Handlebars.compile(this.render())
+
     fragment.innerHTML = template({
       ...this.state,
       ...this.props,
@@ -112,15 +141,15 @@ export default abstract class Block<P extends BlockProps> {
   private _addEvents (): void {
     const events: BlockEvents = this.props.events
 
-    if (events === null || this._element === null) {
+    if (!events) {
       return
     }
 
     if (this.element !== null) {
-      // @ts-expect-error
       Object.entries(events).forEach(([event, listener]) => {
-        // @ts-expect-error
-        this._element.addEventListener(event, listener)
+        if (this._element !== null) {
+          this._element.addEventListener(event, listener)
+        }
       })
     }
   }
@@ -138,6 +167,7 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   private _makePropsProxy (props: P): P {
+
     return new Proxy(props, {
       get (target: P, name: string) {
         const value = target[name as keyof P]
@@ -146,30 +176,12 @@ export default abstract class Block<P extends BlockProps> {
 
       set: (target: P, name: string, value: typeof target[keyof P]) => {
         target[name as keyof P] = value
-        this.eventBus.emit(BLOCK_EVENTS.FLOW_UPDATE)
+        this.eventBus.emit(EVENTS.FLOW_UPDATE)
         return true
       },
       deleteProperty () {
         throw new Error('Отказано в доступе')
       }
     })
-  }
-
-  get element (): any {
-    return this._element
-  }
-
-  getContent (): HTMLElement | null {
-    if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      setTimeout(() => {
-        if (
-          this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
-        ) {
-          this.eventBus.emit(BLOCK_EVENTS.FLOW_CDM)
-        }
-      }, 100)
-    }
-
-    return this.element
   }
 }

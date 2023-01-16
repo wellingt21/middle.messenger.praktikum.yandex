@@ -5,13 +5,13 @@ module.exports = {
   },
   extends: 'standard-with-typescript',
   parser: '@typescript-eslint/parser',
-  overrides: [
-  ],
+  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: ['tsconfig.json']
   },
+  ignorePatterns: "**/*/hbs",
   rules: {
   }
 }

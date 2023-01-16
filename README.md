@@ -1,4 +1,4 @@
-# Sprint I
+# Sprint II
 
 Проект веб-мессенджера на стадии разработки.
 
@@ -12,6 +12,7 @@
 - #### `Tailwind`
 - #### `Netlify`
 - #### `NodeJS 16.16.0`
+- #### `Typescript`
 
 ## Описание
 
@@ -30,3 +31,4 @@
 
 - https://cheery-zabaione-d06e0f.netlify.app/
 - https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1&t=oa4yLODIO7kvF70t-0
+- 
