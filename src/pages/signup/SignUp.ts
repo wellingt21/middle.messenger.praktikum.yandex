@@ -16,7 +16,7 @@ export enum FormFieldTypes {
 type SignupFields = any
 
 interface SignupProps {
-  signupFields: SignupFields
+  fields: SignupFields
   onSignup: () => void
 }
 
@@ -94,64 +94,14 @@ export const validateIsSame = (
 }
 
 export default class SignUp extends Block<any> {
-  constructor () {
-    super({
-      template: SignUpTmpl,
-      options: {
-        fields: [
-          {
-            placeholder: 'Почта',
-            id: 'email',
-            type: 'email',
-            error: 'something'
-          },
-          {
-            placeholder: 'Логин',
-            id: 'login',
-            type: 'text',
-            error: 'something'
-          },
-          {
-            placeholder: 'Имя',
-            id: 'first_name',
-            type: 'text',
-            error: 'something'
-          },
-          {
-            placeholder: 'Фамилия',
-            id: 'second_name',
-            type: 'text',
-            error: 'something'
-          },
-          {
-            placeholder: 'Телефон',
-            id: 'phone',
-            type: 'text',
-            error: 'something'
-          },
-          {
-            placeholder: 'Пароль',
-            id: 'password',
-            type: 'password',
-            error: 'something'
-          },
-          {
-            placeholder: 'Пароль (ещё раз)',
-            id: 'password_repeat',
-            type: 'password',
-            error: 'something'
-          }
-        ]
-      }
-    })
-  }
-
   protected getStateFromProps (): void {
     const onFocus = (event: Event): void => {
+      console.log('inside focus')
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
       template.classList.remove('p-input_error')
     }
     const onBlur = (event: Event): void => {
+      console.log('inside blur')
       const id = (event.target as HTMLInputElement).id as SignupFieldsId
       const inputElement = this.refs?.[id].querySelector(
         `#${id}`
@@ -179,9 +129,9 @@ export default class SignUp extends Block<any> {
       this.setState({ signupFields })
     }
     const state: SignupProps = {
-      signupFields: [
+      fields: [
         {
-          placeholder: 'Почта',
+          placeholder: 'Почsssта',
           id: 'email',
           type: 'text',
           value: '',
@@ -284,7 +234,7 @@ export default class SignUp extends Block<any> {
             FormFieldTypes.repeatPassword
           )
         }
-        const nextInputFields = state.signupFields.map((field: any) => {
+        const nextInputFields = state.fields.map((field: any) => {
           if (field.id in validatedFields) {
             const validatedField = validatedFields?.[field.id]
             if (!validatedField.isValid) {
@@ -302,7 +252,61 @@ export default class SignUp extends Block<any> {
         console.log(inputValues)
       }
     }
+
     this.state = state
+  }
+
+  constructor () {
+    super({
+      template: SignUpTmpl,
+      // options: {
+      //   fields: [
+      //     {
+      //       placeholder: 'pochta fuck you',
+      //       id: 'email',
+      //       type: 'email',
+      //       error: 'something'
+      //     },
+      //     {
+      //       placeholder: 'Логин',
+      //       id: 'login',
+      //       type: 'text',
+      //       error: 'something'
+      //     },
+      //     {
+      //       placeholder: 'Имя',
+      //       id: 'first_name',
+      //       type: 'text',
+      //       error: 'something'
+      //     },
+      //     {
+      //       placeholder: 'Фамилия',
+      //       id: 'second_name',
+      //       type: 'text',
+      //       error: 'something'
+      //     },
+      //     {
+      //       placeholder: 'Телефон',
+      //       id: 'phone',
+      //       type: 'text',
+      //       error: 'something'
+      //     },
+      //     {
+      //       placeholder: 'Пароль',
+      //       id: 'password',
+      //       type: 'password',
+      //       error: 'something'
+      //     },
+      //     {
+      //       placeholder: 'Пароль (ещё раз)',
+      //       id: 'password_repeat',
+      //       type: 'password',
+      //       error: 'something'
+      //     }
+      //   ]
+      // },
+
+    })
   }
 
   protected render (): string {

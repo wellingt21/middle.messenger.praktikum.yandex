@@ -27,7 +27,7 @@ export default abstract class Block<P extends BlockProps> {
       props,
       tagName: 'div'
     }
-
+    console.log(props)
     this.options = props.options
     this.template = props.template
 
@@ -63,6 +63,11 @@ export default abstract class Block<P extends BlockProps> {
       EVENTS.FLOW_UPDATE,
       this._componentDidUpdate.bind(this)
     )
+    this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
+  }
+
+  _componentDidMount() {
+
   }
 
   init (): void {
@@ -113,6 +118,7 @@ export default abstract class Block<P extends BlockProps> {
   private _compile (): DocumentFragment {
     const fragment = document.createElement('template')
     const template = Handlebars.compile(this.render())
+    console.log(template)
     fragment.innerHTML = template({
       ...this.state,
       ...this.props,

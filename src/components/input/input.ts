@@ -14,18 +14,18 @@ export default class Input extends Block<InputProps> {
   }
 
   render (): string {
-    return `<div class="p-input {{#if isError}}p-input_error{{/if}}">
+    return `<div class="input {{#if isError}}p-input_error{{/if}}">
               <input
-                class="p-input__input"
+                class="input__input"
                 type="{{type}}"
                 id="{{id}}"
                 value="{{value}}"
                 placeholder=" "
               />
-              <label class="p-input__label" for="{{id}}">
+              <label class="input_label" for="{{id}}">
                 {{placeholder}}
               </label>
-              <span class="p-input__error-message">{{errorMessage}}</span>
+              <span class="blablabla">{{error}}</span>
             </div>`
   }
 }

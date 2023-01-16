@@ -25,6 +25,7 @@ import SignUpPage from './pages/signup/SignUp'
 import registerComponent from './core/registerComponent'
 import Button from './components/button/button'
 import Input from './components/input/input'
+import renderDOM from "./core/renderDOM";
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
@@ -36,6 +37,11 @@ export type fieldTypes =
   | null
   | {}
   | any
+
+(() => {
+  registerComponent(Button)
+  registerComponent(Input)
+})()
 
 // const pages: pagesArray = {
 // TODO: type ComponentType should be refactored due to issues with type of options and template
@@ -56,27 +62,14 @@ const pages: any = {
   signup: new SignUpPage()
 }
 
-// registerComponents with handlebars
-function componentsRegistration (): void {
-  registerComponent(Button)
-  registerComponent(Input)
-}
-
-/**
- * render page on top level with inner html
- */
-document.addEventListener('DOMContentLoaded', () => {
+window.onload = () => {
   const path: string = window.location.pathname.replace(/\//, '')
-  componentsRegistration()
+
   // eslint-ignore-next-line
   const page: any = pages[path] || pages.notfound
   // const page: componentType<string, fieldTypes> = pages[path] || pages.notfound TODO: typings
 
-  const root = document.querySelector('#app')
-
-  const compiledPage = hbs.compile(page.template)(page.options)
-
-  if (root !== null) {
-    root.innerHTML = compiledPage
+  if (page !== null) {
+    renderDOM(page)
   }
-})
+}

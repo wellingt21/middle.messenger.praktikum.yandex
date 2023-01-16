@@ -23,6 +23,7 @@ export default class EventBus implements IEventBus {
   }
 
   emit (event: string, ...args: unknown[]): void {
+    console.log(this.listeners)
     if (!this.listeners[event]) {
       throw new Error(`Нет такого события "${event}"`)
     }

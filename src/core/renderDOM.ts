@@ -1,10 +1,10 @@
 // import Block from './Block';
 
-export default function renderDOM (node: ChildNode): void {
+export default function renderDOM (block: any): void {
   const root = document.querySelector('#app')
 
   if (root !== null) {
     root.innerHTML = ''
-    root.appendChild(node)
+    root.appendChild(block.getContent())
   }
 }

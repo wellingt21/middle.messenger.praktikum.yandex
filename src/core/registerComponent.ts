@@ -8,10 +8,10 @@ import Handlebars, {HelperOptions} from 'handlebars'
 // }
 
 export default function registerComponent<Props extends any>(Component: any) {
-  const {name} = Component
-
+  const {_name} = Component
+  console.log(Component)
   Handlebars.registerHelper(
-    name,
+    _name,
     function (this: any, {hash: {ref, ...hash}, data, fn}: HelperOptions) {
 
       if (!data.root.children) {
