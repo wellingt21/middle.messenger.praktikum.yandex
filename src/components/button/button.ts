@@ -19,6 +19,7 @@ export default class Button extends Block<BlockProps > {
       events: {
         click: onClick
       }});
+
   }
 
   render() {

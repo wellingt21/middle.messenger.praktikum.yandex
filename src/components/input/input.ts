@@ -15,9 +15,9 @@ export default class Input extends Block<InputProps> {
 
   render (): string {
     console.log('input rendered')
-    return `<div class="input {{#if isError}}p-input_error{{/if}}">
+    return `<div class="input {{#if isError}}input_error{{/if}}">
               <input
-                class="input__input"
+                class="input_input"
                 type="{{type}}"
                 id="{{id}}"
                 value="{{value}}"

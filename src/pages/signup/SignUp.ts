@@ -6,10 +6,10 @@ import Block from '../../core/Block'
 export enum FormFieldTypes {
   login,
   password,
-  firstName,
-  lastName,
+  first_name,
+  last_name,
   email,
-  repeatPassword,
+  password_repeat,
 }
 
 type SignupFields = any
@@ -23,28 +23,28 @@ type SignupFieldsId =
   | 'login'
   | 'email'
   | 'password'
-  | 'repeatPassword'
-  | 'firstName'
-  | 'lastName'
+  | 'password_repeat'
+  | 'first_name'
+  | 'last_name'
 
 const email =
   /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i
 
 const VALIDATORS_REG_EXP: Record<string, RegExp> = {
   email,
-  firstName: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/) ,
-  lastName: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/),
+  first_name: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/) ,
+  last_name: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/),
   login: /^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/,
   password: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/
 }
-const VALIDATORS_MESSAGES: Record<string, string> = {
+const ERROR_MESSAGES: Record<string, string> = {
   login: 'Неверный формат логина',
   password: 'Неверный формат пароля',
-  firstName: 'Неверный формат Имени',
-  lastName: 'Неверный формат Фамилии',
+  first_name: 'Неверный формат Имени',
+  last_name: 'Неверный формат Фамилии',
   email: 'Неверный формат email',
   phone: 'Неверный формат телефона',
-  repeatPassword: 'Пароли не совпадают'
+  password_repeat: 'Пароли не совпадают'
 }
 
 interface ValidateOutput {
@@ -69,7 +69,7 @@ const validateString = (
   if (TYPE_KEY !== '') {
     if (!VALIDATORS_REG_EXP[TYPE_KEY].test(value)) {
       result.isValid = false
-      result.message = VALIDATORS_MESSAGES[TYPE_KEY]
+      result.message = ERROR_MESSAGES[TYPE_KEY]
     }
   }
   return result
@@ -87,21 +87,22 @@ export const validateIsSame = (
   const TYPE_KEY = FormFieldTypes[type]
   if (validatedValue !== comparableValue || validatedValue.length === 0) {
     result.isValid = false
-    result.message = VALIDATORS_MESSAGES[TYPE_KEY]
+    result.message = ERROR_MESSAGES[TYPE_KEY]
   }
   return result
 }
 
-export default class SignUp extends Block<any> {
+export default class SignUp extends Block<SignupProps> {
   protected getStateFromProps (): void {
     const onFocus = (event: Event): void => {
       console.log('inside focus')
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
-      template.classList.remove('p-input_error')
+      template.classList.remove('input_error')
     }
     const onBlur = (event: Event): void => {
       console.log('inside blur')
-      const id = (event.target as HTMLInputElement).id as SignupFieldsId
+      console.log(event.target)
+      const id = (event?.target as HTMLInputElement).id as SignupFieldsId
       const inputElement = this.refs?.[id].querySelector(
         `#${id}`
       ) as HTMLInputElement
@@ -110,14 +111,14 @@ export default class SignUp extends Block<any> {
         (field: any) => field.id === id
       ) as IInput
       let validateField
-      if (id === 'repeatPassword') {
+      if (id === 'password_repeat') {
         const passwordInputValue = (
           this.refs.password.querySelector('#password') as HTMLInputElement
         ).value
         validateField = validateIsSame(
           inputElement.value,
           passwordInputValue,
-          FormFieldTypes.repeatPassword
+          FormFieldTypes.password_repeat
         )
       } else {
         validateField = validateString(inputElement.value, FormFieldTypes[id])
@@ -135,7 +136,7 @@ export default class SignUp extends Block<any> {
           type: 'text',
           value: '',
           isError: true,
-          error: 'asdasd',
+          error: '',
           onFocus,
           onBlur
         },
@@ -151,7 +152,7 @@ export default class SignUp extends Block<any> {
         },
         {
           placeholder: 'Имя',
-          id: 'firstName',
+          id: 'first_name',
           type: 'text',
           value: '',
           isError: true,
@@ -161,13 +162,22 @@ export default class SignUp extends Block<any> {
         },
         {
           placeholder: 'Фамилия',
-          id: 'lastName',
+          id: 'last_name',
           type: 'text',
           value: '',
           isError: false,
           error: '',
           onFocus,
           onBlur
+        },
+        {
+          placeholder: 'Телефон',
+          id: 'phone',
+          type: 'number',
+          error: 'something',
+          isError: true,
+          onBlur,
+          onFocus
         },
         {
           placeholder: 'Пароль',
@@ -181,7 +191,7 @@ export default class SignUp extends Block<any> {
         },
         {
           placeholder: 'И еще разочек Пароль',
-          id: 'repeatPassword',
+          id: 'password_repeat',
           type: 'password',
           value: '',
           isError: false,
@@ -196,18 +206,18 @@ export default class SignUp extends Block<any> {
             ?.value,
           login: (this.refs.login.querySelector('#login') as HTMLInputElement)
             ?.value,
-          firstName: (
-            this.refs.login.querySelector('#firstName') as HTMLInputElement
+          first_name: (
+            this.refs.login.querySelector('#first_name') as HTMLInputElement
           )?.value,
-          lastName: (
-            this.refs.lastName.querySelector('#lastName') as HTMLInputElement
+          last_name: (
+            this.refs.lastName.querySelector('#last_name') as HTMLInputElement
           )?.value,
           password: (
             this.refs.password.querySelector('#password') as HTMLInputElement
           )?.value,
-          repeatPassword: (
+          password_repeat: (
             this.refs.repeatPassword.querySelector(
-              '#repeatPassword'
+              '#password_repeat'
             ) as HTMLInputElement
           )?.value
         }
@@ -220,17 +230,17 @@ export default class SignUp extends Block<any> {
             FormFieldTypes.password
           ),
           firstName: validateString(
-            inputValues.firstName,
-            FormFieldTypes.firstName
+            inputValues.first_name,
+            FormFieldTypes.first_name
           ),
           lastName: validateString(
-            inputValues.lastName,
-            FormFieldTypes.lastName
+            inputValues.last_name,
+            FormFieldTypes.last_name
           ),
           repeatPassword: validateIsSame(
-            inputValues.repeatPassword,
+            inputValues.password_repeat,
             inputValues.password,
-            FormFieldTypes.repeatPassword
+            FormFieldTypes.password_repeat
           )
         }
         const nextInputFields = state.fields.map((field: any) => {
@@ -309,6 +319,7 @@ export default class SignUp extends Block<any> {
   // }
 
   protected render (): string {
+
     return `
       <main class="flex justify-around m-3">
           <section class="w-340">
@@ -318,7 +329,7 @@ export default class SignUp extends Block<any> {
                       {{> input placeholder=placeholder id=id type=type error=error isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}
                   {{/each}}
                     {{> button text="Рега" modificator="primary" onClick=onSignup}}
-                  <a class="signup-form-registration-link flex justify-center mt-2" href="/login">выйти</a>
+                  <a class="signup-form-registration-link flex justify-center mt-2" href="/login">выйssти</a>
               </form>
           </section>
       </main>

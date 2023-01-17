@@ -27,7 +27,7 @@ export default abstract class Block<P extends BlockProps> {
       props,
       tagName: 'div'
     }
-
+    console.log(props)
     this.eventBus = new EventBus()
     this.getStateFromProps(props)
 
