@@ -32,8 +32,8 @@ const email =
 
 const VALIDATORS_REG_EXP: Record<string, RegExp> = {
   email,
-  first_name: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/) ,
-  last_name: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/),
+  first_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
+  last_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
   login: /^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/,
   password: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/
 }
@@ -93,7 +93,7 @@ export const validateIsSame = (
 }
 
 export default class SignUp extends Block<SignupProps> {
-  protected getStateFromProps (): void {
+  getStateFromProps (): void {
     const onFocus = (event: Event): void => {
       console.log('inside focus')
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
@@ -190,7 +190,7 @@ export default class SignUp extends Block<SignupProps> {
           onBlur
         },
         {
-          placeholder: 'И еще разочек Пароль',
+          placeholder: 'повторите пароль',
           id: 'password_repeat',
           type: 'password',
           value: '',
@@ -258,7 +258,6 @@ export default class SignUp extends Block<SignupProps> {
           return field
         })
         this.setState({ signupFields: nextInputFields })
-
       }
     }
 
@@ -318,8 +317,11 @@ export default class SignUp extends Block<SignupProps> {
   //   })
   // }
 
-  protected render (): string {
+  getContent (): HTMLElement | null {
+    return super.getContent()
+  }
 
+  protected render (): string {
     return `
       <main class="flex justify-around m-3">
           <section class="w-340">

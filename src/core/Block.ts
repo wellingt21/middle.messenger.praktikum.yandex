@@ -1,5 +1,5 @@
 // @ts-expect-error
-import Handlebars, {log} from 'handlebars'
+import Handlebars from 'handlebars'
 import EventBus from './EventBus'
 
 const enum EVENTS {
@@ -63,7 +63,7 @@ export default abstract class Block<P extends BlockProps> {
     this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
   }
 
-  _componentDidMount() {
+  _componentDidMount () {
 
   }
 
@@ -74,6 +74,7 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   getContent (): HTMLElement | null {
+    console.log('get content')
     if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (
@@ -83,7 +84,7 @@ export default abstract class Block<P extends BlockProps> {
         }
       }, 100)
     }
-
+    console.log(this.element)
     return this.element
   }
 
@@ -167,7 +168,6 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   private _makePropsProxy (props: P): P {
-
     return new Proxy(props, {
       get (target: P, name: string) {
         const value = target[name as keyof P]

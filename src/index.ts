@@ -25,7 +25,7 @@ import SignUpPage from './pages/signup/SignUp'
 import registerComponent from './core/registerComponent'
 import Button from './components/button/button'
 import Input from './components/input/input'
-import renderDOM from "./core/renderDOM";
+import renderDOM from './core/renderDOM'
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
@@ -59,7 +59,7 @@ const pages: any = {
   edit: Edit,
   fix: fixingPage,
   notfound: notFound,
-  signup: new SignUpPage()
+  signup: SignUpPage
 }
 
 window.onload = () => {
