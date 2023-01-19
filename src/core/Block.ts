@@ -1,5 +1,5 @@
 // @ts-expect-error
-import Handlebars, {log} from 'handlebars'
+import Handlebars from 'handlebars'
 import EventBus from './EventBus'
 
 const enum EVENTS {
@@ -27,7 +27,7 @@ export default abstract class Block<P extends BlockProps> {
       props,
       tagName: 'div'
     }
-    console.log(props)
+
     this.eventBus = new EventBus()
     this.getStateFromProps(props)
 
@@ -63,8 +63,8 @@ export default abstract class Block<P extends BlockProps> {
     this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
   }
 
-  _componentDidMount() {
-
+  _componentDidMount () {
+    console.log('did mount')
   }
 
   init (): void {
@@ -167,7 +167,6 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   private _makePropsProxy (props: P): P {
-
     return new Proxy(props, {
       get (target: P, name: string) {
         const value = target[name as keyof P]

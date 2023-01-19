@@ -1,3 +1,5 @@
+import './input.scss'
+
 import Block from '../../core/Block'
 
 import { IInput, InputProps } from './types'
@@ -14,19 +16,18 @@ export default class Input extends Block<InputProps> {
   }
 
   render (): string {
-    console.log('input rendered')
-    return `<div class="input {{#if isError}}input_error{{/if}}">
+    return `<div class="input {{#if isError}}input-error{{/if}}">
               <input
-                class="input_input"
+                class="input-input"
                 type="{{type}}"
                 id="{{id}}"
                 value="{{value}}"
-                placeholder="фывфыв "
+                placeholder=""
               />
-              <label class="input_label" for="{{id}}">
+              <label class="input-label" for="{{id}}">
                 {{placeholder}}
               </label>
-              <span class="blablabla">{{error}}</span>
+              <span class="input-error-message">{{errorMessage}}</span>
             </div>`
   }
 }
