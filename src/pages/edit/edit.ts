@@ -1,5 +1,4 @@
 import Block from '../../core/Block'
-import './edit.scss'
 import '../../components/photo/photo'
 import { IInput } from '../../components/input/types'
 import validateString, { FormFieldTypes } from '../../utils/validate'
