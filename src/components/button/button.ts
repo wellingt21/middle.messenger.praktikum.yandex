@@ -11,7 +11,7 @@ class Button extends Block<ButtonProps> {
 
   render (): string {
     return `<div class="button {{#if modificator}}button_{{modificator}}{{/if}}">
-              <button tabindex="{{tabIndex}}" class="button-button" type="button" onclick="{{}}">{{text}}</button>
+              <button tabindex="{{tabIndex}}" class="button-button" type="button">{{text}}</button>
             </div>`
   }
 }
