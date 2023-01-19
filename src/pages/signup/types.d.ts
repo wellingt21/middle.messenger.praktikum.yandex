@@ -1,3 +1,4 @@
+// @ts-expect-error
 type SignupFields = IInputProps[]
 
 interface SignupProps {

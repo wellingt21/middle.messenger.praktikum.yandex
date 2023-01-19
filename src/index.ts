@@ -1,46 +1,41 @@
 import 'normalize.css'
 
 import Login from './pages/login/login'
-import Chat from './pages/chat/chat'
 import Profile from './pages/profile/profile'
-import Edit from './pages/edit/edit'
 
-import notFound from './pages/404/404'
-import fixingPage from './pages/500/500'
-
-import profileInfoFieldType from './pages/profile/types'
-import editFieldType from './pages/edit/types'
-import loginFieldType from './pages/login/types'
+import NotFound from './pages/notfound/notfound'
 
 import registerComponent from './core/registerComponent'
 import Button from './components/button/button'
 import Input from './components/input/input'
 import renderDOM from './core/renderDOM'
-import SignupPage from './pages/signup'
-import { signupFieldType } from './pages/signup/types'
+import SignupPage from './pages/signup/signup'
+import Photo from './components/photo/photo'
+import EditPage from './pages/edit/edit'
+import ChatPage from './pages/chat/chat'
+import ErrorPage from './pages/fix/fix'
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
-export type fieldTypes =
-  signupFieldType
-  | loginFieldType
-  | profileInfoFieldType
-  | editFieldType
-  | null
-  | {}
-  | any
+export type fieldTypes = any // TODO: temporary
 
 (() => {
-  registerComponent(Button)
+  registerComponent(Button) // TODO: registration
   registerComponent(Input)
+  registerComponent(Photo)
 })()
 
 const pages: any = {
-  chat: Chat,
-  edit: Edit,
-  fix: fixingPage,
-  login: Login,
-  profile: Profile,
+  // @ts-expect-error // TODO: same
+  chat: new ChatPage(),
+  // @ts-expect-error // TODO: same
+  edit: new EditPage(),
+  // @ts-expect-error // TODO: same
+  fix: new ErrorPage(),
+  // @ts-expect-error
+  login: new Login(),
+  // @ts-expect-error // TODO: same
+  profile: new Profile(),
   // @ts-expect-error // TODO: fixme
   signup: new SignupPage()
 }
@@ -48,7 +43,8 @@ const pages: any = {
 window.onload = () => {
   const path: string = window.location.pathname.replace(/\//, '')
 
-  const page: componentType<string, fieldTypes> = pages !== null ? pages[path] : notFound
+  // @ts-expect-error
+  const page: componentType<string, fieldTypes> = pages !== null ? pages[path] : new NotFound()
 
   if (page !== null) {
     renderDOM(page)

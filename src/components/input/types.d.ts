@@ -26,6 +26,7 @@ export interface IInput {
   value: string
   error: string
   isError: boolean
+  errorMessage: string
   onFocus: (e: Event) => void
   onBlur: (e: Event) => void
 }

@@ -27,7 +27,7 @@ export default abstract class Block<P extends BlockProps> {
       props,
       tagName: 'div'
     }
-    console.log(props)
+
     this.eventBus = new EventBus()
     this.getStateFromProps(props)
 
@@ -64,7 +64,7 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   _componentDidMount () {
-
+    console.log('did mount')
   }
 
   init (): void {
@@ -74,7 +74,6 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   getContent (): HTMLElement | null {
-    console.log('get content')
     if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (
@@ -84,7 +83,7 @@ export default abstract class Block<P extends BlockProps> {
         }
       }, 100)
     }
-    console.log(this.element)
+
     return this.element
   }
 

@@ -1,9 +1,11 @@
 import Block from '../../core/Block'
 import validateString, { FormFieldTypes, validateIsSame } from '../../utils/validate'
 import './signup.scss'
-import { SignupFieldsId, SignupProps } from './types'
+import { SignupFields, SignupFieldsId, SignupProps } from './types'
+import { IInput } from '../../components/input/types'
 
-export default class SignupPage extends Block<SignupProps> {
+export default // @ts-expect-error // TODO: fixme
+class SignupPage extends Block<SignupProps> {
   protected getStateFromProps (): void {
     const onFocus = (event: Event): void => {
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
@@ -179,14 +181,14 @@ export default class SignupPage extends Block<SignupProps> {
 
   protected render (): string {
     return `<main class="signup-page">
-            <section class="signup-form__wrapper">
+            <section class="signup-form-wrapper">
               <form class="signup-form">
                 <h1 class="signup-form__title">registration</h1>
                 {{#each signupFields}}
                   {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
                 {{/each}}
-                {{{Button text="Зарегистрироваться" modificator="blue" onClick=onSignup}}}
-                <a class="signup-form__registration-link" href="/">Или все-таки есть аккаунт?</a>
+                {{{Button text="Зарегистрироваться" modificator="primary" onClick=onSignup}}}
+                <a class="signup-form__registration-link" href="/">Войти</a>
               </form>
             </section>
           </main>`

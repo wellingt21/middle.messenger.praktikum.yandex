@@ -1,37 +1,17 @@
+import './button.scss'
+import Block from '../../core/Block'
 
-// @ts-expect-error
-import hbs from 'handlebars'
+export default // @ts-expect-error
+class Button extends Block<ButtonProps> {
+  static _name = 'Button'
 
-
-import Block from "../../core/Block";
-
-interface ButtonProps {
-  text: string,
-  onClick: () => void
-}
-
-export default class Button extends Block<BlockProps > {
-  static _name = 'button'
-
-  constructor({onClick, ...rest}: ButtonProps) {
-    super( {
-      ...rest,
-      events: {
-        click: onClick
-      }});
-
+  constructor ({ onClick, ...restProps }: IButton) {
+    super({ ...restProps, events: { click: onClick } })
   }
 
-  render() {
-    return `
-      <form action="{{ action }}">
-          <button 
-            class="button  {{#if modification}}button_{{modification}}{{/if}}" 
-            type="{{type}}" 
-            formaction="{{ action }}">
-              {{ text }}
-          </button>
-      </form>
-    `
+  render (): string {
+    return `<div class="button {{#if modificator}}button_{{modificator}}{{/if}}">
+              <button tabindex="{{tabIndex}}" class="button-button" type="button" onclick="{{}}">{{text}}</button>
+            </div>`
   }
 }
