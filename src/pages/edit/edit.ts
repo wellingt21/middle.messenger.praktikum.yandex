@@ -76,7 +76,7 @@ class EditPage extends Block<ProfilePageProps> {
         },
         {
           placeholder: 'name',
-          id: 'firstName',
+          id: 'first_name',
           type: 'text',
           value: 'ivan',
           isError: false,
@@ -86,9 +86,19 @@ class EditPage extends Block<ProfilePageProps> {
         },
         {
           placeholder: 'surname',
-          id: 'lastName',
+          id: 'second_name',
           type: 'text',
           value: 'ivanov',
+          isError: false,
+          errorMessage: '',
+          onFocus,
+          onBlur
+        },
+        {
+          placeholder: 'display_name',
+          id: 'display_name',
+          type: 'text',
+          value: 'ivanovIvan',
           isError: false,
           errorMessage: '',
           onFocus,
@@ -116,7 +126,7 @@ class EditPage extends Block<ProfilePageProps> {
         // },
         // {
         //   placeholder: 'password again',
-        //   id: 'repeatPassword',
+        //   id: 'password_repeat',
         //   type: 'password',
         //   value: '',
         //   isError: false,
@@ -131,18 +141,18 @@ class EditPage extends Block<ProfilePageProps> {
             ?.value,
           login: (this.refs.login.querySelector('#login') as HTMLInputElement)
             ?.value,
-          firstName: (
-            this.refs.login.querySelector('#firstName') as HTMLInputElement
+          first_name: (
+            this.refs.login.querySelector('#first_name') as HTMLInputElement
           )?.value,
-          lastName: (
-            this.refs.lastName.querySelector('#lastName') as HTMLInputElement
+          second_name: (
+            this.refs.second_name.querySelector('#second_name') as HTMLInputElement
           )?.value
           // password: (
           //   this.refs.password.querySelector('#password') as HTMLInputElement
           // )?.value,
-          // repeatPassword: (
-          //   this.refs.repeatPassword.querySelector(
-          //     '#repeatPassword'
+          // password_repeat: (
+          //   this.refs.password_repeat.querySelector(
+          //     '#password_repeat'
           //   ) as HTMLInputElement
           // )?.value
         }
@@ -154,18 +164,18 @@ class EditPage extends Block<ProfilePageProps> {
           //   inputValues.password,
           //   FormFieldTypes.password
           // ),
-          firstName: validateString(
-            inputValues.firstName,
-            FormFieldTypes.firstName
+          first_name: validateString(
+            inputValues.first_name,
+            FormFieldTypes.first_name
           ),
-          lastName: validateString(
-            inputValues.lastName,
-            FormFieldTypes.lastName
+          second_name: validateString(
+            inputValues.second_name,
+            FormFieldTypes.second_name
           )
-          // repeatPassword: validateIsSame(
-          //   inputValues.repeatPassword,
+          // password_repeat: validateIsSame(
+          //   inputValues.password_repeat,
           //   inputValues.password,
-          //   FormFieldTypes.repeatPassword
+          //   FormFieldTypes.password_repeat
           // )
         }
         const nextInputFields = state.editFields.map((field: any) => {
@@ -206,12 +216,14 @@ class EditPage extends Block<ProfilePageProps> {
                   {{{Photo src=img}}}
               </div>
               <div class="profile-info-name">{{name}}</div>
-              <ul class="profile-info-info-list">
+              <form action="">
+                <ul class="profile-info-info-list">
                   {{#each editFields}}
                       {{{ input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
                   {{/each}}
-              </ul>
-              {{{Button text="Сохранить" modificator="primary" onClick=onEdit}}}
+                </ul>
+                {{{Button text="Сохранить" modificator="primary" onClick=onEdit}}}
+              </form>
           </div>
         </section>
       </main>

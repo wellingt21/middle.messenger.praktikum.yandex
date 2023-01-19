@@ -1,6 +1,6 @@
 // @ts-expect-error
 import Handlebars from 'handlebars'
-import EventBus from './EventBus'
+import { EventBus } from './EventBus'
 
 const enum EVENTS {
   INIT = 'init',
@@ -13,7 +13,7 @@ export default abstract class Block<P extends BlockProps> {
   readonly eventBus: IEventBus
   id: string
   protected readonly _meta: BlockMeta<P>
-  protected readonly props: any
+  protected readonly props: P
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   protected state: any
   protected refs: Record<string, HTMLElement> = {}
@@ -63,6 +63,7 @@ export default abstract class Block<P extends BlockProps> {
     this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   _componentDidMount () {
     console.log('did mount')
   }
@@ -70,6 +71,7 @@ export default abstract class Block<P extends BlockProps> {
   init (): void {
     const { eventBus: eventBus1, props, _meta } = this
     this._element = document.createElement(_meta.tagName)
+    // @ts-expect-error TODO
     eventBus1.emit(EVENTS.FLOW_RENDER, props)
   }
 

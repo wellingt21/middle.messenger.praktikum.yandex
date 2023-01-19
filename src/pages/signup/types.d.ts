@@ -10,9 +10,9 @@ type SignupFieldsId =
   | 'login'
   | 'email'
   | 'password'
-  | 'repeatPassword'
-  | 'firstName'
-  | 'lastName'
+  | 'password_repeat'
+  | 'first_name'
+  | 'last_name'
 
 export interface signupFieldType {
   placeholder: string

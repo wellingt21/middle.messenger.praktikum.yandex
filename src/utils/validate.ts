@@ -2,31 +2,29 @@
 export enum FormFieldTypes {
   login,
   password,
-  firstName,
-  lastName,
+  first_name,
+  second_name,
   email,
-  repeatPassword,
+  password_repeat,
 }
+
 const VALIDATORS_REG_EXP: Record<string, RegExp> = {
-  login: new RegExp(
-    /^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/
-  ),
-  password: new RegExp(/^(?=.*\d)(?=.*[A-Z]).{8,40}$/),
-  firstName: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/),
-  lastName: new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/),
-  email: new RegExp(
-    /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i
-  ),
-};
+  login: /^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/,
+  password: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/,
+  first_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
+  second_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
+  // phone: TODO
+  email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i
+}
 const VALIDATORS_MESSAGES: Record<string, string> = {
   login: 'Неверный формат логина',
   password: 'Неверный формат пароля',
-  firstName: 'Неверный формат Имени',
-  lastName: 'Неверный формат Фамилии',
+  first_name: 'Неверный формат Имени',
+  last_name: 'Неверный формат Фамилии',
   email: 'Неверный формат email',
   phone: 'Неверный формат телефона',
-  repeatPassword: 'Пароли не совпадают',
-};
+  password_repeat: 'Пароли не совпадают'
+}
 
 const validateString = (
   value: string,
@@ -35,20 +33,20 @@ const validateString = (
   const result: ValidateOutput = {
     isValid: true,
     value,
-    message: '',
-  };
-  if (!value) {
-    value = '';
+    message: ''
   }
-  const TYPE_KEY = FormFieldTypes[type];
+  if (!value) {
+    value = ''
+  }
+  const TYPE_KEY = FormFieldTypes[type]
   if (TYPE_KEY) {
     if (!VALIDATORS_REG_EXP[TYPE_KEY].test(value)) {
-      result.isValid = false;
-      result.message = VALIDATORS_MESSAGES[TYPE_KEY];
+      result.isValid = false
+      result.message = VALIDATORS_MESSAGES[TYPE_KEY]
     }
   }
-  return result;
-};
+  return result
+}
 export const validateIsSame = (
   validatedValue: string,
   comparableValue: string,
@@ -57,13 +55,13 @@ export const validateIsSame = (
   const result: ValidateOutput = {
     isValid: true,
     value: validatedValue,
-    message: '',
-  };
-  const TYPE_KEY = FormFieldTypes[type];
-  if (validatedValue !== comparableValue || validatedValue.length === 0) {
-    result.isValid = false;
-    result.message = VALIDATORS_MESSAGES[TYPE_KEY];
+    message: ''
   }
-  return result;
-};
-export default validateString;
+  const TYPE_KEY = FormFieldTypes[type]
+  if (validatedValue !== comparableValue || validatedValue.length === 0) {
+    result.isValid = false
+    result.message = VALIDATORS_MESSAGES[TYPE_KEY]
+  }
+  return result
+}
+export default validateString

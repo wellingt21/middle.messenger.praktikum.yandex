@@ -25,16 +25,17 @@ class SignupPage extends Block<SignupProps> {
         (field) => field.id === id
       ) as IInput
       let validateField
-      if (id === 'repeatPassword') {
+      if (id === 'password_repeat') {
         const passwordInputValue = (
           this.refs.password.querySelector('#password') as HTMLInputElement
         ).value
         validateField = validateIsSame(
           inputElement.value,
           passwordInputValue,
-          FormFieldTypes.repeatPassword
+          FormFieldTypes.password_repeat
         )
       } else {
+        // @ts-expect-error
         validateField = validateString(inputElement.value, FormFieldTypes[id])
       }
       currentField.isError = !validateField.isValid
@@ -66,7 +67,7 @@ class SignupPage extends Block<SignupProps> {
         },
         {
           placeholder: 'name',
-          id: 'firstName',
+          id: 'first_name',
           type: 'text',
           value: '',
           isError: false,
@@ -76,7 +77,7 @@ class SignupPage extends Block<SignupProps> {
         },
         {
           placeholder: 'surname',
-          id: 'lastName',
+          id: 'second_name',
           type: 'text',
           value: '',
           isError: false,
@@ -106,7 +107,7 @@ class SignupPage extends Block<SignupProps> {
         },
         {
           placeholder: 'password again',
-          id: 'repeatPassword',
+          id: 'password_repeat',
           type: 'password',
           value: '',
           isError: false,
@@ -121,18 +122,18 @@ class SignupPage extends Block<SignupProps> {
             ?.value,
           login: (this.refs.login.querySelector('#login') as HTMLInputElement)
             ?.value,
-          firstName: (
-            this.refs.login.querySelector('#firstName') as HTMLInputElement
+          first_name: (
+            this.refs.login.querySelector('#first_name') as HTMLInputElement
           )?.value,
-          lastName: (
-            this.refs.lastName.querySelector('#lastName') as HTMLInputElement
+          second_name: (
+            this.refs.second_name.querySelector('#second_name') as HTMLInputElement
           )?.value,
           password: (
             this.refs.password.querySelector('#password') as HTMLInputElement
           )?.value,
-          repeatPassword: (
-            this.refs.repeatPassword.querySelector(
-              '#repeatPassword'
+          password_repeat: (
+            this.refs.password_repeat.querySelector(
+              '#password_repeat'
             ) as HTMLInputElement
           )?.value
         }
@@ -144,18 +145,18 @@ class SignupPage extends Block<SignupProps> {
             inputValues.password,
             FormFieldTypes.password
           ),
-          firstName: validateString(
-            inputValues.firstName,
-            FormFieldTypes.firstName
+          first_name: validateString(
+            inputValues.first_name,
+            FormFieldTypes.first_name
           ),
-          lastName: validateString(
-            inputValues.lastName,
-            FormFieldTypes.lastName
+          second_name: validateString(
+            inputValues.second_name,
+            FormFieldTypes.second_name
           ),
-          repeatPassword: validateIsSame(
-            inputValues.repeatPassword,
+          password_repeat: validateIsSame(
+            inputValues.password_repeat,
             inputValues.password,
-            FormFieldTypes.repeatPassword
+            FormFieldTypes.password_repeat
           )
         }
         const nextInputFields = state.signupFields.map((field) => {
