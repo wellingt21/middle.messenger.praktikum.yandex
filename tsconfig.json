@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "rootDir": "./src",
+        "typeRoots": ["node_modules/@types", "types/app.d.ts"],
+        "strict": true,
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "lib": [
+            "dom",
+            "es5",
+            "scripthost",
+            "es2015.proxy",
+            "es2017"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

@@ -1,0 +1,11 @@
+{
+  "plugins": {
+	"tailwindcss": {},
+    "postcss-import":  true,
+    "postcss-mixins": {},
+    "postcss-css-variables": {
+      "preserveInjectedVariables": true
+    },
+    "postcss-nested": true,
+  }
+}
