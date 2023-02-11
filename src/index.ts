@@ -1,19 +1,20 @@
 import 'normalize.css'
 
-import Login from './pages/login/login'
-import Profile from './pages/profile/profile'
-
-import NotFound from './pages/notfound/notfound'
-
 import registerComponent from './core/registerComponent'
+
+import Router from "./core/router/Router";
+
 import Button from './components/button/button'
 import Input from './components/input/input'
-import renderDOM from './core/renderDOM'
-import SignupPage from './pages/signup/signup'
 import Photo from './components/photo/photo'
+import SignupPage from './pages/signup/signup'
+
 import EditPage from './pages/edit/edit'
 import ChatPage from './pages/chat/chat'
 import ErrorPage from './pages/fix/fix'
+import LoginPage from "./pages/login/login";
+import NotFoundPage from './pages/notfound/notfound'
+import ProfilePage from "./pages/profile/profile";
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
@@ -25,28 +26,32 @@ export type fieldTypes = any // TODO: temporary
   registerComponent(Photo)
 })()
 
-const pages: any = {
-  // @ts-expect-error // TODO: same
-  chat: new ChatPage(),
-  // @ts-expect-error // TODO: same
-  edit: new EditPage(),
-  // @ts-expect-error // TODO: same
-  fix: new ErrorPage(),
-  // @ts-expect-error
-  login: new Login(),
-  // @ts-expect-error // TODO: same
-  profile: new Profile(),
-  // @ts-expect-error // TODO: fixme
-  signup: new SignupPage()
-}
+const router = new Router("#app")
+router
+  .use( {pathname: "/signup", block: SignupPage})
+  .use( {pathname: "/chat", block: ChatPage})
+  .use( {pathname: "/login", block: LoginPage})
+  .use( {pathname: "/fix", block: ErrorPage})
+  .use( {pathname: "/notfound", block: NotFoundPage})
+  .use( {pathname: "/profile", block: ProfilePage})
+  .use( {pathname: "/edit", block: EditPage})
+
 
 window.onload = () => {
-  const path: string = window.location.pathname.replace(/\//, '')
+  let isProtectedRoute = true;
 
-  // @ts-expect-error
-  const page: componentType<string, fieldTypes> = pages !== null ? pages[path] : new NotFound()
+  switch (window.location.pathname) {
+    case "/login":
+    case "/signup":
+      isProtectedRoute = false;
+      break;
+  }
 
-  if (page !== null) {
-    renderDOM(page)
+  router.start()
+
+  if (!isProtectedRoute) {
+    router.go("/chat")
+  } else {
+    router.go("/profile")
   }
 }
