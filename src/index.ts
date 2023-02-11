@@ -28,30 +28,29 @@ export type fieldTypes = any // TODO: temporary
 
 const router = new Router("#app")
 router
-  .use( {pathname: "/signup", block: SignupPage})
-  .use( {pathname: "/chat", block: ChatPage})
-  .use( {pathname: "/login", block: LoginPage})
+  .use( {pathname: "/sign-up", block: SignupPage})
+  .use( {pathname: "/messenger", block: ChatPage})
+  .use( {pathname: "/", block: LoginPage})
   .use( {pathname: "/fix", block: ErrorPage})
   .use( {pathname: "/notfound", block: NotFoundPage})
-  .use( {pathname: "/profile", block: ProfilePage})
+  .use( {pathname: "/settings", block: ProfilePage})
   .use( {pathname: "/edit", block: EditPage})
 
-
 window.onload = () => {
-  let isProtectedRoute = true;
-
-  switch (window.location.pathname) {
-    case "/login":
-    case "/signup":
-      isProtectedRoute = false;
-      break;
-  }
-
+  // let isProtectedRoute = true;
+  //
+  // switch (window.location.pathname) {
+  //   case "/login":
+  //   case "/signup":
+  //     isProtectedRoute = false;
+  //     break;
+  // }
+  //
   router.start()
-
-  if (!isProtectedRoute) {
-    router.go("/chat")
-  } else {
-    router.go("/profile")
-  }
+  //
+  // if (!isProtectedRoute) {
+  //   router.go("/chat")
+  // } else {
+  //   router.go("/profile")
+  // }
 }

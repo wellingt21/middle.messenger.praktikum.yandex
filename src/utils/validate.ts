@@ -13,7 +13,7 @@ const VALIDATORS_REG_EXP: Record<string, RegExp> = {
   password: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/,
   first_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
   second_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
-  // phone: TODO
+  phone: /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/,
   email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i
 }
 const VALIDATORS_MESSAGES: Record<string, string> = {
