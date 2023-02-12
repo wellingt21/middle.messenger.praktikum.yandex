@@ -13,6 +13,7 @@ type SignupFieldsId =
   | 'password_repeat'
   | 'first_name'
   | 'last_name'
+  | 'phone'
 
 export interface signupFieldType {
   placeholder: string

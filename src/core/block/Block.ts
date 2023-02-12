@@ -1,6 +1,7 @@
 // @ts-expect-error
 import Handlebars from 'handlebars'
 import {EventBus} from '../event/EventBus'
+import Router from "../router/Router";
 
 const enum EVENTS {
   INIT = 'init',
@@ -21,6 +22,7 @@ export default abstract class Block<P extends BlockProps> {
   protected children: Record<string, Block<P>> = {}
   protected template = ''
   protected options: {} | null = {}
+  protected router:Router
 
   protected constructor (props: any = {}) {
     this._meta = {
@@ -29,6 +31,7 @@ export default abstract class Block<P extends BlockProps> {
     }
 
     this.eventBus = new EventBus()
+    this.router = new Router()
     this.getStateFromProps(props)
 
     this.props = this._makePropsProxy(props)

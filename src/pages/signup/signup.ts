@@ -1,22 +1,56 @@
 import Block from '../../core/block/Block'
-import validateString, { FormFieldTypes, validateIsSame } from '../../utils/validate'
+import validateString, {FormFieldTypes, validateIsSame} from '../../utils/validate'
 import './signup.scss'
-import { SignupFields, SignupFieldsId, SignupProps } from './types'
-import { IInput } from '../../components/input/types'
+import {SignupFields, SignupFieldsId, SignupProps} from './types'
+import {IInput} from '../../components/input/types'
+import {SignupData} from "../../core/api/types";
+import {AuthAPI} from "../../core/api/auth";
 
 export default // @ts-expect-error // TODO: fixme
 class SignupPage extends Block<SignupProps> {
+
+  async createSignupRequest(formData: SignupData): Promise<void> {
+
+    if (typeof formData === 'object') {
+      const signupRequest = new AuthAPI();
+      this.router.go("/messenger")
+
+      try {
+        await signupRequest.signup(formData)
+          .then(r => {
+            if (r.status == 200) {
+              // TODO: make store here
+              this.router.go("/messenger")
+            }
+
+            // TODO: temporary remove it
+            console.log(r)
+            this.router.go("/profile")
+            console.log(r)
+            console.error(r)
+          })
+
+      } catch (e: any) {
+        const signupFields = { ...this.state }.signupFields
+
+        signupFields.map((field: IInput) => {
+          field.errorMessage = e.reason
+          field.isError = true
+        })
+
+        this.setState({ signupFields })
+      }
+      this.router.go("/profile")
+    }
+  }
+
   protected getStateFromProps (): void {
     const onFocus = (event: Event): void => {
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
       template.classList.remove('p-input_error')
     }
     const onBlur = (event: Event): void => {
-      console.log(event)
-
       const id = (event.target as HTMLInputElement).id as SignupFieldsId
-      console.log(id)
-
       const inputElement = this.refs?.[id].querySelector(
         `#${id}`
       ) as HTMLInputElement
@@ -43,6 +77,7 @@ class SignupPage extends Block<SignupProps> {
       currentField.value = validateField.value
       this.setState({ signupFields })
     }
+
     const state: SignupProps = {
       signupFields: [
         {
@@ -123,7 +158,7 @@ class SignupPage extends Block<SignupProps> {
           login: (this.refs.login.querySelector('#login') as HTMLInputElement)
             ?.value,
           first_name: (
-            this.refs.login.querySelector('#first_name') as HTMLInputElement
+            this.refs.first_name.querySelector('#first_name') as HTMLInputElement
           )?.value,
           second_name: (
             this.refs.second_name.querySelector('#second_name') as HTMLInputElement
@@ -135,6 +170,9 @@ class SignupPage extends Block<SignupProps> {
             this.refs.password_repeat.querySelector(
               '#password_repeat'
             ) as HTMLInputElement
+          )?.value,
+          phone: (
+            this.refs.phone.querySelector('#phone') as HTMLInputElement
           )?.value
         }
 
@@ -157,6 +195,10 @@ class SignupPage extends Block<SignupProps> {
             inputValues.password_repeat,
             inputValues.password,
             FormFieldTypes.password_repeat
+          ),
+          phone: validateString(
+            inputValues.phone,
+              FormFieldTypes.phone
           )
         }
         const nextInputFields = state.signupFields.map((field) => {
@@ -175,12 +217,16 @@ class SignupPage extends Block<SignupProps> {
         })
         this.setState({ signupFields: nextInputFields })
         console.log(inputValues)
+
+        this.createSignupRequest(inputValues).then(r => alert(r))
+
       }
     }
     this.state = state
   }
 
   protected render (): string {
+    console.log(this.state.signupFields)
     return `<main class="signup-page">
             <section class="signup-form-wrapper">
               <form class="signup-form">

@@ -6,6 +6,7 @@ export enum FormFieldTypes {
   second_name,
   email,
   password_repeat,
+  phone = 6
 }
 
 const VALIDATORS_REG_EXP: Record<string, RegExp> = {
@@ -13,17 +14,18 @@ const VALIDATORS_REG_EXP: Record<string, RegExp> = {
   password: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/,
   first_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
   second_name: /^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/,
-  phone: /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/,
-  email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i
+  email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i,
+  password_repeat: /^(?=.*\d)(?=.*[A-Z]).{8,40}$/,
+  phone: /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/
 }
 const VALIDATORS_MESSAGES: Record<string, string> = {
   login: 'Неверный формат логина',
-  password: 'Неверный формат пароля',
+  password: 'Неверный формат пароля (хардкор)',
   first_name: 'Неверный формат Имени',
   last_name: 'Неверный формат Фамилии',
   email: 'Неверный формат email',
-  phone: 'Неверный формат телефона',
-  password_repeat: 'Пароли не совпадают'
+  password_repeat: 'Пароли не совпадают',
+  phone: 'Неверный формат телефона. 8 цифр'
 }
 
 const validateString = (

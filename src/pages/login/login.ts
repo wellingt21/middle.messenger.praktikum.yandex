@@ -5,20 +5,23 @@ import {AuthAPI} from "../../core/api/auth"
 import {IInput} from '../../components/input/types'
 import {LoginFieldsId, LoginPageProps} from './types'
 import {LoginData} from "../../core/api/types";
-import Router from "../../core/router/Router";
 
 // noinspection HtmlUnknownTarget TODO: check why
 export default // @ts-expect-error
 class LoginPage extends Block<LoginPageProps> {
-  router = new Router()
 
   async createLoginRequest(formData: LoginData): Promise<void> {
-    console.error("HERE I AM ")
+
     if (typeof formData === 'object') {
       const loginRequest = new AuthAPI();
 
       try {
-        await loginRequest.login(formData).then(r => console.log(r + "asdasdasdasd"))
+        await loginRequest.login(formData).then(() => {
+          this.router.go("messenger")
+
+          // store.set('user', response.response);
+          // TODO: implement store here
+        })
       } catch (e: any) {
         const loginFields = { ...this.state }.loginFields
 
@@ -27,61 +30,39 @@ class LoginPage extends Block<LoginPageProps> {
           field.isError = true
         })
 
-        this.setState({ loginFields })
+		this.setState({ loginFields })
       }
-
-      // TODO: implement this logic to success 200 response on login
-            // await loginRequest.login(formData)
-            //   .then((response: XMLHttpRequest) => {
-            //
-            //     if (response.status === 200) {
-            //       this.router.go("/chat");
-            //     } else {
-            //       // TODO: make it up with something nice
-            //       console.error("HERE I AM 2")
-            //       console.log(response.response.reasone)
-            //
-            //       this.state.loginFields.errorMessage = response.response.reason
-            //
-            //     }
-            //   })
-            //   .then(() => {
-            //     console.error("HERE I AM 3")
-            //     void loginRequest
-            //       .read()
-            //       .then((response: User) => {
-            //         console.error("HERE I AM  $")
-            //         if (response !== null) {
-            //           // store.set('user', response.response);
-            //           // TODO: implement store here
-            //           console.log(response)
-            //         }
-            //       });
-            //   });
     }
   }
 
   getStateFromProps (): void {
+
     const onFocus = (event: Event): void => {
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
       template.classList.remove('p-input_error')
     }
+
     const onBlur = (event: Event): void => {
       const id = (event.target as HTMLInputElement).id as LoginFieldsId
       const inputElement = this.refs?.[id].querySelector(
         `#${id}`
       ) as HTMLInputElement
+
       const loginFields = { ...this.state }.loginFields
+
       const currentField = loginFields.find(
         (field: any) => field.id === id
       ) as IInput
+
       const validateField = validateString(
         inputElement.value,
         FormFieldTypes[id]
       )
+
       currentField.isError = !validateField.isValid
       currentField.errorMessage = validateField.message
       currentField.value = validateField.value
+
       this.setState({ loginFields })
     }
 
@@ -108,7 +89,7 @@ class LoginPage extends Block<LoginPageProps> {
           onBlur
         }
       ],
-      onLogin: () => {
+      onLogin: async () => {
         const inputValues = {
           login: (this.refs.login.querySelector('#login') as HTMLInputElement)
             ?.value,
@@ -139,9 +120,23 @@ class LoginPage extends Block<LoginPageProps> {
             }
             return field
           })
-          this.setState({ loginFields: nextInputFields })
+          this.setState({loginFields: nextInputFields})
           console.log(inputValues)
-          this.createLoginRequest(inputValues).then(r => console.log(r))
+
+          await this.createLoginRequest(inputValues)
+        }
+      },
+      onLogout: async () => {
+        const authAPI = new AuthAPI()
+
+        try {
+          await authAPI.logout().then(r => {
+            console.log(r + "asdasdasdasd")
+            // clear store
+          })
+        } catch (e) {
+          // TODO: remove tempo
+          console.log(e)
         }
       }
     }
@@ -159,9 +154,24 @@ class LoginPage extends Block<LoginPageProps> {
                 {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
               {{/each}}
               {{{Button text="Авторизоваться" modificator="primary" onClick=onLogin}}}
+              {{{Button text="Логаут" modificator="primary" onClick=onLogout}}}
               <a class="login-form-registration-link" href="/signup">Нет аккаунта?</a>
             </form>
           </section>
         </main>`
   }
 }
+
+
+
+/*
+{
+    "email": "random@randasd.xc",
+    "login": "toper",
+    "first_name": "Toper",
+    "second_name": "Toperovich",
+    "password": "vbe8jnv_TNX_xfd!ryk",
+    "password_repeat": "vbe8jnv_TNX_xfd!ryk",
+    "phone": "7896541659"
+}
+ */
