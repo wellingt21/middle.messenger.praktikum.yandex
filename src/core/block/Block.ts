@@ -1,6 +1,6 @@
 // @ts-expect-error
 import Handlebars from 'handlebars'
-import { EventBus } from './EventBus'
+import { EventBus } from '../event/EventBus'
 
 const enum EVENTS {
   INIT = 'init',

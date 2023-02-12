@@ -1,13 +1,13 @@
-import Route from './route';
-import Block from "../Block";
+import Route from './route'
+import Block from '../block/Block'
 
-import ChatPage from "../../pages/chat/chat"
-import EditPage from "../../pages/edit/edit"
-import FixPage from "../../pages/fix/fix"
+import ChatPage from '../../pages/chat/chat'
+import EditPage from '../../pages/edit/edit'
+import FixPage from '../../pages/fix/fix'
 import LoginPage from '../../pages/login/login'
 import NotFoundPage from '../../pages/notfound/notfound'
-import ProfilePage from "../../pages/profile/profile"
-import SignupPage from "../../pages/signup/signup"
+import ProfilePage from '../../pages/profile/profile'
+import SignupPage from '../../pages/signup/signup'
 
 export type BlockType = typeof FixPage | typeof LoginPage | typeof EditPage | typeof NotFoundPage | typeof SignupPage
   | typeof ChatPage | typeof Block | typeof ProfilePage
@@ -25,7 +25,7 @@ export default class Router {
   private currentRoute: Route | null = null
   private readonly history = window.history
 
-  constructor(private readonly rootQuery: string) {
+  constructor (private readonly rootQuery: string) {
     if (Router.__instance) {
       return Router.__instance
     }
@@ -35,29 +35,43 @@ export default class Router {
     Router.__instance = this
   }
 
-  use(args: UseMethodType): Router {
+  use (args: UseMethodType): Router {
     const { pathname, block } = args
     const route = new Route(pathname, block, this.rootQuery)
     this.routes.push(route)
 
-    return this;
+    return this
   }
 
-  start(): void {
+  start (): void {
     window.onpopstate = (event: PopStateEvent) => {
       const target = event.currentTarget as Window
 
       this._onRoute(target.location.pathname)
-    };
+    }
 
     this._onRoute(window.location.pathname)
   }
 
-  private _onRoute(pathname: string, props?: Record<string, any>): void {
+  go (pathname: string, props?: Record<string, any>): void {
+    this.history.pushState({}, '', pathname)
+
+    this._onRoute(pathname, props)
+  }
+
+  back (): void {
+    this.history.back()
+  }
+
+  forward (): void {
+    this.history.forward()
+  }
+
+  private _onRoute (pathname: string, props?: Record<string, any>): void {
     const route = this.getRoute(pathname)
 
     if (!route) {
-      return;
+      return
     }
 
     if (this.currentRoute && this.currentRoute !== route) {
@@ -69,21 +83,7 @@ export default class Router {
     route.render(props)
   }
 
-  go(pathname: string, props?: Record<string, any>): void {
-    this.history.pushState({}, '', pathname)
-
-    this._onRoute(pathname, props)
-  }
-
-  back(): void {
-    this.history.back()
-  }
-
-  forward(): void {
-    this.history.forward()
-  }
-
-  private getRoute(pathname: string): Route | undefined {
+  private getRoute (pathname: string): Route | undefined {
     return this.routes.find(route => route.match(pathname))
   }
 }

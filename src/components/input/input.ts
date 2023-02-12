@@ -1,6 +1,6 @@
 import './input.scss'
 
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 
 import { IInput, InputProps } from './types'
 

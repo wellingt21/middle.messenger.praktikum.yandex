@@ -1,4 +1,4 @@
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 
 export default class ErrorPage extends Block<Record<string, never>> {
   protected render (): string {

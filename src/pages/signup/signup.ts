@@ -1,4 +1,4 @@
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 import validateString, { FormFieldTypes, validateIsSame } from '../../utils/validate'
 import './signup.scss'
 import { SignupFields, SignupFieldsId, SignupProps } from './types'

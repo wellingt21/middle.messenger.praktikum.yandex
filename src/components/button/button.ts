@@ -1,5 +1,5 @@
 import './button.scss'
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 
 export default // @ts-expect-error
 class Button extends Block<ButtonProps> {

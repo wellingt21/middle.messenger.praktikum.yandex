@@ -1,4 +1,4 @@
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 import './photo.scss'
 
 export default // @ts-expect-error

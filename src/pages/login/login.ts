@@ -1,5 +1,5 @@
 import './login.scss'
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 import validateString, { FormFieldTypes } from '../../utils/validate'
 import { IInput } from '../../components/input/types'
 import { LoginFieldsId, LoginPageProps } from './types'

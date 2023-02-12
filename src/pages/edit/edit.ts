@@ -1,4 +1,4 @@
-import Block from '../../core/Block'
+import Block from '../../core/block/Block'
 import '../../components/photo/photo'
 import { IInput } from '../../components/input/types'
 import validateString, { FormFieldTypes } from '../../utils/validate'
