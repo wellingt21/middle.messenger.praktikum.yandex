@@ -1,6 +1,7 @@
 import Block from '../../core/block/Block'
 import './profile.scss'
 import '../../components/photo/photo'
+import {AuthAPI} from "../../core/api/auth";
 
 const state: ProfilePageProps = {
   img: {
@@ -21,6 +22,13 @@ export default // @ts-expect-error
 class ProfilePage extends Block<ProfilePageProps> {
   getStateFromProps (): void {
     this.state = state
+  }
+  async onLoad(): Promise<void> {
+	const api = new AuthAPI()
+	await api.read().then(r => console.log(r))
+	this.state.profileInfo.map((field: ProfileInfo) => {
+	  console.log(field)
+	})
   }
 
   render (): string {
