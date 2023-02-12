@@ -1,11 +1,66 @@
 import './login.scss'
 import Block from '../../core/block/Block'
-import validateString, { FormFieldTypes } from '../../utils/validate'
-import { IInput } from '../../components/input/types'
-import { LoginFieldsId, LoginPageProps } from './types'
+import validateString, {FormFieldTypes} from '../../utils/validate'
+import {AuthAPI} from "../../core/api/auth"
+import {IInput} from '../../components/input/types'
+import {LoginFieldsId, LoginPageProps} from './types'
+import {LoginData} from "../../core/api/types";
+import Router from "../../core/router/Router";
 
+// noinspection HtmlUnknownTarget TODO: check why
 export default // @ts-expect-error
 class LoginPage extends Block<LoginPageProps> {
+  router = new Router()
+
+  async createLoginRequest(formData: LoginData): Promise<void> {
+    console.error("HERE I AM ")
+    if (typeof formData === 'object') {
+      const loginRequest = new AuthAPI();
+
+      try {
+        await loginRequest.login(formData).then(r => console.log(r + "asdasdasdasd"))
+      } catch (e: any) {
+        const loginFields = { ...this.state }.loginFields
+
+        loginFields.map((field: IInput) => {
+          field.errorMessage = e.reason
+          field.isError = true
+        })
+
+        this.setState({ loginFields })
+      }
+
+      // TODO: implement this logic to success 200 response on login
+            // await loginRequest.login(formData)
+            //   .then((response: XMLHttpRequest) => {
+            //
+            //     if (response.status === 200) {
+            //       this.router.go("/chat");
+            //     } else {
+            //       // TODO: make it up with something nice
+            //       console.error("HERE I AM 2")
+            //       console.log(response.response.reasone)
+            //
+            //       this.state.loginFields.errorMessage = response.response.reason
+            //
+            //     }
+            //   })
+            //   .then(() => {
+            //     console.error("HERE I AM 3")
+            //     void loginRequest
+            //       .read()
+            //       .then((response: User) => {
+            //         console.error("HERE I AM  $")
+            //         if (response !== null) {
+            //           // store.set('user', response.response);
+            //           // TODO: implement store here
+            //           console.log(response)
+            //         }
+            //       });
+            //   });
+    }
+  }
+
   getStateFromProps (): void {
     const onFocus = (event: Event): void => {
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
@@ -86,9 +141,11 @@ class LoginPage extends Block<LoginPageProps> {
           })
           this.setState({ loginFields: nextInputFields })
           console.log(inputValues)
+          this.createLoginRequest(inputValues).then(r => console.log(r))
         }
       }
     }
+
     this.state = state
   }
 

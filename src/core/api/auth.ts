@@ -1,27 +1,34 @@
-import HTTPTransport from '../service/http/http-transport'
+import BaseAPI from './base';
 
-export class AuthApi extends HTTPTransport {
-  auth = async (data: Record<string, string>): Promise<unknown> => {
-    const url = '/auth/signin'
+import {LoginData, SignupData, User} from './types';
 
-    return await this.post(url, { data })
+export class AuthAPI extends BaseAPI {
+  constructor() {
+    super('/auth');
   }
 
-  create = async (data: Record<string, string>): Promise<unknown> => {
-    const url = '/auth/signup'
-
-    return await this.post(url, { data })
+  login(data: LoginData) {
+    console.log("inside login")
+    return this.http.post('/signin', {data});
   }
 
-  user = async (): Promise<unknown> => {
-    const url = '/auth/user'
-
-    return await this.get(url, {})
+  signup(data: SignupData) {
+    return this.http.post('/signup', { data });
   }
 
-  logout = async (): Promise<unknown> => {
-    const url = '/auth/logout'
-
-    return await this.post(url, {})
+  read(): Promise<User> {
+    return this.http.get('/user');
   }
+
+  logout() {
+    return this.http.post('/logout');
+  }
+
+  create = undefined;
+
+  update = undefined;
+
+  delete = undefined;
 }
+
+export default new AuthAPI();

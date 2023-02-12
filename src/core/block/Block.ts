@@ -1,6 +1,6 @@
 // @ts-expect-error
 import Handlebars from 'handlebars'
-import { EventBus } from '../event/EventBus'
+import {EventBus} from '../event/EventBus'
 
 const enum EVENTS {
   INIT = 'init',
@@ -65,7 +65,7 @@ export default abstract class Block<P extends BlockProps> {
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   _componentDidMount () {
-    console.log('did mount')
+
   }
 
   init (): void {

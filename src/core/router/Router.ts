@@ -25,7 +25,7 @@ export default class Router {
   private currentRoute: Route | null = null
   private readonly history = window.history
 
-  constructor (private readonly rootQuery: string) {
+  constructor (private readonly rootQuery: string = "#app") {
     if (Router.__instance) {
       return Router.__instance
     }
