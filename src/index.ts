@@ -9,7 +9,8 @@ import Input from './components/input/input'
 import Photo from './components/photo/photo'
 import SignupPage from './pages/signup/signup'
 
-import EditPage from './pages/edit/edit'
+import EditInfoPage from './pages/edit/info'
+import EditPasswordPage from './pages/edit/password'
 import ChatPage from './pages/chat/chat'
 import ErrorPage from './pages/fix/fix'
 import LoginPage from "./pages/login/login";
@@ -34,7 +35,8 @@ router
   .use( {pathname: "/fix", block: ErrorPage})
   .use( {pathname: "/notfound", block: NotFoundPage})
   .use( {pathname: "/settings", block: ProfilePage})
-  .use( {pathname: "/edit", block: EditPage})
+  .use( {pathname: "/edit", block: EditInfoPage})
+  .use( {pathname: "/password", block: EditPasswordPage})
 
 window.onload = () => {
   // let isProtectedRoute = true;

@@ -17,7 +17,7 @@ class LoginPage extends Block<LoginPageProps> {
 
       try {
         await loginRequest.login(formData).then(() => {
-          this.router.go("messenger")
+          this.router.go("/messenger")
 
           // store.set('user', response.response);
           // TODO: implement store here
@@ -153,8 +153,8 @@ class LoginPage extends Block<LoginPageProps> {
               {{#each loginFields}}
                 {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
               {{/each}}
-              {{{Button text="Авторизоваться" modificator="primary" onClick=onLogin}}}
-              {{{Button text="Логаут" modificator="primary" onClick=onLogout}}}
+              {{{Button text="Авторизоваться" modifier="primary" onClick=onLogin}}}
+              {{{Button text="Логаут" modifier="secondary" onClick=onLogout}}}
               <a class="login-form-registration-link" href="/signup">Нет аккаунта?</a>
             </form>
           </section>
@@ -173,5 +173,6 @@ class LoginPage extends Block<LoginPageProps> {
     "password": "vbe8jnv_TNX_xfd!ryk",
     "password_repeat": "vbe8jnv_TNX_xfd!ryk",
     "phone": "7896541659"
+    "id": "312328"
 }
  */

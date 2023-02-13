@@ -1,31 +1,51 @@
 import Block from '../../core/block/Block'
 import '../../components/photo/photo'
-import { IInput } from '../../components/input/types'
-import validateString, { FormFieldTypes } from '../../utils/validate'
-import { EditProps } from './types'
-
-// const state: EditPageProps = {
-//   img: {
-//     src: 'static/images/default_profile_image.png.png',
-//     alt: 'Аватар пользователя'
-//   },
-//   name: 'ivanIvanov', // TODO:dynamically
-//   profileInfo: [
-//     { label: 'Почта', value: 'pochta@yandex.ru' },
-//     { label: 'Логин', value: 'ivanIvanov' },
-//     { label: 'Имя', value: 'ivan' },
-//     { label: 'Фамилия', value: 'ivanov' },
-//     { label: 'Имя в чате', value: 'ivan ivanov' },
-//     { label: 'Телефон', value: '+79032678712' }
-//   ]
-// }
+import {IInput} from '../../components/input/types'
+import validateString, {FormFieldTypes} from '../../utils/validate'
+import {EditProps} from './types'
+import {User} from "../../core/api/types";
+import {AuthAPI} from "../../core/api/auth";
 
 export default // @ts-expect-error
-class EditPage extends Block<ProfilePageProps> {
+class EditInfoPage extends Block<ProfilePageProps> {
   // getStateFromProps (): void {
   //   this.state = state
   // }
 
+    // TODO: duplication
+    // TODO: try/catch possibly not the best solution
+    async onLoad(): Promise<User | null> {
+        const api = new AuthAPI()
+        try {
+            return await api.read()
+        } catch (e: { reason: string } | any) {
+            alert(e.reason)
+            this.router.go('/')
+        }
+        return null
+    }
+
+    // TODO: duplication
+    init() {
+        super.init();
+
+        // TODO: not so good, bad null checking too
+        this.onLoad().then(r => {
+            if (r == null) return
+            Object.entries(r).map(el => {
+                this.state.editFields.map((field: any) => {
+                    if (field.id == el[0]) {
+                        field.value = el[1]
+                    }
+                })
+
+                // TODO: display name fix empty field
+            })
+        }).then(() => {
+            this.setState(this.state.editFields)
+            console.log(this.state.editFields)
+        })
+    }
   getStateFromProps (): void {
     const onFocus = (event: Event): void => {
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
@@ -58,7 +78,7 @@ class EditPage extends Block<ProfilePageProps> {
           placeholder: 'pochta',
           id: 'email',
           type: 'text',
-          value: 'pochta@yandex.ru',
+          value: '',
           isError: false,
           errorMessage: '',
           onFocus,
@@ -68,7 +88,7 @@ class EditPage extends Block<ProfilePageProps> {
           placeholder: 'login',
           id: 'login',
           type: 'text',
-          value: 'ivanIvanov',
+          value: '',
           isError: false,
           errorMessage: '',
           onFocus,
@@ -88,7 +108,7 @@ class EditPage extends Block<ProfilePageProps> {
           placeholder: 'surname',
           id: 'second_name',
           type: 'text',
-          value: 'ivanov',
+          value: '',
           isError: false,
           errorMessage: '',
           onFocus,
@@ -98,7 +118,7 @@ class EditPage extends Block<ProfilePageProps> {
           placeholder: 'display_name',
           id: 'display_name',
           type: 'text',
-          value: 'ivanovIvan',
+          value: '',
           isError: false,
           errorMessage: '',
           onFocus,
@@ -108,7 +128,7 @@ class EditPage extends Block<ProfilePageProps> {
           placeholder: 'Телефон',
           id: 'phone',
           type: 'number',
-          value: '912873123',
+          value: '',
           isError: false,
           errorMessage: '',
           onFocus,
@@ -222,7 +242,7 @@ class EditPage extends Block<ProfilePageProps> {
                       {{{ input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
                   {{/each}}
                 </ul>
-                {{{Button text="Сохранить" modificator="primary" onClick=onEdit}}}
+                {{{Button text="Сохранить" modifier="primary" onClick=onEdit}}}
               </form>
           </div>
         </section>

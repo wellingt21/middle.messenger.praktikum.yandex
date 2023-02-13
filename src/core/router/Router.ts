@@ -2,7 +2,7 @@ import Route from './route'
 import Block from '../block/Block'
 
 import ChatPage from '../../pages/chat/chat'
-import EditPage from '../../pages/edit/edit'
+import EditPage from '../../pages/edit/info'
 import FixPage from '../../pages/fix/fix'
 import LoginPage from '../../pages/login/login'
 import NotFoundPage from '../../pages/notfound/notfound'

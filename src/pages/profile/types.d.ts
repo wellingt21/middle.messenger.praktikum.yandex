@@ -1,6 +1,7 @@
 interface ProfileInfo {
   label: string
   value: string
+  tag?: string
 }
 
 interface ProfilePageProps {
@@ -8,4 +9,5 @@ interface ProfilePageProps {
   img: IImage
   name: string
   profileInfo: ProfileInfo[]
+  onLogout: () => Promise<void>
 }

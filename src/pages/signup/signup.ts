@@ -234,7 +234,7 @@ class SignupPage extends Block<SignupProps> {
                 {{#each signupFields}}
                   {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
                 {{/each}}
-                {{{Button text="Зарегистрироваться" modificator="primary" onClick=onSignup}}}
+                {{{Button text="Зарегистрироваться" modifier="primary" onClick=onSignup}}}
                 <a class="signup-form__registration-link" href="/">Войти</a>
               </form>
             </section>
