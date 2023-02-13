@@ -4,6 +4,9 @@ import {AvatarProps} from "./types";
 
 // @ts-ignore
 import defaultAvatar from "../../../static/images/"
+// import changeAvatarModal from "./changeAvatarModal";
+
+
 
 export default // @ts-ignore
 class Avatar extends Block<AvatarProps> {
@@ -11,17 +14,48 @@ class Avatar extends Block<AvatarProps> {
 
     public isActive = false
 
-    constructor ({ ...restProps }: IButton) {
+    // constructor ({ ...restProps }: IButton) {
+    //
+    //     const test = () => {
+    //         console.log(this.isActive)
+    //         console.log(this.state)
+    //         this.setState({...this.state, isActive: !this.state.isActive })
+    //         console.log(this.state)
+    //     }
+    //
+    //     super({ ...restProps, isActive: false, events: { click:  () => test()  }})
+    // }
 
-        const test = () => {
-            console.log(this.isActive)
-            console.log(this.state)
-            this.setState({...this.state, isActive: !this.state.isActive })
-            console.log(this.state)
+
+    constructor(props: AvatarProps) {
+        super({
+            ...props,
+            changeModalActive: false,
+            events: {
+                click: (event: Event) => this.setChangeModalActive(event),
+            },
+        });
+    }
+
+    // protected init() {
+    //     this.children.changeAvatarModal = new changeAvatarModal({
+    //         changeModalActive: false,
+    //         type: 'profile',
+    //     });
+    // }
+
+    setChangeModalActive(event: Event) {
+        // console.log(Object.values(this.children)[0].setState)
+
+        // открытие модального окна изменения аватара
+        if ((event.target as Element).className === 'avatar-mask'
+            || (event.target as Element).className === 'avatar-mask__text') {
+
+            // @ts-ignore
+            (Object.values(this.children)[0] as Block).setState({
+                changeModalActive: true,
+            });
         }
-
-        super({ ...restProps, isActive: false, events: { click:  () => test()  }})
-
     }
 
 
@@ -40,30 +74,8 @@ class Avatar extends Block<AvatarProps> {
                     <img src="{{defaultAvatar}}" alt="avatar-template">
                     {{/if}}
                 </div>
-
-                 <div>
-                    {{#if isActive}}
-                         <div
-                            onclick="this.test()"
-                          class="modal"                                    
-                        >
-                          <form class="modal-content" id="modal-container">
-                            <p class="modal-title">
-                              Загрузите файл
-                            </p>
-                            <div class="modal-text">
-                              <input type="file" name="avatar" id="avatar-upload" accept="image/*">
-                              {{#if imageName}}
-                                <span class="modal-text__content-text">{{imageName}}</span>
-                              {{else}}
-                                <label class="modal-text__content-button" for="avatar-upload">Выбрать файл на компьютере</label>
-                              {{/if}}
-                            </div>
-                            {{{Button text="Закрыть" modifier="primary" onClick=onClick}}}
-                          </form>
-                        </div>
-                    {{/if}}
-                </div>
+                {{{Modal}}}
+                
             </div>
         `
     }

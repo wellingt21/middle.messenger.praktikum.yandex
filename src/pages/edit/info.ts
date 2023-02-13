@@ -12,12 +12,7 @@ import defaultAvatar from '../../../static/images/default_profile_image.png'
 
 export default // @ts-expect-error
 class EditInfoPage extends Block<ProfilePageProps> {
-  // getStateFromProps (): void {
-  //   this.state = state
-  // }
-
     onClick = () => console.log('shit is clicked')
-
 
     // TODO: handle formData
     async createUpdateRequest(formData: UpdateProfileData): Promise<void> {
@@ -55,10 +50,6 @@ class EditInfoPage extends Block<ProfilePageProps> {
         }
     }
 
-
-    // TODO: duplication
-    // TODO: try/catch possibly not the best solution
-    // TODO: possibly substitute it for user{id} request (if id will be at store)
     async onLoad(): Promise<User | null> {
         const api = new AuthAPI()
         try {
@@ -279,6 +270,6 @@ class EditInfoPage extends Block<ProfilePageProps> {
           </div>
         </section>
       </main>
-`
+       `
   }
 }
