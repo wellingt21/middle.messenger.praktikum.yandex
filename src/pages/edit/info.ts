@@ -3,8 +3,12 @@ import '../../components/photo/photo'
 import {IInput} from '../../components/input/types'
 import validateString, {FormFieldTypes} from '../../utils/validate'
 import {EditProps} from './types'
-import {User} from "../../core/api/types";
+import {UpdateProfileData, User} from "../../core/api/types";
 import {AuthAPI} from "../../core/api/auth";
+import {UserAPI} from "../../core/api/user";
+
+// @ts-ignore
+import defaultAvatar from '../../../static/images/default_profile_image.png'
 
 export default // @ts-expect-error
 class EditInfoPage extends Block<ProfilePageProps> {
@@ -12,8 +16,49 @@ class EditInfoPage extends Block<ProfilePageProps> {
   //   this.state = state
   // }
 
+    onClick = () => console.log('shit is clicked')
+
+
+    // TODO: handle formData
+    async createUpdateRequest(formData: UpdateProfileData): Promise<void> {
+
+        if (typeof formData === 'object') {
+            const updateRequest = new UserAPI();
+
+            // this.router.go("/messenger")
+
+            try {
+                await updateRequest.updateProfile(formData)
+                    .then(r => {
+                        if (r.status == 200) {
+                            // TODO: make store here
+                            // this.router.go("/messenger")
+
+                            console.log("status comes to 200: " + r)
+                        }
+
+                    })
+
+            } catch (e: any) {
+                const editFields = { ...this.state }.editFields
+
+                editFields.map((field: IInput) => {
+                    field.errorMessage = e.reason
+                    field.isError = true
+                })
+
+                this.setState({ editFields })
+            }
+
+            // TODO: chech why and test this logic
+            // this.router.go("/profile")
+        }
+    }
+
+
     // TODO: duplication
     // TODO: try/catch possibly not the best solution
+    // TODO: possibly substitute it for user{id} request (if id will be at store)
     async onLoad(): Promise<User | null> {
         const api = new AuthAPI()
         try {
@@ -38,19 +83,18 @@ class EditInfoPage extends Block<ProfilePageProps> {
                         field.value = el[1]
                     }
                 })
-
-                // TODO: display name fix empty field
             })
         }).then(() => {
             this.setState(this.state.editFields)
-            console.log(this.state.editFields)
         })
     }
-  getStateFromProps (): void {
-    const onFocus = (event: Event): void => {
-      const template = (event?.target as HTMLElement).parentNode as HTMLElement
-      template.classList.remove('p-input-error')
+
+    getStateFromProps (): void {
+        const onFocus = (event: Event): void => {
+          const template = (event?.target as HTMLElement).parentNode as HTMLElement
+          template.classList.remove('p-input-error')
     }
+
     const onBlur = (event: Event): void => {
       const id = (event.target as HTMLInputElement).id
       const inputElement = this.refs?.[id].querySelector(
@@ -66,124 +110,105 @@ class EditInfoPage extends Block<ProfilePageProps> {
         // @ts-expect-error
         FormFieldTypes[id]
       )
+
       currentField.isError = !validateField.isValid
       currentField.errorMessage = validateField.message
       currentField.value = validateField.value
+
       this.setState({ editFields })
     }
 
     const state: EditProps = {
-      editFields: [
-        {
-          placeholder: 'pochta',
-          id: 'email',
-          type: 'text',
-          value: '',
-          isError: false,
-          errorMessage: '',
-          onFocus,
-          onBlur
+        avatar: {
+            src: defaultAvatar,
+            onClick: () => console.log('strange click')
         },
-        {
-          placeholder: 'login',
-          id: 'login',
-          type: 'text',
-          value: '',
-          isError: false,
-          errorMessage: '',
-          onFocus,
-          onBlur
-        },
-        {
-          placeholder: 'name',
-          id: 'first_name',
-          type: 'text',
-          value: 'ivan',
-          isError: false,
-          errorMessage: '',
-          onFocus,
-          onBlur
-        },
-        {
-          placeholder: 'surname',
-          id: 'second_name',
-          type: 'text',
-          value: '',
-          isError: false,
-          errorMessage: '',
-          onFocus,
-          onBlur
-        },
-        {
-          placeholder: 'display_name',
-          id: 'display_name',
-          type: 'text',
-          value: '',
-          isError: false,
-          errorMessage: '',
-          onFocus,
-          onBlur
-        },
-        {
-          placeholder: 'Телефон',
-          id: 'phone',
-          type: 'number',
-          value: '',
-          isError: false,
-          errorMessage: '',
-          onFocus,
-          onBlur
-        }
-        // {
-        //   placeholder: 'Пароль',
-        //   id: 'password',
-        //   type: 'password',
-        //   value: '',
-        //   isError: false,
-        //   errorMessage: '',
-        //   onFocus,
-        //   onBlur
-        // },
-        // {
-        //   placeholder: 'password again',
-        //   id: 'password_repeat',
-        //   type: 'password',
-        //   value: '',
-        //   isError: false,
-        //   errorMessage: '',
-        //   onFocus,
-        //   onBlur
-        // }
-      ],
-      onEdit: () => {
-        const inputValues = {
-          email: (this.refs.email.querySelector('#email') as HTMLInputElement)
-            ?.value,
-          login: (this.refs.login.querySelector('#login') as HTMLInputElement)
-            ?.value,
-          first_name: (
-            this.refs.login.querySelector('#first_name') as HTMLInputElement
-          )?.value,
-          second_name: (
-            this.refs.second_name.querySelector('#second_name') as HTMLInputElement
-          )?.value
-          // password: (
-          //   this.refs.password.querySelector('#password') as HTMLInputElement
-          // )?.value,
-          // password_repeat: (
-          //   this.refs.password_repeat.querySelector(
-          //     '#password_repeat'
-          //   ) as HTMLInputElement
-          // )?.value
+        editFields: [
+            {
+              placeholder: 'mail',
+              id: 'email',
+              type: 'text',
+              value: '',
+              isError: false,
+              errorMessage: '',
+              onFocus,
+              onBlur
+            },
+            {
+              placeholder: 'login',
+              id: 'login',
+              type: 'text',
+              value: '',
+              isError: false,
+              errorMessage: '',
+              onFocus,
+              onBlur
+            },
+            {
+              placeholder: 'name',
+              id: 'first_name',
+              type: 'text',
+              value: '',
+              isError: false,
+              errorMessage: '',
+              onFocus,
+              onBlur
+            },
+            {
+              placeholder: 'surname',
+              id: 'second_name',
+              type: 'text',
+              value: '',
+              isError: false,
+              errorMessage: '',
+              onFocus,
+              onBlur
+            },
+            {
+              placeholder: 'display_name',
+              id: 'display_name',
+              type: 'text',
+              value: '',
+              isError: false,
+              errorMessage: '',
+              onFocus,
+              onBlur
+            },
+            {
+              placeholder: 'Телефон',
+              id: 'phone',
+              type: 'number',
+              value: '',
+              isError: false,
+              errorMessage: '',
+              onFocus,
+              onBlur
+            }
+        ],
+        onEdit: () => {
+            const inputValues = {
+                email: (this.refs.email.querySelector('#email') as HTMLInputElement)
+                ?.value,
+                login: (this.refs.login.querySelector('#login') as HTMLInputElement)
+                ?.value,
+                first_name: (
+                this.refs.first_name.querySelector('#first_name') as HTMLInputElement
+                )?.value,
+                second_name: (
+                this.refs.second_name.querySelector('#second_name') as HTMLInputElement
+                )?.value,
+                phone: (
+                  this.refs.phone.querySelector('#phone') as HTMLInputElement
+                )?.value,
+                display_name: (
+                    this.refs.display_name.querySelector('#display_name') as HTMLInputElement
+                )?.value
         }
 
         const validatedFields: Record<string, ValidateOutput> = {
           email: validateString(inputValues.email, FormFieldTypes.email),
           login: validateString(inputValues.login, FormFieldTypes.login),
-          // password: validateString(
-          //   inputValues.password,
-          //   FormFieldTypes.password
-          // ),
+          display_name: validateString(inputValues.display_name, FormFieldTypes.login),
           first_name: validateString(
             inputValues.first_name,
             FormFieldTypes.first_name
@@ -191,13 +216,13 @@ class EditInfoPage extends Block<ProfilePageProps> {
           second_name: validateString(
             inputValues.second_name,
             FormFieldTypes.second_name
+          ),
+          phone: validateString(
+              inputValues.phone,
+              FormFieldTypes.phone
           )
-          // password_repeat: validateIsSame(
-          //   inputValues.password_repeat,
-          //   inputValues.password,
-          //   FormFieldTypes.password_repeat
-          // )
         }
+
         const nextInputFields = state.editFields.map((field: any) => {
           if (field.id in validatedFields) {
             const validatedField = validatedFields?.[field.id]
@@ -212,11 +237,18 @@ class EditInfoPage extends Block<ProfilePageProps> {
           }
           return field
         })
-        this.setState({ signupFields: nextInputFields })
-        console.log(inputValues)
-      }
 
+
+        // TODO: decompose this logic duplication on every page issue
+          this.setState({ editFields: nextInputFields })
+          this.createUpdateRequest(inputValues).then(r => {
+              // TODO: implement store logic
+              console.log(r)
+              this.router.go("/messenger")
+          })
+          }
     }
+
     this.state = state
   }
 
@@ -233,7 +265,7 @@ class EditInfoPage extends Block<ProfilePageProps> {
         <section class="profile-info-wrapper">
           <div class="profile-info">
               <div class="profile-info-picture">
-                  {{{Photo src=img}}}
+                {{{Avatar}}}
               </div>
               <div class="profile-info-name">{{name}}</div>
               <form action="">

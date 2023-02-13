@@ -7,8 +7,10 @@ import Router from "./core/router/Router";
 import Button from './components/button/button'
 import Input from './components/input/input'
 import Photo from './components/photo/photo'
-import SignupPage from './pages/signup/signup'
+import Avatar from './components/avatar/avatar'
+import Modal from './components/modal/modal'
 
+import SignupPage from './pages/signup/signup'
 import EditInfoPage from './pages/edit/info'
 import EditPasswordPage from './pages/edit/password'
 import ChatPage from './pages/chat/chat'
@@ -25,6 +27,8 @@ export type fieldTypes = any // TODO: temporary
   registerComponent(Button) // TODO: registration
   registerComponent(Input)
   registerComponent(Photo)
+    registerComponent(Avatar)
+    registerComponent(Modal)
 })()
 
 const router = new Router("#app")

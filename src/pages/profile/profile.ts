@@ -3,59 +3,40 @@ import './profile.scss'
 import '../../components/photo/photo'
 import {AuthAPI} from "../../core/api/auth";
 import {User} from "../../core/api/types";
+// @ts-ignore todo: do not hardcode it that way
+import image from '../../../static/images/default_profile_image.png'
 
 const state: ProfilePageProps = {
-  img: {
-    src: 'static/images/default_profile_image.png.png',
-    alt: 'Аватар пользователя'
-  },
-  name: '', // TODO:dynamically
-  profileInfo: [
+    avatar: "static/images/default_profile_image.png",
+    img: {
+        src: image,
+        alt: 'Аватар пользователя'
+    },
+    name: '', // TODO:dynamically
+    profileInfo: [
     { label: 'Почта', value: '', tag: 'email' },
     { label: 'Логин', value: '', tag: 'login' },
     { label: 'Имя', value: '', tag: 'first_name' },
     { label: 'Фамилия', value: '', tag: 'second_name' },
     { label: 'Имя в чате', value: '', tag: 'display_name' },
     { label: 'Телефон', value: '', tag: 'phone' }
-  ],
-  onLogout: async () => {
+    ],
+    onLogout: async () => {
 
+      const authAPI = new AuthAPI()
 
-	  const authAPI = new AuthAPI()
-
-	  try {
-		authAPI.logout().then(r => {
-		  console.log(r + "asdasdasdasd")
-		  // clear store
-		})
-	  } catch (e) {
-		// TODO: remove tempo
-		console.log(e)
-		alert(e)
-	  }
-
-
-  }
+      try {
+        authAPI.logout().then(r => {
+          console.log(r + "asdasdasdasd")
+          // clear store
+        })
+      } catch (e) {
+        // TODO: remove tempo
+        console.log(e)
+        alert(e)
+      }
+    }
 }
-
-/*
-{
-    "id": 312328,
-    "first_name": "Toper",
-    "second_name": "Toperovich",
-    "display_name": null,
-    "login": "toper",
-    "avatar": null,
-    "email": "random@randasd.xc",
-    "phone": "7896541659"
-}
- */
-
-
-
-
-
-
 
 export default // @ts-expect-error
 class ProfilePage extends Block<ProfilePageProps> {

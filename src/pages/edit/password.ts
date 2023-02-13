@@ -29,7 +29,7 @@ class EditPasswordPage extends Block<ProfilePageProps> {
     init() {
         super.init();
 
-        // TODO: not so good, bad null checking too
+        // TODO: not so good, bad null checking too, duplicated too
         this.onLoad().then(r => {
             if (r == null) return
             Object.entries(r).map(el => {
@@ -47,6 +47,7 @@ class EditPasswordPage extends Block<ProfilePageProps> {
         })
     }
   getStateFromProps (): void {
+        // TODO: duplicated stuff here
     const onFocus = (event: Event): void => {
       const template = (event?.target as HTMLElement).parentNode as HTMLElement
       template.classList.remove('p-input-error')
@@ -118,6 +119,7 @@ class EditPasswordPage extends Block<ProfilePageProps> {
             FormFieldTypes.password_repeat
           )
         }
+        //TODO: duplication
         const nextInputFields = state.editFields.map((field: any) => {
           if (field.id in validatedFields) {
             const validatedField = validatedFields?.[field.id]

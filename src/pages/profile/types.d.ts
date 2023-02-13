@@ -5,9 +5,9 @@ interface ProfileInfo {
 }
 
 interface ProfilePageProps {
-  // @ts-expect-error
-  img: IImage
-  name: string
-  profileInfo: ProfileInfo[]
-  onLogout: () => Promise<void>
+    avatar: string;
+    img: { src: string, alt: string }
+    name: string
+    profileInfo: ProfileInfo[]
+    onLogout: () => Promise<void>
 }
