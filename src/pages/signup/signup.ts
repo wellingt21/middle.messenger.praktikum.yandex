@@ -12,11 +12,11 @@ export class RegistrationPage extends Block {
   protected init () {
     this.children.registrationForm = new RegistrationForm({
       events: {
-        submit: (event: Event | undefined) => {
+        submit: (event: Event) => {
           event.preventDefault()
           if (validateForm(event)) {
             const data = getFormData(event)
-            AuthController.signup(data as SignupData)
+            AuthController.signup(data as SignupData).then(r => console.log(r))
           }
         }
       }

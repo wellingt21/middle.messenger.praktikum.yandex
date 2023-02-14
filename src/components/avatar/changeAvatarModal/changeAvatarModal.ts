@@ -80,9 +80,13 @@ export class changeAvatarModal extends Block {
     )
 
     if (avatarUpload != null) {
-      this.setState({
+
+        this.setState({
+            // @ts-ignore
         imageName: avatarUpload.files[0].name,
-        uploadAvatar: avatarUpload.files[0]
+            // @ts-ignore
+
+            uploadAvatar: avatarUpload.files[0]
       })
     }
   }

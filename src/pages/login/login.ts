@@ -13,7 +13,7 @@ export class AuthPage extends Block {
   protected init () {
     this.children.loginForm = new LoginForm({
       events: {
-        submit: (event: Event | undefined) => {
+        submit: (event: Event) => {
           event.preventDefault()
           if (validateForm(event)) {
             const data = getFormData(event)

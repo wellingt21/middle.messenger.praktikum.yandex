@@ -26,12 +26,14 @@ export default abstract class Block<P extends Record<string, unknown> = any> {
 
   protected props: Props<P>
 
-  private readonly eventBus: () => EventBus<BlockEvents<Props<P>>>
+  // @ts-ignore
+    private readonly eventBus: () => EventBus<BlockEvents<Props<P>>>
 
   private _element: HTMLElement | null = null
 
   protected constructor (propsWithChildren: Props<P> = {} as Props<P>) {
-    const eventBus = new EventBus<BlockEvents<Props<P>>>()
+    // @ts-ignore
+      const eventBus = new EventBus<BlockEvents<Props<P>>>()
     this.eventBus = () => eventBus
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren)
@@ -67,7 +69,8 @@ export default abstract class Block<P extends Record<string, unknown> = any> {
     })
   }
 
-  private _registerEvents (eventBus: EventBus<BlockEvents>) {
+  // @ts-ignore
+    private _registerEvents (eventBus: EventBus<BlockEvents>) {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this))
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))

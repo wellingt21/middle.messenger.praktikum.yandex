@@ -55,7 +55,7 @@ export class ChatPageBase extends Block {
   openChatHandler (event: Event) {
     const element = event.target as HTMLElement
     const { title, id, avatar } = element.dataset
-
+    if (!title) return
     ChatController.selectChat({
       title,
       avatar,
@@ -109,7 +109,7 @@ export class ChatPageBase extends Block {
       events: {
         click: () => {
           const title = prompt('Введите название чата')
-
+            if (!title) return
           ChatController.createChat({ title }).then(() => {
             this.updateChatListHandler()
           })
@@ -271,8 +271,8 @@ export class ChatPageBase extends Block {
 
       events: {
         click: () => {
-          const message: HTMLTextAreaElement = document.querySelector('#message')
-
+          const message: Nullable< HTMLTextAreaElement> = document.querySelector('#message')
+            if (!message) return
           if (message.value) {
             MessagesController.sendMessage(this.props.current.id, message.value)
             message.value = ''
@@ -288,7 +288,9 @@ export class ChatPageBase extends Block {
       id: 'message',
       placeholder: 'Сообщение',
       events: {
-        input: (event) => autoSizeTextArea(event)
+        input: (event) => {
+            if (event) autoSizeTextArea(event)
+        }
       }
     })
 

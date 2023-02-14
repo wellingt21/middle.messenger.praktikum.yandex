@@ -39,38 +39,46 @@ export function validateInput (event: Event, inputName?: string, inputValue?: st
 
   switch (event.type) {
     case 'focus':
-      errorMessage.style.display = 'none'
-      tipMessage.style.display = 'block'
+        // @ts-ignore
+        errorMessage.style.display = 'none'
+        // @ts-ignore
+        tipMessage.style.display = 'block'
 
       if (name === 'repeatPassword') {
-        tipMessage.textContent = validationValue[name].message
+        // @ts-ignore
+          tipMessage.textContent = validationValue[name].message
         return true
       }
 
       result = focusValidate(name)
-      tipMessage.textContent = result
+        // @ts-ignore
+        tipMessage.textContent = result
       return true
     default:
-      errorMessage.style.display = 'block'
-      tipMessage.style.display = 'none'
+        // @ts-ignore
+        errorMessage.style.display = 'block'
+        // @ts-ignore
+        tipMessage.style.display = 'none'
 
       if (name === 'repeatPassword') {
         const passwordInput = document.querySelector('#password')
         if (passwordInput == null) {
           const newPassword = document.querySelector('#newPassword')
-          if (value !== newPassword.value) {
+          // @ts-ignore
+            if (value !== newPassword.value) {
             result = validationValue[name].errMessage
           }
-        } else if (value !== passwordInput.value) {
-          result = validationValue[name].errMessage
+        } else { // @ts-ignore
+            if (value !== passwordInput.value) {
+                      result = validationValue[name].errMessage
+                    }
         }
-
-        errorMessage.textContent = result
+        if (errorMessage) errorMessage.textContent = result
         return !(result)
       }
 
       result = blurOrSubmitValidate(name, value)
-      errorMessage.innerHTML = result
+        if (errorMessage) errorMessage.innerHTML = result
       return !(result)
   }
 }

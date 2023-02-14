@@ -85,7 +85,9 @@ export class ChatController {
   async selectChat (data: SelectChatData) {
     try {
       const token = await this.getChatToken(data.id)
-      await MessagesController.connect(data.id, token)
+      if (token != null) {
+          await MessagesController.connect(data.id, token)
+      }
       store.set('chats.current', { ...data, token })
       return { ...data, token }
     } catch (e: any) {
