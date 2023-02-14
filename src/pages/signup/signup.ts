@@ -218,8 +218,7 @@ class SignupPage extends Block<SignupProps> {
         this.setState({ signupFields: nextInputFields })
         console.log(inputValues)
 
-        this.createSignupRequest(inputValues).then(r => alert(r))
-
+        this.createSignupRequest(inputValues).then(() => console.log('request is done'))
       }
     }
     this.state = state
@@ -228,16 +227,16 @@ class SignupPage extends Block<SignupProps> {
   protected render (): string {
     console.log(this.state.signupFields)
     return `<main class="signup-page">
-            <section class="signup-form-wrapper">
-              <form class="signup-form">
-                <h1 class="signup-form__title">registration</h1>
-                {{#each signupFields}}
-                  {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
-                {{/each}}
-                {{{Button text="Зарегистрироваться" modifier="primary" onClick=onSignup}}}
-                <a class="signup-form__registration-link" href="/">Войти</a>
-              </form>
-            </section>
-          </main>`
+                <section class="signup-form-wrapper">
+                  <form class="signup-form">
+                    <h1 class="signup-form__title">registration</h1>
+                    {{#each signupFields}}
+                      {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
+                    {{/each}}
+                    {{{Button text="Зарегистрироваться" modifier="primary" onClick=onSignup}}}
+                    <a class="signup-form__registration-link" href="/">Войти</a>
+                  </form>
+                </section>
+            </main>`
   }
 }

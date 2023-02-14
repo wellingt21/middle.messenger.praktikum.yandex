@@ -2,36 +2,50 @@ import './modal.scss'
 import Block from '../../core/block/Block'
 import {ModalProps} from "./types";
 import {changeAvatarModalProps} from "../avatar/types";
+import {UserAPI} from "../../core/api/user";
 
 export default // @ts-ignore
 class Modal extends Block<ModalProps> {
     static _name = 'Modal'
+    api = new UserAPI()
 
-    onSubmit() {
+    async onSubmit() {
         // event.preventDefault();
         console.log('submitted')
+        console.log(this.props.uploadAvatar)
+        console.log(this.props)
         if (this.props.uploadAvatar) {
             const data = new FormData();
+
+            console.log(this.props.uploadAvatar)
+
             data.append('avatar', this.props.uploadAvatar);
+            // data.append('avatar', 'sad')
 
-            switch (this.props.type) {
-                case 'profile':
-                    console.log('case profile')
-
-
-                    // TODO: update PROCESSING
-                    // updateProfileAvatar(data);
-
-                    break;
-                case 'chat':
-                    // const chatId = store.getState().chats.current.id;
-                    console.log('id')
-                    // if (chatId) {
-                    //     data.append('chatId', chatId);
-                    //     ChatController.changeAvatar(data);
-                    // }
-                    break;
+            console.log(data)
+            // TODO: actually push avatar to dest
+            // updateProfileAvatar(data);
+            try {
+                console.log('try')
+                const updatedUser = await this.api.updateAvatar(data);
+                console.log(updatedUser)
+                // store.set('user', updatedUser); todo: implement store
+            } catch (e: any) {
+                console.error(e);
             }
+
+
+            //
+            // switch (this.props.type) {
+            //     case 'profile':
+            //         console.log('case profile')
+            //         break;
+            //     case 'chat':
+            //         // TODO: possibly refactor it for chat modal window
+            //         // const chatId = store.getState().chats.current.id;
+            //         console.log('id')
+            //         break;
+            // }
 
             this.setState({
                 changeModalActive: false,
@@ -50,8 +64,6 @@ class Modal extends Block<ModalProps> {
             },
             onSubmit: () => this.onSubmit()
         });
-
-        console.log(this.state)
     }
 
 
@@ -70,7 +82,6 @@ class Modal extends Block<ModalProps> {
             '#avatar-upload',
         ) as HTMLInputElement;
 
-        console.log(avatarUpload.files)
         if (avatarUpload.files) {
             this.setState({
                 imageName: avatarUpload!.files![0].name,

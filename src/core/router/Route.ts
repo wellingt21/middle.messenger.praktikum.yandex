@@ -1,5 +1,5 @@
 import Block from '../block/Block'
-import { BlockType } from './router'
+import { BlockType } from './Router'
 
 export default class Route {
   private block: Nullable<Block<any>> = null

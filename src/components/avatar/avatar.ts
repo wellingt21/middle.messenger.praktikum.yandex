@@ -6,8 +6,6 @@ import {AvatarProps} from "./types";
 import defaultAvatar from "../../../static/images/"
 // import changeAvatarModal from "./changeAvatarModal";
 
-
-
 export default // @ts-ignore
 class Avatar extends Block<AvatarProps> {
     static _name = 'Avatar'

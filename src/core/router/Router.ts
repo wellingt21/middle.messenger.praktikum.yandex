@@ -1,4 +1,4 @@
-import Route from './route'
+import Route from './Route'
 import Block from '../block/Block'
 
 import ChatPage from '../../pages/chat/chat'

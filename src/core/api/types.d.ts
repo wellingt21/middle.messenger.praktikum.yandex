@@ -41,3 +41,16 @@ export interface UpdateProfileData {
   email: string;
   phone: string;
 }
+
+export interface ChatsUsersData {
+    users: [number];
+    chatId: number;
+}
+
+export interface ChatsData {
+    title: string;
+}
+
+export interface DeleteChatData {
+    chatId: number;
+}

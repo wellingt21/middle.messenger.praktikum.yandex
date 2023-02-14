@@ -1,109 +1,155 @@
-.chats-page {
-  height: 100vh;
-  overflow: hidden;
+@import "src/styles/utilities/colors";
 
-  & .left-panel {
-    width: 390px;
+.messenger {
     display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--secondary-l);
-  }
+    height: 100%;
+    width: 100%;
 
-  & .search {
-    padding: 25px 15px;
+    &__left-column {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 310px;
+        background: var(--secondary-bg-el);
+        border-right: 1px solid var(--secondary-l);
 
-    & .search-input {
-      background: var(--secondary-l);
-      border-radius: 5px;
-      padding: 10px;
-      width: 100%;
-    }
-  }
+        .profile {
+            text-align: right;
+            margin: 20px 10px;
 
-  & .users-list-container {
-    flex-grow: 1;
-    overflow: hidden;
-  }
+            display: flex;
+            justify-content: space-between;
 
-  & .users-list {
-    overflow: auto;
-    height: calc(100vh - 83px - 73px);
-  }
+            &__link {
+                cursor: pointer;
+                color: var(--secondary-s-l);
+                font-size: 12px;
+            }
+        }
 
-  & .user {
-    display: flex;
-    padding: 9px 8px 9px 15px;
-    border-top: 1px solid var(--secondary-l);
+        .search-field {
+            border-bottom: 1px solid var(--secondary-bg-l);
 
-    & .user-img {
-      width: 55px;
-      height: 55px;
-      flex-shrink: 0;
-      background: var(--primary);
-      border-radius: 100%;
-      margin-right: 15px;
-    }
+            .text-input {
+                margin: 0 10px 15px;
 
-    & .user-name {
-      font-weight: 500;
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      color: var(--black);
-    }
+                input {
+                    background-color: var(--secondary-bg-l);
+                    border: 0;
+                    height: 32px;
+                    border-radius: 5px;
+                    padding: 0 5px;
+                    margin: 0;
+                    font-size: 12px;
 
-    & .user-last-message {
-      color: var(--secondary-m);
-      font-size: 0.8rem;
+                    &::placeholder {
+                        color: var(--secondary-m);
+                        text-align: center;
+                    }
+                }
+            }
+        }
     }
 
-    & .user-message-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+    &__right-column {
+        height: 100%;
+        width: 100%;
+
+        .empty-chat {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            &__header {
+                display: flex;
+                align-items: center;
+                margin: 0 20px;
+                padding: 10px 0;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--secondary-bg-l);
+
+                .chat-title {
+                    display: flex;
+                    align-items: center;
+
+                    &__avatar {
+                        border-radius: 50%;
+                        border: none;
+                        background: var(--secondary-bg-l);
+                        object-fit: cover;
+                    }
+
+                    &__name {
+                        margin-left: 10px;
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    &__context-button {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0;
+                        background: var(--white);
+                        width: 25px;
+                        height: 25px;
+                        border-radius: 50%;
+
+                        &:hover {
+                            background: #f5f5f5;
+                            cursor: pointer;
+                        }
+
+                        img {
+                            height: 15px;
+                        }
+                    }
+                }
+            }
+
+            &__bottom-panel {
+                display: flex;
+                align-items: center;
+                border-top: 1px solid var(--secondary-bg-l);
+                margin: 0 20px;
+                padding: 10px 0;
+
+                .clip-button {
+                    background: var(--white);
+                    padding: 0;
+                    border: none;
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .send-button {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-left: 10px;
+                    width: 28px;
+                    height: 28px;
+                    background: var(--primary);
+                    border: none;
+                    border-radius: 50%;
+                    rotate: 180deg;
+                }
+            }
+        }
     }
+}
 
-    & .user-last-time {
-      font-size: 0.7rem;
-      color: var(--secondary-m);
-    }
-
-    & .user-not-read-messages {
-      background: var(--primary);
-      width: 20px;
-      height: 20px;
-      font-size: 0.5rem;
-      border-radius: 100%;
-      font-weight: 500;
-      color: var(--white);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  & .navigation-bar-container {
-    flex-shrink: 0;
-  }
-
-  & .navigation-bar {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 50px;
-    border-top: 1px solid var(--secondary-l);
-
-    & .navigation-bar-link {
-      color: var(--secondary-s-s);
-      cursor: pointer;
-
-      &:hover {
-        color: var(--secondary-t-l);
-      }
-
-      & .svg-icon {
-        width: 40px;
-        height: 40px;
-      }
-    }
-  }
+.test {
+    position: relative;
 }
