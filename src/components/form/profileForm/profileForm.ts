@@ -1,36 +1,36 @@
-import Block from '../../../core/Block';
-import template from './profileForm.hbs';
-import { LabeledInput } from '../../inputs/Input/LabeledInput/labeledInput';
-import { Button } from '../../buttons/base/button';
+import Block from '../../../core/Block'
+import template from './profileForm.hbs'
+import { LabeledInput } from '../../inputs/Input/LabeledInput/labeledInput'
+import { Button } from '../../buttons/base/button'
 
 interface ProfileFormProps {
-  isChangeForm: boolean,
-  isChangePassForm?: boolean,
+  isChangeForm: boolean
+  isChangePassForm?: boolean
   email?: string
   login?: string
   first_name?: string
   second_name?: string
   display_name?: string
   phone?: string
-  events?:{
+  events?: {
     submit?: (event: Event) => void
   }
 }
 
 export class ProfileForm extends Block {
-  constructor(props: ProfileFormProps) {
-    super(props);
+  constructor (props: ProfileFormProps) {
+    super(props)
   }
 
-  protected init() {
+  protected init () {
     this.children.emailInput = new LabeledInput({
       type: 'text',
       disabled: !this.props.isChangeForm,
       name: 'email',
       id: 'email',
       labelText: 'Почта',
-      value: this.props.email,
-    });
+      value: this.props.email
+    })
 
     this.children.loginInput = new LabeledInput({
       type: 'text',
@@ -38,8 +38,8 @@ export class ProfileForm extends Block {
       name: 'login',
       id: 'login',
       labelText: 'Логин',
-      value: this.props.login,
-    });
+      value: this.props.login
+    })
 
     this.children.firstNameInput = new LabeledInput({
       type: 'text',
@@ -47,8 +47,8 @@ export class ProfileForm extends Block {
       name: 'first_name',
       id: 'first_name',
       labelText: 'Имя',
-      value: this.props.first_name,
-    });
+      value: this.props.first_name
+    })
 
     this.children.secondNameInput = new LabeledInput({
       type: 'text',
@@ -56,8 +56,8 @@ export class ProfileForm extends Block {
       name: 'second_name',
       id: 'second_name',
       labelText: 'Фамилия',
-      value: this.props.second_name,
-    });
+      value: this.props.second_name
+    })
 
     this.children.displayNameInput = new LabeledInput({
       type: 'text',
@@ -65,8 +65,8 @@ export class ProfileForm extends Block {
       name: 'display_name',
       id: 'display_name',
       labelText: 'Имя в чате',
-      value: this.props.display_name,
-    });
+      value: this.props.display_name
+    })
 
     this.children.phoneInput = new LabeledInput({
       type: 'text',
@@ -74,39 +74,39 @@ export class ProfileForm extends Block {
       name: 'phone',
       id: 'phone',
       labelText: 'Телефон',
-      value: this.props.phone,
-    });
+      value: this.props.phone
+    })
 
     this.children.passwordOldInput = new LabeledInput({
       type: 'password',
       disabled: !this.props.isChangeForm,
       name: 'oldPassword',
       id: 'oldPassword',
-      labelText: 'Старый пароль',
-    });
+      labelText: 'Старый пароль'
+    })
 
     this.children.passwordInput = new LabeledInput({
       type: 'password',
       disabled: !this.props.isChangeForm,
       name: 'newPassword',
       id: 'newPassword',
-      labelText: 'Новый пароль',
-    });
+      labelText: 'Новый пароль'
+    })
 
     this.children.passwordRepeatInput = new LabeledInput({
       type: 'password',
       disabled: !this.props.isChangeForm,
       name: 'repeatPassword',
       id: 'repeatPassword',
-      labelText: 'Повторите новый пароль',
-    });
+      labelText: 'Повторите новый пароль'
+    })
 
     this.children.saveButton = new Button({
-      text: 'Сохранить',
-    });
+      text: 'Сохранить'
+    })
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, this.props);
+  protected render (): DocumentFragment {
+    return this.compile(template, this.props)
   }
 }

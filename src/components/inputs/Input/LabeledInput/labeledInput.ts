@@ -1,30 +1,30 @@
-import Block from '../../../../core/Block';
-import { Input } from '../input';
-import template from './labeledInput.hbs';
-import * as styles from './labeledInput.scss';
-import { validateInput } from '../../../../core/validation/validateInput';
+import Block from '../../../../core/Block'
+import { Input } from '../input'
+import template from './labeledInput.hbs'
+import * as styles from './labeledInput.scss'
+import { validateInput } from '../../../../core/validation/validateInput'
 
 interface LabeledInputProps {
-  labelText?: string;
-  type: string;
-  name: string;
-  id: string;
-  disabled?: boolean;
-  placeholder?: string;
-  value?: string;
+  labelText?: string
+  type: string
+  name: string
+  id: string
+  disabled?: boolean
+  placeholder?: string
+  value?: string
   events?: {
-    blur?: (event: Event) => void;
-    focus?: (event: Event) => void;
-    input?: (event: Event) => void;
-  };
+    blur?: (event: Event) => void
+    focus?: (event: Event) => void
+    input?: (event: Event) => void
+  }
 }
 
 export class LabeledInput extends Block {
-  constructor(props: LabeledInputProps) {
-    super(props);
+  constructor (props: LabeledInputProps) {
+    super(props)
   }
 
-  protected init() {
+  protected init () {
     this.children.input = new Input({
       type: this.props.type,
       name: this.props.name,
@@ -34,22 +34,22 @@ export class LabeledInput extends Block {
       placeholder: this.props.placeholder,
       events: {
         blur: validateInput,
-        focus: validateInput,
-      },
-    });
+        focus: validateInput
+      }
+    })
   }
 
-  protected componentDidUpdate(
-    newProps: LabeledInputProps,
+  protected componentDidUpdate (
+    newProps: LabeledInputProps
   ): boolean {
     (this.children.input as Block).setState({
-      value: newProps.value,
-    });
+      value: newProps.value
+    })
 
-    return true;
+    return true
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }

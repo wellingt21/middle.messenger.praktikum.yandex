@@ -1,51 +1,51 @@
-import API, { AuthAPI } from '../AuthAPI';
-import store from '../../Store';
-import router from '../../Router';
+import API, { AuthAPI } from '../AuthAPI'
+import store from '../../Store'
+import router from '../../Router'
 // import { SigninData, SignupData } from '../types/interfaces';
 
 export class AuthController {
-  private readonly api: AuthAPI;
+  private readonly api: AuthAPI
 
-  constructor() {
-    this.api = API;
+  constructor () {
+    this.api = API
   }
 
-  async signin(data: SigninData) {
+  async signin (data: SigninData) {
     try {
-      await this.api.signin(data);
+      await this.api.signin(data)
 
-      router.go('/profile');
+      router.go('/profile')
     } catch (e: any) {
-      console.error(e);
+      console.error(e)
     }
   }
 
-  async signup(data: SignupData) {
+  async signup (data: SignupData) {
     try {
-      await this.api.signup(data);
+      await this.api.signup(data)
 
-      await this.fetchUser();
+      await this.fetchUser()
 
-      router.go('/profile');
+      router.go('/profile')
     } catch (e: any) {
-      console.error(e.message);
+      console.error(e.message)
     }
   }
 
-  async fetchUser() {
-    const user = await this.api.read();
-    store.set('user', user);
+  async fetchUser () {
+    const user = await this.api.read()
+    store.set('user', user)
   }
 
-  async logout() {
+  async logout () {
     try {
-      await this.api.logout();
+      await this.api.logout()
 
-      router.go('/');
+      router.go('/')
     } catch (e: any) {
-      console.error(e.message);
+      console.error(e.message)
     }
   }
 }
 
-export default new AuthController();
+export default new AuthController()

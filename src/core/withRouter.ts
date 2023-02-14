@@ -1,20 +1,20 @@
-import Block from './Block';
-import Router from './Router';
+import Block from './Block'
+import Router from './Router'
 
-export function withRouter(Component: typeof Block<any>) {
+export function withRouter (Component: typeof Block<any>) {
   type Props = typeof Component extends typeof Block<
   infer P extends Record<string, unknown>
   >
     ? P
-    : any;
+    : any
 
   return class WithRouter extends Component {
-    constructor(props: Props & PropsWithRouter) {
-      super({ ...props, router: Router });
+    constructor (props: Props & PropsWithRouter) {
+      super({ ...props, router: Router })
     }
-  };
+  }
 }
 
 export interface PropsWithRouter {
-  router: typeof Router;
+  router: typeof Router
 }

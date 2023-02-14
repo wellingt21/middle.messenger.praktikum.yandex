@@ -1,47 +1,47 @@
-import { EventBus } from './EventBus';
-import Block from './Block';
-import set from './helpers/set';
+import { EventBus } from './EventBus'
+import Block from './Block'
+import set from './helpers/set'
 
 export enum StoreEvents {
   Updated = 'updated',
 }
 
 export class Store extends EventBus<Record<string, unknown[]>> {
-  private state: any = {};
+  private readonly state: any = {}
 
-  public set(keypath: string, data: unknown) {
-    set(this.state, keypath, data);
+  public set (keypath: string, data: unknown) {
+    set(this.state, keypath, data)
 
-    this.emit(StoreEvents.Updated, this.getState());
+    this.emit(StoreEvents.Updated, this.getState())
   }
 
-  public getState() {
-    return this.state;
+  public getState () {
+    return this.state
   }
 }
 
-const store = new Store();
+const store = new Store()
 
-export function withStore(mapStateToProps: (state: any) => any) {
-  return function wrap(Component: typeof Block) {
-    let previousState: any;
+export function withStore (mapStateToProps: (state: any) => any) {
+  return function wrap (Component: typeof Block) {
+    let previousState: any
 
     return class WithStore extends Component {
-      constructor(props: any) {
-        previousState = mapStateToProps(store.getState());
+      constructor (props: any) {
+        previousState = mapStateToProps(store.getState())
 
-        super({ ...props, ...previousState });
+        super({ ...props, ...previousState })
 
         store.on(StoreEvents.Updated, () => {
-          const stateProps = mapStateToProps(store.getState());
+          const stateProps = mapStateToProps(store.getState())
 
-          previousState = stateProps;
+          previousState = stateProps
 
-          this.setState({ ...stateProps });
-        });
+          this.setState({ ...stateProps })
+        })
       }
-    };
-  };
+    }
+  }
 }
 
-export default store;
+export default store

@@ -1,23 +1,23 @@
-import template from './ControlLink.hbs';
-import * as styles from '../link.scss';
-import Block from '../../../../core/Block';
+import template from './ControlLink.hbs'
+import * as styles from '../link.scss'
+import Block from '../../../../core/Block'
 
 interface ControlLinkProps {
-  text: string;
-  class?: string;
+  text: string
+  class?: string
   events?: {
-    click?: (event?: Event) => void;
-  };
+    click?: (event?: Event) => void
+  }
 }
 
 export class ControlLink extends Block {
-  constructor(props: ControlLinkProps) {
+  constructor (props: ControlLinkProps) {
     super({
-      ...props,
-    });
+      ...props
+    })
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }

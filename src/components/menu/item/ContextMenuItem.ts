@@ -1,24 +1,24 @@
-import Block from '../../../core/Block';
-import template from './ContextMenuItem.hbs';
-import * as styles from './ContextMenuItem.scss';
+import Block from '../../../core/Block'
+import template from './ContextMenuItem.hbs'
+import * as styles from './ContextMenuItem.scss'
 
 export interface ContextMenuItemProps {
-  img: any,
+  img: any
   text: string
 
   events?: {
-    click?: (event: Event) => void;
+    click?: (event: Event) => void
   }
 }
 
 export class ContextMenuItem extends Block {
-  constructor(props: ContextMenuItemProps) {
+  constructor (props: ContextMenuItemProps) {
     super({
-      ...props,
-    });
+      ...props
+    })
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }

@@ -9,7 +9,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    extraFileExtensions: ['.hbs']
+    extraFileExtensions: ['.hbs'],
+      project: './tsconfig.json'
   },
   ignorePatterns: '**/*/hbs',
   rules: {

@@ -1,36 +1,36 @@
-import BaseAPI from './BaseAPI';
+import BaseAPI from './BaseAPI'
 
 export class UserAPI extends BaseAPI {
-  constructor() {
-    super('/user');
+  constructor () {
+    super('/user')
   }
 
-  updateProfile(data: UpdateProfileData) {
-    return this.http.put('/profile', { data });
+  async updateProfile (data: UpdateProfileData) {
+    return await this.http.put('/profile', { data })
   }
 
-  updateAvatar(data: FormData) {
-    return this.http.put('/profile/avatar', {
+  async updateAvatar (data: FormData) {
+    return await this.http.put('/profile/avatar', {
       data,
-      file: true,
-    });
+      file: true
+    })
   }
 
-  updatePassword(data: UpdatePasswordData) {
-    return this.http.put('/password', { data });
+  async updatePassword (data: UpdatePasswordData) {
+    return await this.http.put('/password', { data })
   }
 
-  search(data: UserSearchData) {
-    return this.http.post('/search', { data });
+  async search (data: UserSearchData) {
+    return await this.http.post('/search', { data })
   }
 
-  read = undefined;
+  read = undefined
 
-  create = undefined;
+  create = undefined
 
-  update = undefined;
+  update = undefined
 
-  delete = undefined;
+  delete = undefined
 }
 
-export default new UserAPI();
+export default new UserAPI()

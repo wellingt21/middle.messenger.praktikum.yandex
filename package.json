@@ -10,7 +10,8 @@
         "server": "node server.js",
         "start": "npm run build && npm run server",
         "dev": "npm run build && parcel --port 5555 src/index.html --no-cache --open ",
-        "lint": "eslint . --ext .js,.ts --ignore-pattern \"/node_modules/\" --ignore-pattern \"/dist/\" --fix"
+        "lint": "eslint . --ext .js,.ts --ignore-pattern \"/node_modules/\" --ignore-pattern \"/dist/\" --fix",
+        "stylelint": "stylelint \"src/**/*.scss\" --fix"
     },
     "repository": {
         "type": "git",

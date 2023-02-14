@@ -1,14 +1,14 @@
-import { validateInput } from './validateInput';
+import { validateInput } from './validateInput'
 
-export function validateForm(event: Event):boolean {
-  const data = new FormData(event?.target as HTMLFormElement);
-  let result: boolean = true;
+export function validateForm (event: Event): boolean {
+  const data = new FormData(event?.target as HTMLFormElement)
+  let result: boolean = true
 
   data.forEach((value, name) => {
-    const validationResult = validateInput(event, name, value as string);
+    const validationResult = validateInput(event, name, value as string)
     if (result) {
-      result = validationResult;
+      result = validationResult
     }
-  });
-  return result;
+  })
+  return result
 }

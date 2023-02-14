@@ -1,43 +1,43 @@
 // base
-import Block from '../../core/Block';
-import template from './chatList.hbs';
+import Block from '../../core/Block'
+import template from './chatList.hbs'
 
 // styles
-import * as styles from './chatList.scss';
+import * as styles from './chatList.scss'
 
-import { withStore } from '../../core/Store';
+import { withStore } from '../../core/Store'
 
 interface LastMessage {
-  user: UserInfo;
-  time: string;
-  content: string;
+  user: UserInfo
+  time: string
+  content: string
 }
 
 export interface ChatListProp {
-  id?: number;
-  title?: string;
-  avatar?: string | null;
-  unread_count?: number;
-  last_message?: LastMessage | null;
+  id?: number
+  title?: string
+  avatar?: string | null
+  unread_count?: number
+  last_message?: LastMessage | null
 }
 
 export interface ChatListProps {
-  chats?: ChatListProp[];
+  chats?: ChatListProp[]
   events?: {
-    click: (event: Event) => void;
+    click: (event: Event) => void
   }
 }
 
 export class ChatListBase extends Block {
-  constructor(props?: ChatListProps) {
-    super(props);
+  constructor (props?: ChatListProps) {
+    super(props)
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }
 
-const withChats = withStore((state) => ({ ...state.chats }));
+const withChats = withStore((state) => ({ ...state.chats }))
 
-export const ChatList = withChats(ChatListBase);
+export const ChatList = withChats(ChatListBase)

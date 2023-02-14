@@ -1,41 +1,41 @@
-import BaseAPI from './BaseAPI';
+import BaseAPI from './BaseAPI'
 export class ChatAPI extends BaseAPI {
-  constructor() {
-    super('/chats');
+  constructor () {
+    super('/chats')
   }
 
-  read() {
-    return this.http.get('');
+  async read () {
+    return await this.http.get('')
   }
 
-  create(data: ChatsData) {
-    return this.http.post('', { data });
+  async create (data: ChatsData) {
+    return await this.http.post('', { data })
   }
 
-  delete(data: DeleteChatData) {
-    return this.http.delete('', { data });
+  async delete (data: DeleteChatData) {
+    return await this.http.delete('', { data })
   }
 
-  addUsers(data: ChatsUsersData) {
-    return this.http.put('/users', { data });
+  async addUsers (data: ChatsUsersData) {
+    return await this.http.put('/users', { data })
   }
 
-  deleteUsers(data: ChatsUsersData) {
-    return this.http.delete('/users', { data });
+  async deleteUsers (data: ChatsUsersData) {
+    return await this.http.delete('/users', { data })
   }
 
-  token(chatId: number) {
-    return this.http.post(`/token/${chatId}`);
+  async token (chatId: number) {
+    return await this.http.post(`/token/${chatId}`)
   }
 
-  changeAvatar(data: FormData) {
-    return this.http.put('/avatar', {
+  async changeAvatar (data: FormData) {
+    return await this.http.put('/avatar', {
       data,
-      file: true,
-    });
+      file: true
+    })
   }
 
-  update = undefined;
+  update = undefined
 }
 
-export default new ChatAPI();
+export default new ChatAPI()

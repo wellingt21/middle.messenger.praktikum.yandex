@@ -1,34 +1,34 @@
-import Block from '../../../core/Block';
-import template from './link.hbs';
-import * as styles from './link.scss';
-import { withRouter } from '../../../core/withRouter';
+import Block from '../../../core/Block'
+import template from './link.hbs'
+import * as styles from './link.scss'
+import { withRouter } from '../../../core/withRouter'
 
 interface LinkProps {
-  text: string;
-  href: string;
-  class?: string;
+  text: string
+  href: string
+  class?: string
   events?: {
-    click: () => void;
-  };
+    click: () => void
+  }
 }
 
 class BaseLink extends Block {
-  constructor(props: LinkProps) {
+  constructor (props: LinkProps) {
     super({
       ...props,
       events: {
-        click: () => this.navigate(),
-      },
-    });
+        click: () => this.navigate()
+      }
+    })
   }
 
-  navigate() {
-    this.props.router.go(this.props.href);
+  navigate () {
+    this.props.router.go(this.props.href)
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }
 
-export const Link = withRouter(BaseLink);
+export const Link = withRouter(BaseLink)

@@ -1,4 +1,4 @@
-import { EventBus } from './EventBus';
+import { EventBus } from './EventBus'
 
 export enum WSTransportEvents {
   Connected = 'connected',
@@ -8,76 +8,76 @@ export enum WSTransportEvents {
 }
 
 export default class WSTransport extends EventBus {
-  private socket: WebSocket | null = null;
+  private socket: WebSocket | null = null
 
-  private pingInterval: number = 0;
+  private pingInterval: number = 0
 
-  constructor(private url: string) {
-    super();
+  constructor (private readonly url: string) {
+    super()
   }
 
-  public send(data: unknown) {
-    if (!this.socket) {
-      throw new Error('Socket is not connected');
+  public send (data: unknown) {
+    if (this.socket == null) {
+      throw new Error('Socket is not connected')
     }
 
-    this.socket.send(JSON.stringify(data));
+    this.socket.send(JSON.stringify(data))
   }
 
-  public connect(): Promise<void> {
-    this.socket = new WebSocket(this.url);
+  public async connect (): Promise<void> {
+    this.socket = new WebSocket(this.url)
 
-    this.subscribe(this.socket);
+    this.subscribe(this.socket)
 
-    this.setupPing();
+    this.setupPing()
 
-    return new Promise((resolve) => {
+    return await new Promise((resolve) => {
       this.on(WSTransportEvents.Connected, () => {
-        resolve();
-      });
-    });
+        resolve()
+      })
+    })
   }
 
-  public close() {
-    this.socket?.close();
+  public close () {
+    this.socket?.close()
   }
 
-  private setupPing() {
+  private setupPing () {
     this.pingInterval = setInterval(() => {
-      this.send({ type: 'ping' });
-    }, 5000);
+      this.send({ type: 'ping' })
+    }, 5000)
 
     this.on(WSTransportEvents.Close, () => {
-      clearInterval(this.pingInterval);
+      clearInterval(this.pingInterval)
 
-      this.pingInterval = 0;
-    });
+      this.pingInterval = 0
+    })
   }
 
-  private subscribe(socket: WebSocket) {
+  private subscribe (socket: WebSocket) {
     socket.addEventListener('open', () => {
-      this.emit(WSTransportEvents.Connected);
-    });
+      this.emit(WSTransportEvents.Connected)
+    })
     socket.addEventListener('close', () => {
-      this.emit(WSTransportEvents.Close);
-    });
+      this.emit(WSTransportEvents.Close)
+    })
 
     socket.addEventListener('error', (e) => {
-      this.emit(WSTransportEvents.Error, e);
-    });
+      this.emit(WSTransportEvents.Error, e)
+    })
 
     socket.addEventListener('message', (message) => {
       try {
-        const data = JSON.parse(message.data);
+        const data = JSON.parse(message.data)
 
         if (data.type && data.type === 'pong') {
-          return;
+          return
         }
 
-        this.emit(WSTransportEvents.Message, data);
+        this.emit(WSTransportEvents.Message, data)
       } catch (e: any) {
-        console.error(e.message);
+        console.error(e.message)
       }
-    });
+    })
   }
 }

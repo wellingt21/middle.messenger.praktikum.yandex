@@ -1,51 +1,51 @@
 // base
-import Block from '../../core/Block';
-import template from './avatar.hbs';
+import Block from '../../core/Block'
+import template from './avatar.hbs'
 
 // styles
-import * as styles from './avatar.scss';
+import * as styles from './avatar.scss'
 
 // assets
-import avatarSVG from '../../../static/avatar.svg';
-import { changeAvatarModal } from './changeAvatarModal/changeAvatarModal';
+import avatarSVG from '../../../static/avatar.svg'
+import { changeAvatarModal } from './changeAvatarModal/changeAvatarModal'
 
 interface AvatarProps {
-  url: string;
-  changeModalActive?: boolean;
+  url: string
+  changeModalActive?: boolean
   events?: {
-    click: (event: Event) => void;
-  };
+    click: (event: Event) => void
+  }
 }
 
 export class Avatar extends Block {
-  constructor(props: AvatarProps) {
+  constructor (props: AvatarProps) {
     super({
       ...props,
       changeModalActive: false,
       events: {
-        click: (event: Event) => this.setChangeModalActive(event),
-      },
-    });
+        click: (event: Event) => this.setChangeModalActive(event)
+      }
+    })
   }
 
-  protected init() {
+  protected init () {
     this.children.changeAvatarModal = new changeAvatarModal({
       changeModalActive: false,
-      type: 'profile',
-    });
+      type: 'profile'
+    })
   }
 
-  setChangeModalActive(event: Event) {
+  setChangeModalActive (event: Event) {
     // открытие модального окна изменения аватара
-    if ((event.target as Element).className === 'avatar-mask'
-      || (event.target as Element).className === 'avatar-mask__text') {
+    if ((event.target as Element).className === 'avatar-mask' ||
+      (event.target as Element).className === 'avatar-mask__text') {
       (this.children.changeAvatarModal as Block).setState({
-        changeModalActive: true,
-      });
+        changeModalActive: true
+      })
     }
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles, avatarSVG });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles, avatarSVG })
   }
 }

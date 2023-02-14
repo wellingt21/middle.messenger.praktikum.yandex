@@ -1,33 +1,33 @@
-import Block from '../../../core/Block';
-import template from './backButton.hbs';
-import * as styles from './backButton.scss';
-import arrowSVG from '../../../../static/arrow.svg';
-import { withRouter } from '../../../core/withRouter';
+import Block from '../../../core/Block'
+import template from './backButton.hbs'
+import * as styles from './backButton.scss'
+import arrowSVG from '../../../../static/arrow.svg'
+import { withRouter } from '../../../core/withRouter'
 
 interface BackButtonProps {
-  href: string;
+  href: string
   events?: {
-    click: () => void;
-  };
+    click: () => void
+  }
 }
 
 export class BackButtonBase extends Block {
-  constructor(props: BackButtonProps) {
+  constructor (props: BackButtonProps) {
     super({
       ...props,
       events: {
-        click: () => this.navigate(),
-      },
-    });
+        click: () => this.navigate()
+      }
+    })
   }
 
-  navigate() {
-    this.props.router.go(this.props.href);
+  navigate () {
+    this.props.router.go(this.props.href)
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles, arrowSVG });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles, arrowSVG })
   }
 }
 
-export const BackButton = withRouter(BackButtonBase);
+export const BackButton = withRouter(BackButtonBase)

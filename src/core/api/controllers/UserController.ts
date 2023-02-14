@@ -1,46 +1,46 @@
-import API, { UserAPI } from '../UserAPI';
+import API, { UserAPI } from '../UserAPI'
 
-import store from '../../Store';
+import store from '../../Store'
 
 export class UserController {
-  private readonly api: UserAPI;
+  private readonly api: UserAPI
 
-  constructor() {
-    this.api = API;
+  constructor () {
+    this.api = API
   }
 
-  async updateProfile(data: UpdateProfileData) {
+  async updateProfile (data: UpdateProfileData) {
     try {
-      const updatedUser = await this.api.updateProfile(data);
-      store.set('user', updatedUser);
+      const updatedUser = await this.api.updateProfile(data)
+      store.set('user', updatedUser)
     } catch (e: any) {
-      console.error(e);
+      console.error(e)
     }
   }
 
-  async updateProfileAvatar(data: FormData) {
+  async updateProfileAvatar (data: FormData) {
     try {
-      const updatedUser = await this.api.updateAvatar(data);
-      store.set('user', updatedUser);
+      const updatedUser = await this.api.updateAvatar(data)
+      store.set('user', updatedUser)
     } catch (e: any) {
-      console.error(e);
+      console.error(e)
     }
   }
 
-  async updateProfilePassword(data: UpdatePasswordData) {
+  async updateProfilePassword (data: UpdatePasswordData) {
     try {
-      await this.api.updatePassword(data);
+      await this.api.updatePassword(data)
     } catch (e: any) {
-      console.error(e);
+      console.error(e)
     }
   }
 
-  async searchUser(data: UserSearchData) {
+  async searchUser (data: UserSearchData) {
     try {
-      const searchUsersData = await this.api.search(data);
-      return searchUsersData as [UserInfo];
+      const searchUsersData = await this.api.search(data)
+      return searchUsersData as [UserInfo]
     } catch (e: any) {
-      console.error(e);
+      console.error(e)
       return null
     }
   }
@@ -62,4 +62,4 @@ export class UserController {
   // }
 }
 
-export default new UserController();
+export default new UserController()

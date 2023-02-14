@@ -1,19 +1,19 @@
-import Block from '../../core/Block';
-import template from './Message.hbs';
-import * as styles from './Message.scss';
+import Block from '../../core/Block'
+import template from './Message.hbs'
+import * as styles from './Message.scss'
 
 interface MessageProps {
-  content: string;
-  isMine: boolean;
-  time: string;
+  content: string
+  isMine: boolean
+  time: string
 }
 
 export class Message extends Block {
-  constructor(props: MessageProps) {
-    super(props);
+  constructor (props: MessageProps) {
+    super(props)
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }

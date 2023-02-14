@@ -1,83 +1,83 @@
-import Block from '../../../core/Block';
-import template from './registrationForm.hbs';
-import * as styles from '../form.scss';
-import { Button } from '../../buttons/base/button';
-import { Link } from '../../buttons/link/link';
-import { LabeledInput } from '../../inputs/Input/LabeledInput/labeledInput';
+import Block from '../../../core/Block'
+import template from './registrationForm.hbs'
+import * as styles from '../form.scss'
+import { Button } from '../../buttons/base/button'
+import { Link } from '../../buttons/link/link'
+import { LabeledInput } from '../../inputs/Input/LabeledInput/labeledInput'
 
 interface RegistrationFormProps {
-  events:{
+  events: {
     submit: (event?: Event) => void
   }
 }
 
 export class RegistrationForm extends Block {
-  constructor(props: RegistrationFormProps) {
-    super(props);
+  constructor (props: RegistrationFormProps) {
+    super(props)
   }
 
-  protected init() {
+  protected init () {
     this.children.emailInput = new LabeledInput({
       type: 'email',
       name: 'email',
       id: 'email',
-      labelText: 'Почта',
+      labelText: 'Почта'
 
-    });
+    })
 
     this.children.loginInput = new LabeledInput({
       type: 'text',
       name: 'login',
       id: 'login',
-      labelText: 'Логин',
-    });
+      labelText: 'Логин'
+    })
 
     this.children.firstNameInput = new LabeledInput({
       type: 'text',
       name: 'first_name',
       id: 'first_name',
-      labelText: 'Имя',
-    });
+      labelText: 'Имя'
+    })
 
     this.children.secondNameInput = new LabeledInput({
       type: 'text',
       name: 'second_name',
       id: 'second_name',
-      labelText: 'Фамилия',
-    });
+      labelText: 'Фамилия'
+    })
 
     this.children.phoneInput = new LabeledInput({
       type: 'text',
       name: 'phone',
       id: 'phone',
-      labelText: 'Телефон',
-    });
+      labelText: 'Телефон'
+    })
 
     this.children.passwordInput = new LabeledInput({
       type: 'password',
       name: 'password',
       id: 'password',
-      labelText: 'Пароль',
-    });
+      labelText: 'Пароль'
+    })
 
     this.children.repeatPasswordInput = new LabeledInput({
       type: 'password',
       name: 'repeatPassword',
       id: 'repeatPassword',
-      labelText: 'Пароль (еще раз)',
-    });
+      labelText: 'Пароль (еще раз)'
+    })
 
     this.children.submitButton = new Button({
-      text: 'Зарегистрироваться',
-    });
+      text: 'Зарегистрироваться'
+    })
 
     this.children.loginLink = new Link({
       text: 'Войти',
-      href: '/',
-    });
+      href: '/'
+    })
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }

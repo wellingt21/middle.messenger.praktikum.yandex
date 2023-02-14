@@ -1,27 +1,27 @@
-import Block from '../../../core/Block';
-import template from './ContextButton.hbs';
-import * as styles from './ContextButton.scss';
+import Block from '../../../core/Block'
+import template from './ContextButton.hbs'
+import * as styles from './ContextButton.scss'
 
 interface ContextButtonProps {
-  img: any;
-  class?: string;
-  events?:{
-    click?: (event?: Event) => void;
+  img: any
+  class?: string
+  events?: {
+    click?: (event?: Event) => void
   }
 }
 
 export class ContextButton extends Block {
-  constructor(props?: ContextButtonProps) {
+  constructor (props?: ContextButtonProps) {
     super({
-      ...props,
-    });
+      ...props
+    })
   }
 
-  protected init() {
-    super.init();
+  protected init () {
+    super.init()
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }

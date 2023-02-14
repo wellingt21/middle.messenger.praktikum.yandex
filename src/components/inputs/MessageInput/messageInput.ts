@@ -1,11 +1,11 @@
-import Block from '../../../core/Block';
-import template from './messageInput.hbs';
-import * as styles from './messageInput.scss';
+import Block from '../../../core/Block'
+import template from './messageInput.hbs'
+import * as styles from './messageInput.scss'
 
 interface MessageInputProps {
-  name: string,
-  id: string,
-  placeholder?: string,
+  name: string
+  id: string
+  placeholder?: string
   value?: string
   events?: {
     input: (event?: InputEvent & { target: HTMLTextAreaElement }) => void
@@ -13,11 +13,11 @@ interface MessageInputProps {
 }
 
 export class MessageInput extends Block {
-  constructor(props: MessageInputProps) {
-    super(props);
+  constructor (props: MessageInputProps) {
+    super(props)
   }
 
-  protected render(): DocumentFragment {
-    return this.compile(template, { ...this.props, styles });
+  protected render (): DocumentFragment {
+    return this.compile(template, { ...this.props, styles })
   }
 }
