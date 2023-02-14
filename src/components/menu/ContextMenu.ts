@@ -1,7 +1,7 @@
-
-import  './ContextMenu.scss';
-import ContextMenuItem, { ContextMenuItemProps } from './ContextMunuItem/ContextMenuItem';
-import Block from "../../core/block/Block";
+import Block from '../../core/Block';
+import template from './ContextMenu.hbs';
+import * as styles from './ContextMenu.scss';
+import { ContextMenuItem, ContextMenuItemProps } from './item/ContextMenuItem';
 
 interface ContextMenuProps {
   items: ContextMenuItemProps[];
@@ -14,25 +14,23 @@ interface ContextMenuProps {
   }
 }
 
-export default class ContextMenu extends Block<any> {
+export class ContextMenu extends Block {
   constructor(props: ContextMenuProps) {
-      super({
-          ...props,
-          // items: this.createMenuItems(this.props),
-          events: {
-              mouseleave: () => this.setState({
-                  active: false,
-              }),
-          },
-      });
+    super({
+      ...props,
+      events: {
+        mouseleave: () => this.setState({
+          active: false,
+        }),
+      },
+    });
   }
 
-  init() {
+  protected init() {
     this.children.items = this.createMenuItems(this.props);
   }
 
-  // todo: check carefully
-  private createMenuItems(props: ContextMenuProps): any {
+  private createMenuItems(props: ContextMenuProps) {
     return props.items.map((item) => new ContextMenuItem({
       img: item.img,
       text: item.text,
@@ -40,15 +38,7 @@ export default class ContextMenu extends Block<any> {
     }));
   }
 
-  render(): string {
-    return `
-        <div class='context-menu' 
-            style="left: {{positionX}}px; top: {{positionY}}px; {{#if active}} 
-                display: flex {{else}} display: none {{/if}}">
-            {{#each items}}
-              {{{this}}}
-            {{/each}}
-        </div>
-    `
+  protected render(): DocumentFragment {
+    return this.compile(template, { ...this.props, styles });
   }
 }

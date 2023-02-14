@@ -1,6 +1,4 @@
-import BaseAPI from './base';
-import { ChatsData, ChatsUsersData, DeleteChatData } from './types';
-
+import BaseAPI from './BaseAPI';
 export class ChatAPI extends BaseAPI {
   constructor() {
     super('/chats');

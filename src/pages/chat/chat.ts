@@ -1,385 +1,333 @@
-import Block from '../../core/block/block2'
-import './chat.scss'
-import {ChatController} from "../../core/controllers/ChatController";
-import {AuthController} from "../../core/controllers/AuthController";
-import userController from "../../core/controllers/UserController";
-import Modal from "../../components/modal/modal";
-import ControlLink from "../../components/links/controlLink";
-import BaseLink from "../../components/links/link";
-import LabeledInput from "../../components/input/labaled/labeledInput";
-import ChatListBase from "../../components/chat/chatList";
-import ContextMenu from "../../components/menu/ContextMenu";
+// base
+import Block from '../../core/Block';
+import template from './chat.hbs';
 
-// @ts-ignore
-import addUserSVG from '../../../static/images/addUser.svg'
-// @ts-ignore
-import arrowSVG from '../../../static/images/arrow.svg';
-// @ts-ignore
-import clipSVG from '../../../static/images/grayClip.svg';
-// @ts-ignore
-import contextMenuSVG from '../../../static/images/contextMenu.svg';
-// @ts-ignore
-import photoVideoSVG from '../../../static/images/fotoVideo.svg';
-// @ts-ignore
-import locationSVG from '../../../static/images/location.svg';
-// @ts-ignore
-import fileSVG from '../../../static/images/file.svg';
-// @ts-ignore
-import delUserSVG from '../../../static/images/delUser.svg';
-// @ts-ignore
-import delChatSVG from '../../../static/images/delChat.svg';
-import MessagesController from "../../core/controllers/MessagesController";
-import ContextButton from "../../components/button/ContextButton/ContextButton";
-import ChatHistoryBase from "../../components/history/chatHistory";
-import {MessageInput} from "../../components/message/MessageInput/messageInput";
-// import Block from "../../core/block/block2";
-// import store from "../../core/store/Store";
 
-export default class ChatPage extends Block {
-    async createChatHandler(event: Event) {
-        const element = event.target as HTMLElement;
-        const {title, id} = element.dataset;
+import * as styles from './chat.scss';
 
-        // console.log(title, id);
-        // console.log(this.props);
 
-        await ChatController.createChat({title: `чат ${title} / ${this.props.user.login}`}).then((chat: any) => {
-            this.updateChatListHandler();
-            ChatController.addUserToChat({chatId: chat.id, users: [Number(id)]}).then((r: any) => console.log(r));
-        });
-    }
+import arrowSVG from '../../../static/arrow.svg';
+import clipSVG from '../../../static/grayClip.svg';
+import contextMenuSVG from '../../../static/contextMenu.svg';
 
-    openChatHandler(event: Event) {
-        const element = event.target as HTMLElement;
-        const { title, id, avatar } = element.dataset;
+import photoVideoSVG from '../../../static/menuSvg/fotoVideo.svg';
+import locationSVG from '../../../static/menuSvg/location.svg';
+import fileSVG from '../../../static/menuSvg/file.svg';
 
-        ChatController.selectChat({
-            title: title as string,
-            avatar: avatar as string,
-            id: Number(id),
-        }).then(() => {
-            // TODO: possible narrow moment
-            (this.children.chatHistory as Block).setState({
-                userId: this.props.user.id,
-                id: Number(id),
+import addUserSVG from '../../../static/menuSvg/addUser.svg';
+import delUserSVG from '../../../static/menuSvg/delUser.svg';
+import delChatSVG from '../../../static/menuSvg/delChat.svg';
+
+import { ChatList, ChatListProp } from '../../components/list/chatList';
+import { MessageInput } from '../../components/inputs/MessageInput/messageInput';
+import { LabeledInput } from '../../components/inputs/Input/LabeledInput/labeledInput';
+import { ChatHistory } from '../../components/history/chatHistory';
+import { Link } from '../../components/buttons/link/link';
+
+import { Routes } from '../../utils/routes';
+import { autoSizeTextArea } from '../../core/helpers/autoSizeTextArea';
+
+
+import ChatController from '../../core/api/controllers/ChatController';
+import userController from '../../core/api/controllers/UserController';
+import AuthController from '../../core/api/controllers/AuthController';
+
+import { withStore } from '../../core/Store';
+import router from '../../core/Router';
+import { ContextButton } from '../../components/buttons/context/ContextButton';
+import { ContextMenu } from '../../components/menu/ContextMenu';
+import MessagesController from '../../core/api/controllers/MessagesController';
+import { ControlLink } from '../../components/buttons/link/ControlLink/ControlLink';
+import { changeAvatarModal } from '../../components/avatar/changeAvatarModal/changeAvatarModal';
+
+export class ChatPageBase extends Block {
+  createChatHandler(event: Event) {
+    const element = event.target as HTMLElement;
+    const { title, id } = element.dataset;
+
+    // console.log(title, id);
+    // console.log(this.props);
+
+    ChatController.createChat({ title: `чат ${title} / ${this.props.user.login}` }).then((chat) => {
+      this.updateChatListHandler();
+      ChatController.addUserToChat({chatId: chat.id, users: [Number(id)]})
+          .then(r => console.log(r + " user added"));
+    });
+  }
+
+  openChatHandler(event: Event) {
+    const element = event.target as HTMLElement;
+    const { title, id, avatar } = element.dataset;
+
+    ChatController.selectChat({
+      title: title as string,
+      avatar: avatar as string,
+      id: Number(id),
+    }).then(() => {
+      (this.children.chatHistory as Block).setState({
+        userId: this.props.user.id,
+        id: Number(id),
+      });
+      router.go(`${Routes.Messenger}#${id}`);
+    });
+  }
+
+  searchUserHandler(event: InputEvent) {
+    const searchQuery = (event.target as HTMLInputElement).value;
+    if (searchQuery) {
+      userController.searchUser({ login: searchQuery }).then((data) => {
+        if (data) {
+          const result: ChatListProp[] = [];
+
+          data?.map((user) => {
+            result.push({
+              id: user.id,
+              title: user.login,
+              avatar: user.avatar,
             });
-            // this.router.go(`/messenger#${id}`);
-        });
-    }
+          });
 
-    searchUserHandler(event: InputEvent) {
-        const searchQuery = (event.target as HTMLInputElement).value;
-        if (searchQuery) {
-            userController.searchUser({ login: searchQuery }).then((data) => {
-                if (data) {
-                    const result: any[] = [];
-
-                    data?.map((user) => {
-                        result.push({
-                            id: user.id,
-                            title: user.login,
-                            avatar: user.avatar,
-                        });
-                    });
-
-                    (this.children.chatList as Block).setState({
-                        chats: [...result],
-                        events: {
-                            click: (event: Event) => this.createChatHandler(event),
-                        },
-                    });
-                }
-            });
-        } else {
-            this.updateChatListHandler();
+          (this.children.chatList as Block).setState({
+            chats: [...result],
+            events: {
+              click: (event: Event) => this.createChatHandler(event),
+            },
+          });
         }
+      });
+    } else {
+      this.updateChatListHandler();
     }
+  }
 
-     init() {
-        super.init()
-        this.children.changeAvatarModal = new Modal({
-            changeModalActive: false,
-            type: 'chat',
-        }) as unknown as Block;
+  protected init() {
+    this.children.changeAvatarModal = new changeAvatarModal({
+      changeModalActive: false,
+      type: 'chat',
+    });
 
-        this.children.createChat = new ControlLink({
-            text: 'Новый чат',
-            class: 'profile__link',
-            events: {
-                click: () => {
-                    const title = prompt('Введите название чата');
+    this.children.createChat = new ControlLink({
+      text: 'Новый чат',
+      class: 'profile__link',
+      events: {
+        click: () => {
+          const title = prompt('Введите название чата');
 
-                    ChatController.createChat({title: title as string}).then(() => {
-                        this.updateChatListHandler();
-                    });
-                },
+          ChatController.createChat({ title: title as string }).then(() => {
+            this.updateChatListHandler();
+          });
+        },
+      },
+    });
+
+    this.children.profileLink = new Link({
+      text: 'Профиль >',
+      class: 'profile__link',
+      href: Routes.Profile,
+    });
+
+    // search input
+    this.children.input = new LabeledInput({
+      type: 'text',
+      name: 'search',
+      id: 'search',
+      placeholder: 'Поиск',
+      events: {
+        input: (event) => this.searchUserHandler(event as InputEvent),
+      },
+    });
+
+    this.children.chatList = new ChatList({
+      events: {
+        click: (event: Event) => this.openChatHandler(event),
+      },
+    });
+
+    this.children.contextMunuChatSettings = new ContextMenu({
+      items: [
+        {
+          img: addUserSVG,
+          text: 'Добавить пользователя',
+          events: {
+            click: () => {
+              const userIdToAdd = prompt('Введите id пользователя');
+
+              if (userIdToAdd) {
+                ChatController.addUserToChat({
+                    chatId: this.props.current.id,
+                    users: [Number(userIdToAdd)],
+                }).then( r => console.log(r + " user added"));
+              }
             },
-        }) as unknown as Block;
+          },
+        },
+        {
+          img: delUserSVG,
+          text: 'Удалить пользователя',
+          events: {
+            click: () => {
+              const userIdToDelete = prompt('Введите id пользователя');
 
-        this.children.profileLink = new BaseLink({
-            text: 'Профиль >',
-            class: 'profile__link',
-            href: '/profile',
-        }) as unknown as Block;
-
-        // search input
-        this.children.input = new LabeledInput({
-            type: 'text',
-            name: 'search',
-            id: 'search',
-            placeholder: 'Поиск',
-            events: {
-                input: (event: Event) => this.searchUserHandler(event as InputEvent),
+              if (userIdToDelete) {
+                ChatController.addUserToChat({
+                    chatId: this.props.current.id,
+                    users: [Number(userIdToDelete)],
+                }).then( r => console.log(r + " user added"));
+              }
             },
-        }) as unknown as Block;
-
-        this.children.chatList = new ChatListBase({
-            events: {
-                click: (event: Event) => this.openChatHandler(event),
+          },
+        },
+        {
+          img: delChatSVG,
+          text: 'Удалить чат',
+          events: {
+            click: () => {
+              const confirmMsg = confirm('Вы действительно хотите удалить чат ?');
+              if (confirmMsg) {
+                ChatController.deleteChat({
+                    chatId: this.props.current.id,
+                }).then(()  => console.log('chat deleted'));
+                this.updateChatListHandler();
+              }
             },
-        }) as unknown as Block;
-
-        this.children.contextMenuChatSettings = new ContextMenu({
-            items: [
-                {
-                    img: addUserSVG,
-                    text: 'Добавить пользователя',
-                    events: {
-                        click: () => {
-                            const userIdToAdd = prompt('Введите id пользователя');
-
-                            if (userIdToAdd) {
-                                ChatController.addUserToChat({
-                                    chatId: this.props.current.id,
-                                    users: [Number(userIdToAdd)],
-                                });
-                            }
-                        },
-                    },
-                },
-                {
-                    img: delUserSVG,
-                    text: 'Удалить пользователя',
-                    events: {
-                        click: () => {
-                            const userIdToDelete = prompt('Введите id пользователя');
-
-                            if (userIdToDelete) {
-                                ChatController.addUserToChat({
-                                    chatId: this.props.current.id,
-                                    users: [Number(userIdToDelete)],
-                                });
-                            }
-                        },
-                    },
-                },
-                {
-                    img: delChatSVG,
-                    text: 'Удалить чат',
-                    events: {
-                        click: async () => {
-                            const confirmMsg = confirm('Вы действительно хотите удалить чат ?');
-                            if (confirmMsg) {
-                                await ChatController.deleteChat({
-                                    chatId: this.props.current.id,
-                                }).then((r: any) => console.log(r));
-                                this.updateChatListHandler();
-                            }
-                        },
-                    },
-                },
-                {
-                    img: photoVideoSVG,
-                    text: 'Изменить изображение чата',
-                    events: {
-                        click: () => {
-                            (this.children.changeAvatarModal as Block<any>).setState({
-                                changeModalActive: true,
-                            });
-                        },
-                    },
-                },
-            ],
-        }) as unknown as Block;
-
-        this.children.contextButtonMenu = new ContextButton({
-            img: contextMenuSVG,
-            class: 'links-title__context-button',
-
-            events: {
-                click: (event: any) => {
-                    (this.children.contextMenuChatSettings as Block<any>).setState({
-                        positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x - 200,
-                        positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y + 25,
-                        active: true,
-                    });
-                },
+          },
+        },
+        {
+          img: photoVideoSVG,
+          text: 'Изменить изображение чата',
+          events: {
+            click: () => {
+              (this.children.changeAvatarModal as Block).setState({
+                changeModalActive: true,
+              });
             },
-        }) as unknown as Block;
+          },
+        },
+      ],
+    });
 
-        this.children.contextMenuMessage = new ContextMenu({
-            items: [
-                {
-                    img: photoVideoSVG,
-                    text: 'Фото или Видео',
-                    events: {
-                        click: () => {
-                            console.log('Фото или Видео');
-                        },
-                    },
-                },
-                {
-                    img: fileSVG,
-                    text: 'Файл',
-                    events: {
-                        click: () => {
-                            console.log('Файл');
-                        },
-                    },
-                },
-                {
-                    img: locationSVG,
-                    text: 'Локация',
-                    events: {
-                        click: () => {
-                            console.log('Локация');
-                        },
-                    },
-                },
-            ],
-        }) as unknown as Block;
+    this.children.contextButtonMenu = new ContextButton({
+      img: contextMenuSVG,
+      class: 'chat-title__context-button',
 
-        this.children.clipButton = new ContextButton({
-            img: clipSVG,
-            class: 'button clip-button',
+      events: {
+        click: (event) => {
+          (this.children.contextMunuChatSettings as Block).setState({
+            positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x - 200,
+            positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y + 25,
+            active: true,
+          });
+        },
+      },
+    });
 
-            events: {
-                click: (event: any) => {
-                    (this.children.contextMenuMessage as Block<any>).setState({
-                        positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x,
-                        positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y - 150,
-                        active: true,
-                    });
-                },
+    this.children.contextMunuMessage = new ContextMenu({
+      items: [
+        {
+          img: photoVideoSVG,
+          text: 'Фото или Видео',
+          events: {
+            click: () => {
+              console.log('Фото или Видео');
             },
-        }) as unknown as Block;
-
-        this.children.sendMsgButton = new ContextButton({
-            img: arrowSVG,
-            class: 'button send-button',
-
-            events: {
-                click: () => {
-                    const message: HTMLTextAreaElement = document.querySelector('#message') as HTMLTextAreaElement;
-
-                    if (message.value) {
-                        MessagesController.sendMessage(this.props.current.id, message.value);
-                        message.value = '';
-                    }
-                },
+          },
+        },
+        {
+          img: fileSVG,
+          text: 'Файл',
+          events: {
+            click: () => {
+              console.log('Файл');
             },
-        }) as unknown as Block    ;
-
-        // @ts-ignore
-         this.children.chatHistory = new ChatHistoryBase({}) as unknown as Block;
-
-        this.children.messageInput = new MessageInput({
-            name: 'message',
-            id: 'message',
-            placeholder: 'Сообщение',
-            events: {
-                input: (event: any) => this.autoSizeTextArea(event!),
+          },
+        },
+        {
+          img: locationSVG,
+          text: 'Локация',
+          events: {
+            click: () => {
+              console.log('Локация');
             },
-        }) as unknown as Block;
+          },
+        },
+      ],
+    });
 
-        this.updateChatListHandler();
-    }
+    this.children.clipButton = new ContextButton({
+      img: clipSVG,
+      class: 'button clip-button',
 
-    autoSizeTextArea(event: InputEvent & { target: HTMLTextAreaElement }) {
-        const { target } = event!;
-        const maxHeight = 200;
-        const defaultHeight = 35;
+      events: {
+        click: (event) => {
+          (this.children.contextMunuMessage as Block).setState({
+            positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x,
+            positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y - 150,
+            active: true,
+          });
+        },
+      },
+    });
 
-        if (target) {
-            if (target.value === '') {
-                target.style.height = `${defaultHeight}px`;
-                return;
-            }
-            if (target.scrollHeight > maxHeight) {
-                target.style.height = `${maxHeight}px`;
-            } else {
-                target.style.height = `${target.scrollHeight}px`;
-            }
-        }
-    }
+    this.children.sendMsgButton = new ContextButton({
+      img: arrowSVG,
+      class: 'button send-button',
 
-    updateChatListHandler() {
-        new AuthController().fetchUser().then((r: void) => console.log('fetch done '+r));
+      events: {
+        click: () => {
+          const message: HTMLTextAreaElement = document.querySelector('#message') as HTMLTextAreaElement;
 
-        new ChatController().fetchChats().then(() => {
-            // refresh chatList
-            (this.children.chatList as Block<any>).setState({
-                chats: this.props.chats,
-                events: {
-                    click: (event: Event) => this.openChatHandler(event),
-                },
-            });
+          if (message.value) {
+            MessagesController.sendMessage(this.props.current.id, message.value);
+            message.value = '';
+          }
+        },
+      },
+    });
 
-            // clear search input
-            (this.children.input as Block<any>).setState({
-                value: '',
-            });
-        });
-    }
+    this.children.chatHistory = new ChatHistory({});
 
+    this.children.messageInput = new MessageInput({
+      name: 'message',
+      id: 'message',
+      placeholder: 'Сообщение',
+      events: {
+        input: (event) => autoSizeTextArea(event!),
+      },
+    });
 
-    render (): string {
-        console.log(this)
-    return `
-        <main>
-          <div class="messenger">
-            <div class="messenger__left-column">
-              <div class="profile">
-                {{{ControlLink}}}
-                {{{createChat}}}
-                {{{profileLink}}}
-              </div>
-              <div class="search-field">
-                {{{input}}}
-              </div>
-              {{{chatList}}}
-            </div>
-            <div class="messenger__right-column">
-              {{#if current}}
-                <div class="chat">
-                  <div class="chat__header">
-                    <div class="chat-title">
-                      {{#if current.avatar}}
-                        <img src="https://ya-praktikum.tech/api/v2/resources{{current.avatar}}" 
-                             class="chat-title__avatar" 
-                             height="35" 
-                             width="35"
-                             alt="avatar">
-                       {{/if}}
-                      <h4 class="chat-title__name">{{current.title}}</h4>
-                    </div>
-                    {{{contextButtonMenu}}}
-                    {{{contextMenuChatSettings}}}
-                  </div>
-                  {{{chatHistory}}}
-                  <div class="chat__bottom-panel">
-                    {{{clipButton}}}
-                    {{{messageInput}}}
-                    {{{sendMsgButton}}}
-                  </div>
-                </div>
-              {{else}}
-                <div class="empty-chat"><span>Выберите чат</span></div>
-              {{/if}}
-            </div>
-            {{{Modal}}}
-          </div>
-        </main>
-    `
+    this.updateChatListHandler();
+  }
+
+  updateChatListHandler() {
+    AuthController.fetchUser().then(() => console.log('user fetched'));
+
+    ChatController.fetchChats().then(() => {
+      // refresh chatList
+      (this.children.chatList as Block).setState({
+        chats: this.props.chats,
+        events: {
+          click: (event: Event) => this.openChatHandler(event),
+        },
+      });
+
+      // clear search input
+      (this.children.input as Block).setState({
+        value: '',
+      });
+    });
+  }
+
+  protected render(): DocumentFragment {
+    return this.compile(template, {
+      ...this.props,
+      styles,
+      arrowSVG,
+      clipSVG,
+      contextMenuSVG,
+    });
   }
 }
+
+const withChats = withStore((state) => ({ ...state.chats, user: { ...state.user } }));
+
+export const ChatPage = withChats(ChatPageBase);

@@ -1,5 +1,6 @@
-import './Message.scss';
-import Block from "../../core/block/Block";
+import Block from '../../core/Block';
+import template from './Message.hbs';
+import * as styles from './Message.scss';
 
 interface MessageProps {
   content: string;
@@ -7,16 +8,12 @@ interface MessageProps {
   time: string;
 }
 
-export class Message extends Block<any> {
+export class Message extends Block {
   constructor(props: MessageProps) {
     super(props);
   }
 
-  render() {
-    return `
-        <div {{#if isMine}} class="message__send" {{else}} class="message__received" {{/if}}>
-          <p class="message__text">{{content}}<span class="message__time">{{time}}</span></p>
-        </div>
-    `
+  protected render(): DocumentFragment {
+    return this.compile(template, { ...this.props, styles });
   }
 }

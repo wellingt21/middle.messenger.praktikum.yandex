@@ -1,4 +1,4 @@
-@import "src/styles/utilities/colors";
+@import "src/styles/variables";
 
 .message__send {
   display: flex;
@@ -7,12 +7,12 @@
   width: 50%;
 
   .message__text {
-    background: var(--primary-d);
+    background: $lightBlueColor;
     border-radius: 12px 12px 0;
   }
 
   .message__time {
-    color: var(--primary);
+    color: $blueColor;
   }
 }
 
@@ -21,12 +21,12 @@
   width: 50%;
 
   .message__text {
-    background: var(--secondary-bg-el);
+    background: $backGroundLightGrayColor;
     border-radius: 0 12px 12px;
   }
 
   .message__time {
-    color: var(--secondary-s-l);
+    color: $grayColor;
   }
 }
 
