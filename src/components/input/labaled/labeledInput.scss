@@ -1,0 +1,28 @@
+@import "src/styles/utilities/colors";
+
+.text-input {
+  display: flex;
+  flex-direction: column;
+  font-size: 9px;
+  color: var(--secondary-s-l);
+
+  &__validation {
+    font-size: 9px;
+    margin-bottom: 16px;
+    color: var(--error);
+  }
+
+  &__tip {
+    display: none;
+    color: var(--primary);
+    margin-bottom: 16px;
+    font-size: 9px;
+  }
+
+  input {
+    margin-top: 8px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--primary);
+  }
+}

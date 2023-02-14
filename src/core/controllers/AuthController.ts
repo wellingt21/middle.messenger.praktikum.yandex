@@ -7,7 +7,6 @@ import Router from "../router/Router";
 export class AuthController {
   private readonly api: AuthAPI;
   private router: Router
-    static fetchUser: any;
 
   constructor() {
     this.api = API;
@@ -37,6 +36,7 @@ export class AuthController {
   }
 
   async fetchUser() {
+      console.log('fetching')
     const user = await this.api.read();
     store.set('user', user);
   }

@@ -1,0 +1,46 @@
+@import "src/styles/utilities/colors";
+
+.message__send {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-left: 50%;
+  width: 50%;
+
+  .message__text {
+    background: var(--primary-d);
+    border-radius: 12px 12px 0;
+  }
+
+  .message__time {
+    color: var(--primary);
+  }
+}
+
+.message__received {
+  display: flex;
+  width: 50%;
+
+  .message__text {
+    background: var(--secondary-bg-el);
+    border-radius: 0 12px 12px;
+  }
+
+  .message__time {
+    color: var(--secondary-s-l);
+  }
+}
+
+.message__text {
+  padding: 10px;
+  margin: 0 20px;
+
+  &:first-child {
+    margin-bottom: 20px;
+  }
+}
+
+.message__time {
+  font-size: 9px;
+  display: flex;
+  flex-direction: row-reverse;
+}

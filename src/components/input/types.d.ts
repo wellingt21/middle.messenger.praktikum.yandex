@@ -1,11 +1,13 @@
 export interface IInput {
   id: string
   placeholder: string
+    name?: string
   type: string
   value: string
-  error: string
-  isError: boolean
-  errorMessage: string
+  error?: string
+    disabled: boolean
+  isError?: boolean
+  errorMessage?: string
   onFocus: (e: Event) => void
   onBlur: (e: Event) => void
 }

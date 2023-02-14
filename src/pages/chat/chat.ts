@@ -1,10 +1,41 @@
-import Block from '../../core/block/Block'
+import Block from '../../core/block/block2'
 import './chat.scss'
 import {ChatController} from "../../core/controllers/ChatController";
 import {AuthController} from "../../core/controllers/AuthController";
 import userController from "../../core/controllers/UserController";
+import Modal from "../../components/modal/modal";
+import ControlLink from "../../components/links/controlLink";
+import BaseLink from "../../components/links/link";
+import LabeledInput from "../../components/input/labaled/labeledInput";
+import ChatListBase from "../../components/chat/chatList";
+import ContextMenu from "../../components/menu/ContextMenu";
 
-export default class ChatPage extends Block<any> {
+// @ts-ignore
+import addUserSVG from '../../../static/images/addUser.svg'
+// @ts-ignore
+import arrowSVG from '../../../static/images/arrow.svg';
+// @ts-ignore
+import clipSVG from '../../../static/images/grayClip.svg';
+// @ts-ignore
+import contextMenuSVG from '../../../static/images/contextMenu.svg';
+// @ts-ignore
+import photoVideoSVG from '../../../static/images/fotoVideo.svg';
+// @ts-ignore
+import locationSVG from '../../../static/images/location.svg';
+// @ts-ignore
+import fileSVG from '../../../static/images/file.svg';
+// @ts-ignore
+import delUserSVG from '../../../static/images/delUser.svg';
+// @ts-ignore
+import delChatSVG from '../../../static/images/delChat.svg';
+import MessagesController from "../../core/controllers/MessagesController";
+import ContextButton from "../../components/button/ContextButton/ContextButton";
+import ChatHistoryBase from "../../components/history/chatHistory";
+import {MessageInput} from "../../components/message/MessageInput/messageInput";
+// import Block from "../../core/block/block2";
+// import store from "../../core/store/Store";
+
+export default class ChatPage extends Block {
     async createChatHandler(event: Event) {
         const element = event.target as HTMLElement;
         const {title, id} = element.dataset;
@@ -28,11 +59,11 @@ export default class ChatPage extends Block<any> {
             id: Number(id),
         }).then(() => {
             // TODO: possible narrow moment
-            (this.children.chatHistory as Block<any>).setState({
+            (this.children.chatHistory as Block).setState({
                 userId: this.props.user.id,
                 id: Number(id),
             });
-            this.router.go(`/messenger#${id}`);
+            // this.router.go(`/messenger#${id}`);
         });
     }
 
@@ -51,7 +82,7 @@ export default class ChatPage extends Block<any> {
                         });
                     });
 
-                    (this.children.chatList as Block<any>).setState({
+                    (this.children.chatList as Block).setState({
                         chats: [...result],
                         events: {
                             click: (event: Event) => this.createChatHandler(event),
@@ -64,208 +95,228 @@ export default class ChatPage extends Block<any> {
         }
     }
 
-    // protected init() {
-    //     this.children.changeAvatarModal = new changeAvatarModal({
-    //         changeModalActive: false,
-    //         type: 'chat',
-    //     });
-    //
-    //     this.children.createChat = new ControlLink({
-    //         text: 'Новый чат',
-    //         class: 'profile__link',
-    //         events: {
-    //             click: () => {
-    //                 const title = prompt('Введите название чата');
-    //
-    //                 ChatController.createChat({ title: title as string }).then(() => {
-    //                     this.updateChatListHandler();
-    //                 });
-    //             },
-    //         },
-    //     });
-    //
-    //     this.children.profileLink = new Link({
-    //         text: 'Профиль >',
-    //         class: 'profile__link',
-    //         href: Routes.Profile,
-    //     });
-    //
-    //     // search input
-    //     this.children.input = new LabeledInput({
-    //         type: 'text',
-    //         name: 'search',
-    //         id: 'search',
-    //         placeholder: 'Поиск',
-    //         events: {
-    //             input: (event: InputEvent) => this.searchUserHandler(event as InputEvent),
-    //         },
-    //     });
-    //
-    //     this.children.chatList = new ChatList({
-    //         events: {
-    //             click: (event: Event) => this.openChatHandler(event),
-    //         },
-    //     });
-    //
-    //     this.children.contextMunuChatSettings = new ContextMenu({
-    //         items: [
-    //             {
-    //                 img: addUserSVG,
-    //                 text: 'Добавить пользователя',
-    //                 events: {
-    //                     click: () => {
-    //                         const userIdToAdd = prompt('Введите id пользователя');
-    //
-    //                         if (userIdToAdd) {
-    //                             ChatController.addUserToChat({
-    //                                 chatId: this.props.current.id,
-    //                                 users: [Number(userIdToAdd)],
-    //                             });
-    //                         }
-    //                     },
-    //                 },
-    //             },
-    //             {
-    //                 img: delUserSVG,
-    //                 text: 'Удалить пользователя',
-    //                 events: {
-    //                     click: () => {
-    //                         const userIdToDelete = prompt('Введите id пользователя');
-    //
-    //                         if (userIdToDelete) {
-    //                             ChatController.addUserToChat({
-    //                                 chatId: this.props.current.id,
-    //                                 users: [Number(userIdToDelete)],
-    //                             });
-    //                         }
-    //                     },
-    //                 },
-    //             },
-    //             {
-    //                 img: delChatSVG,
-    //                 text: 'Удалить чат',
-    //                 events: {
-    //                     click: () => {
-    //                         const confirmMsg = confirm('Вы действительно хотите удалить чат ?');
-    //                         if (confirmMsg) {
-    //                             ChatController.deleteChat({
-    //                                 chatId: this.props.current.id,
-    //                             });
-    //                             this.updateChatListHandler();
-    //                         }
-    //                     },
-    //                 },
-    //             },
-    //             {
-    //                 img: photoVideoSVG,
-    //                 text: 'Изменить изображение чата',
-    //                 events: {
-    //                     click: () => {
-    //                         (this.children.changeAvatarModal as Block).setProps({
-    //                             changeModalActive: true,
-    //                         });
-    //                     },
-    //                 },
-    //             },
-    //         ],
-    //     });
-    //
-    //     this.children.contextButtonMenu = new ContextButton({
-    //         img: contextMenuSVG,
-    //         class: 'chat-title__context-button',
-    //
-    //         events: {
-    //             click: (event) => {
-    //                 (this.children.contextMunuChatSettings as Block).setProps({
-    //                     positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x - 200,
-    //                     positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y + 25,
-    //                     active: true,
-    //                 });
-    //             },
-    //         },
-    //     });
-    //
-    //     this.children.contextMunuMessage = new ContextMenu({
-    //         items: [
-    //             {
-    //                 img: photoVideoSVG,
-    //                 text: 'Фото или Видео',
-    //                 events: {
-    //                     click: () => {
-    //                         console.log('Фото или Видео');
-    //                     },
-    //                 },
-    //             },
-    //             {
-    //                 img: fileSVG,
-    //                 text: 'Файл',
-    //                 events: {
-    //                     click: () => {
-    //                         console.log('Файл');
-    //                     },
-    //                 },
-    //             },
-    //             {
-    //                 img: locationSVG,
-    //                 text: 'Локация',
-    //                 events: {
-    //                     click: () => {
-    //                         console.log('Локация');
-    //                     },
-    //                 },
-    //             },
-    //         ],
-    //     });
-    //
-    //     this.children.clipButton = new ContextButton({
-    //         img: clipSVG,
-    //         class: 'button clip-button',
-    //
-    //         events: {
-    //             click: (event) => {
-    //                 (this.children.contextMunuMessage as Block).setProps({
-    //                     positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x,
-    //                     positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y - 150,
-    //                     active: true,
-    //                 });
-    //             },
-    //         },
-    //     });
-    //
-    //     this.children.sendMsgButton = new ContextButton({
-    //         img: arrowSVG,
-    //         class: 'button send-button',
-    //
-    //         events: {
-    //             click: () => {
-    //                 const message: HTMLTextAreaElement = document.querySelector('#message') as HTMLTextAreaElement;
-    //
-    //                 if (message.value) {
-    //                     MessagesController.sendMessage(this.props.current.id, message.value);
-    //                     message.value = '';
-    //                 }
-    //             },
-    //         },
-    //     });
-    //
-    //     this.children.chatHistory = new ChatHistory({});
-    //
-    //     this.children.messageInput = new MessageInput({
-    //         name: 'message',
-    //         id: 'message',
-    //         placeholder: 'Сообщение',
-    //         events: {
-    //             input: (event: InputEvent) => autoSizeTextArea(event!),
-    //         },
-    //     });
-    //
-    //     this.updateChatListHandler();
-    // }
+     init() {
+        super.init()
+        this.children.changeAvatarModal = new Modal({
+            changeModalActive: false,
+            type: 'chat',
+        }) as unknown as Block;
+
+        this.children.createChat = new ControlLink({
+            text: 'Новый чат',
+            class: 'profile__link',
+            events: {
+                click: () => {
+                    const title = prompt('Введите название чата');
+
+                    ChatController.createChat({title: title as string}).then(() => {
+                        this.updateChatListHandler();
+                    });
+                },
+            },
+        }) as unknown as Block;
+
+        this.children.profileLink = new BaseLink({
+            text: 'Профиль >',
+            class: 'profile__link',
+            href: '/profile',
+        }) as unknown as Block;
+
+        // search input
+        this.children.input = new LabeledInput({
+            type: 'text',
+            name: 'search',
+            id: 'search',
+            placeholder: 'Поиск',
+            events: {
+                input: (event: Event) => this.searchUserHandler(event as InputEvent),
+            },
+        }) as unknown as Block;
+
+        this.children.chatList = new ChatListBase({
+            events: {
+                click: (event: Event) => this.openChatHandler(event),
+            },
+        }) as unknown as Block;
+
+        this.children.contextMenuChatSettings = new ContextMenu({
+            items: [
+                {
+                    img: addUserSVG,
+                    text: 'Добавить пользователя',
+                    events: {
+                        click: () => {
+                            const userIdToAdd = prompt('Введите id пользователя');
+
+                            if (userIdToAdd) {
+                                ChatController.addUserToChat({
+                                    chatId: this.props.current.id,
+                                    users: [Number(userIdToAdd)],
+                                });
+                            }
+                        },
+                    },
+                },
+                {
+                    img: delUserSVG,
+                    text: 'Удалить пользователя',
+                    events: {
+                        click: () => {
+                            const userIdToDelete = prompt('Введите id пользователя');
+
+                            if (userIdToDelete) {
+                                ChatController.addUserToChat({
+                                    chatId: this.props.current.id,
+                                    users: [Number(userIdToDelete)],
+                                });
+                            }
+                        },
+                    },
+                },
+                {
+                    img: delChatSVG,
+                    text: 'Удалить чат',
+                    events: {
+                        click: async () => {
+                            const confirmMsg = confirm('Вы действительно хотите удалить чат ?');
+                            if (confirmMsg) {
+                                await ChatController.deleteChat({
+                                    chatId: this.props.current.id,
+                                }).then((r: any) => console.log(r));
+                                this.updateChatListHandler();
+                            }
+                        },
+                    },
+                },
+                {
+                    img: photoVideoSVG,
+                    text: 'Изменить изображение чата',
+                    events: {
+                        click: () => {
+                            (this.children.changeAvatarModal as Block<any>).setState({
+                                changeModalActive: true,
+                            });
+                        },
+                    },
+                },
+            ],
+        }) as unknown as Block;
+
+        this.children.contextButtonMenu = new ContextButton({
+            img: contextMenuSVG,
+            class: 'links-title__context-button',
+
+            events: {
+                click: (event: any) => {
+                    (this.children.contextMenuChatSettings as Block<any>).setState({
+                        positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x - 200,
+                        positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y + 25,
+                        active: true,
+                    });
+                },
+            },
+        }) as unknown as Block;
+
+        this.children.contextMenuMessage = new ContextMenu({
+            items: [
+                {
+                    img: photoVideoSVG,
+                    text: 'Фото или Видео',
+                    events: {
+                        click: () => {
+                            console.log('Фото или Видео');
+                        },
+                    },
+                },
+                {
+                    img: fileSVG,
+                    text: 'Файл',
+                    events: {
+                        click: () => {
+                            console.log('Файл');
+                        },
+                    },
+                },
+                {
+                    img: locationSVG,
+                    text: 'Локация',
+                    events: {
+                        click: () => {
+                            console.log('Локация');
+                        },
+                    },
+                },
+            ],
+        }) as unknown as Block;
+
+        this.children.clipButton = new ContextButton({
+            img: clipSVG,
+            class: 'button clip-button',
+
+            events: {
+                click: (event: any) => {
+                    (this.children.contextMenuMessage as Block<any>).setState({
+                        positionX: (event?.currentTarget as HTMLElement).getClientRects()[0].x,
+                        positionY: (event?.currentTarget as HTMLElement).getClientRects()[0].y - 150,
+                        active: true,
+                    });
+                },
+            },
+        }) as unknown as Block;
+
+        this.children.sendMsgButton = new ContextButton({
+            img: arrowSVG,
+            class: 'button send-button',
+
+            events: {
+                click: () => {
+                    const message: HTMLTextAreaElement = document.querySelector('#message') as HTMLTextAreaElement;
+
+                    if (message.value) {
+                        MessagesController.sendMessage(this.props.current.id, message.value);
+                        message.value = '';
+                    }
+                },
+            },
+        }) as unknown as Block    ;
+
+        // @ts-ignore
+         this.children.chatHistory = new ChatHistoryBase({}) as unknown as Block;
+
+        this.children.messageInput = new MessageInput({
+            name: 'message',
+            id: 'message',
+            placeholder: 'Сообщение',
+            events: {
+                input: (event: any) => this.autoSizeTextArea(event!),
+            },
+        }) as unknown as Block;
+
+        this.updateChatListHandler();
+    }
+
+    autoSizeTextArea(event: InputEvent & { target: HTMLTextAreaElement }) {
+        const { target } = event!;
+        const maxHeight = 200;
+        const defaultHeight = 35;
+
+        if (target) {
+            if (target.value === '') {
+                target.style.height = `${defaultHeight}px`;
+                return;
+            }
+            if (target.scrollHeight > maxHeight) {
+                target.style.height = `${maxHeight}px`;
+            } else {
+                target.style.height = `${target.scrollHeight}px`;
+            }
+        }
+    }
 
     updateChatListHandler() {
-        AuthController.fetchUser().then((r: void) => console.log('fetch done '+r));
+        new AuthController().fetchUser().then((r: void) => console.log('fetch done '+r));
 
-        ChatController.fetchChats().then(() => {
+        new ChatController().fetchChats().then(() => {
             // refresh chatList
             (this.children.chatList as Block<any>).setState({
                 chats: this.props.chats,
@@ -282,12 +333,14 @@ export default class ChatPage extends Block<any> {
     }
 
 
-    protected render (): string {
+    render (): string {
+        console.log(this)
     return `
         <main>
           <div class="messenger">
             <div class="messenger__left-column">
               <div class="profile">
+                {{{ControlLink}}}
                 {{{createChat}}}
                 {{{profileLink}}}
               </div>
@@ -311,7 +364,7 @@ export default class ChatPage extends Block<any> {
                       <h4 class="chat-title__name">{{current.title}}</h4>
                     </div>
                     {{{contextButtonMenu}}}
-                    {{{contextMunuChatSettings}}}
+                    {{{contextMenuChatSettings}}}
                   </div>
                   {{{chatHistory}}}
                   <div class="chat__bottom-panel">
@@ -324,7 +377,7 @@ export default class ChatPage extends Block<any> {
                 <div class="empty-chat"><span>Выберите чат</span></div>
               {{/if}}
             </div>
-            {{{changeAvatarModal}}}
+            {{{Modal}}}
           </div>
         </main>
     `

@@ -1,36 +1,33 @@
-export class EventBus implements IEventBus {
-  protected listeners: Record<string, EventBusListener[]>
+export class EventBus<E extends Record<string, unknown[]> = Record<string, any>> {
+    private readonly listeners: {
+        [K in keyof E]?: Array<(...args: E[K]) => void>;
+    } = {};
 
-  constructor () {
-    this.listeners = {}
-  }
+    public on<K extends keyof E>(event: K, callback: (...args: E[K]) => void): void {
+        if (!this.listeners[event]) {
+            this.listeners[event] = [];
+        }
 
-  on (event: string, listener: EventBusListener): void {
-    this.listeners[event] = []
-
-    this.listeners[event].push(listener)
-  }
-
-  off (event: string, listener: EventBusListener): void {
-    this.listeners[event] = this.listeners[event].filter(
-      (EventListener) => EventListener !== listener
-    )
-  }
-
-  emit (event: string, ...args: unknown[]): void {
-    if (!this.listeners[event]) {
-      throw new Error(`Нет такого события "${event}"`)
+        this.listeners[event]!.push(callback);
     }
-    this.listeners[event].forEach((listener) => {
-      listener(...args)
-    })
-  }
-}
 
-type EventBusListener = (...args: unknown[]) => unknown
+    public off<K extends keyof E>(event: K, callback: (...args: E[K]) => void): void {
+        if (!this.listeners[event]) {
+            throw new Error(`Нет события: ${event as string}`);
+        }
 
-interface IEventBus {
-  on: (event: string, listener: EventBusListener) => any
-  off: (event: string, listener: EventBusListener) => any
-  emit: (event: string, ...args: unknown[]) => any
+        this.listeners[event] = this.listeners[event]!.filter(
+            (listener) => listener !== callback,
+        );
+    }
+
+    public emit<K extends keyof E>(event: K, ...args: E[K]): void {
+        if (!this.listeners[event]) {
+            return;
+        }
+
+        this.listeners[event]!.forEach((listener) => {
+            listener(...args);
+        });
+    }
 }

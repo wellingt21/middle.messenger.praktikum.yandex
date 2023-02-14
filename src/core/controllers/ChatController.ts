@@ -11,6 +11,7 @@ export class ChatController {
     static api: any;
     static addUserToChat: any;
     static fetchChats: any;
+    static deleteChat: any;
 
   constructor() {
     this.api = API;
@@ -20,7 +21,7 @@ export class ChatController {
     try {
       const result = await this.api.changeAvatar(data);
       store.set('chats.current.avatar', result.avatar);
-      this.fetchChats();
+      await this.fetchChats();
     } catch (e: any) {
       console.error(e.message);
     }
@@ -99,8 +100,6 @@ export class ChatController {
       return null
     }
   }
-
-
 }
 
 export default new ChatController();

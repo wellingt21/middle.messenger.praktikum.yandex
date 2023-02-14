@@ -2,6 +2,7 @@
 import Handlebars from 'handlebars'
 import {EventBus} from '../event/EventBus'
 import Router from "../router/Router";
+import {Props} from "./block2";
 
 const enum EVENTS {
   INIT = 'init',
@@ -30,9 +31,14 @@ export default abstract class Block<P extends BlockProps> {
       tagName: 'div'
     }
 
+
+
     this.eventBus = new EventBus()
     this.router = new Router()
     this.getStateFromProps(props)
+
+      const {  children } = this._getChildrenAndProps(props);
+      this.children = children
 
     this.props = this._makePropsProxy(props)
     this.state = this._makePropsProxy(this.state)
@@ -42,6 +48,23 @@ export default abstract class Block<P extends BlockProps> {
     this.eventBus.emit(EVENTS.INIT)
   }
 
+    private _getChildrenAndProps(childrenAndProps: Props<P>): {
+        props: Props<P>;
+        children: Record<string, Block<any>>;
+    } {
+        const props = {} as Record<string, unknown>;
+        const children: Record<string, Block<any>> = {};
+
+        Object.entries(childrenAndProps).forEach(([key, value]) => {
+            if (value instanceof Block) {
+                children[key] = value;
+            } else {
+                props[key] = value;
+            }
+        });
+
+        return { props: props as Props<P>, children };
+    }
   private _element: HTMLElement | null
 
   get element (): any {
@@ -79,15 +102,18 @@ export default abstract class Block<P extends BlockProps> {
   }
 
   getContent (): HTMLElement | null {
-    if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      setTimeout(() => {
-        if (
-          this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
-        ) {
-          this.eventBus.emit(EVENTS.FLOW_CDM)
-        }
-      }, 100)
-    }
+      if (this.element != null) {
+          if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+              setTimeout(() => {
+                  if (
+                      this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
+                  ) {
+                      this.eventBus.emit(EVENTS.FLOW_CDM)
+                  }
+              }, 100)
+          }
+      }
+
 
     return this.element
   }

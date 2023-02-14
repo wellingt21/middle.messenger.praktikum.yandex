@@ -40,8 +40,8 @@ class Modal extends Block<ModalProps> {
             //     case 'profile':
             //         console.log('case profile')
             //         break;
-            //     case 'chat':
-            //         // TODO: possibly refactor it for chat modal window
+            //     case 'links':
+            //         // TODO: possibly refactor it for links modal window
             //         // const chatId = store.getState().chats.current.id;
             //         console.log('id')
             //         break;

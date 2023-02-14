@@ -8,8 +8,11 @@ import Button from './components/button/button'
 import Input from './components/input/input'
 import Photo from './components/photo/photo'
 import Avatar from './components/avatar/avatar'
-import Modal from './components/modal/modal'
+import ControlLink from "./components/links/controlLink";
+import BaseLink from "./components/links/link";
 
+
+import Modal from './components/modal/modal'
 import SignupPage from './pages/signup/signup'
 import EditInfoPage from './pages/edit/info'
 import EditPasswordPage from './pages/edit/password'
@@ -18,6 +21,12 @@ import ErrorPage from './pages/fix/fix'
 import LoginPage from "./pages/login/login";
 import NotFoundPage from './pages/notfound/notfound'
 import ProfilePage from "./pages/profile/profile";
+import ChatListBase from "./components/chat/chatList";
+import ContextMenu from "./components/menu/ContextMenu";
+import ContextMenuItem from "./components/menu/ContextMunuItem/ContextMenuItem";
+import ContextButton from "./components/button/ContextButton/ContextButton";
+import ChatHistoryBase from "./components/history/chatHistory";
+import {MessageInput} from "./components/message/MessageInput/messageInput";
 
 export type pagesArray = Record<string, componentType<string, fieldTypes>>
 
@@ -29,6 +38,15 @@ export type fieldTypes = any // TODO: temporary
   registerComponent(Photo)
     registerComponent(Avatar)
     registerComponent(Modal)
+    registerComponent(ControlLink)
+    registerComponent(BaseLink)
+    registerComponent(ChatListBase)
+    registerComponent(ContextMenu)
+    registerComponent(ContextMenuItem)
+    registerComponent(ContextButton)
+    registerComponent(ChatHistoryBase)
+    registerComponent(MessageInput)
+    // registerComponent(createC)
 })()
 
 const router = new Router("#app")
@@ -55,7 +73,7 @@ window.onload = () => {
   router.start()
   //
   // if (!isProtectedRoute) {
-  //   router.go("/chat")
+  //   router.go("/links")
   // } else {
   //   router.go("/profile")
   // }

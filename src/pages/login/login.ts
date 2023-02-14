@@ -154,7 +154,6 @@ class LoginPage extends Block<LoginPageProps> {
                 {{{input placeholder=placeholder id=id type=type errorMessage=errorMessage isError=isError value=value ref=id onFocus=onFocus onBlur=onBlur}}}
               {{/each}}
               {{{Button text="Авторизоваться" modifier="primary" onClick=onLogin}}}
-              {{{Button text="Логаут" modifier="secondary" onClick=onLogout}}}
               <a class="login-form-registration-link" href="/signup">Нет аккаунта?</a>
             </form>
           </section>
