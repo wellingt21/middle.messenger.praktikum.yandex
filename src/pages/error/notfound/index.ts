@@ -1,4 +1,4 @@
-import { renderDom } from '../../../core/renderDom';
+import { renderDOM } from '../../../core/renderDOM';
 import { ErrorPage } from '../error';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -6,5 +6,5 @@ window.addEventListener('DOMContentLoaded', () => {
     statusCode: 404,
     errorMessage: 'Не туда попали',
   });
-  renderDom('#app', error404);
+  renderDOM('#app', error404);
 });

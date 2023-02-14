@@ -1,7 +1,7 @@
-import { renderDom } from '../../core/renderDom';
+import { renderDOM } from '../../core/renderDOM';
 import { AuthPage } from './login';
 
 window.addEventListener('DOMContentLoaded', () => {
   const authPage = new AuthPage();
-  renderDom('#app', authPage);
+  renderDOM('#app', authPage);
 });

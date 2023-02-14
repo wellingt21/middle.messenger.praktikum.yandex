@@ -1,4 +1,4 @@
-import { renderDom } from '../../../core/renderDom';
+import { renderDOM } from '../../../core/renderDOM';
 import { ErrorPage } from '../error';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -6,5 +6,5 @@ window.addEventListener('DOMContentLoaded', () => {
     statusCode: 505,
     errorMessage: 'Мы уже фиксим',
   });
-  renderDom('#app', error505);
+  renderDOM('#app', error505);
 });
