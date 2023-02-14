@@ -1,188 +1,244 @@
-// @ts-expect-error
-import Handlebars from 'handlebars'
+import { nanoid } from 'nanoid'
 import { EventBus } from './EventBus'
 
-const enum EVENTS {
-  INIT = 'init',
-  FLOW_CDM = 'flow:component-did-mount',
-  FLOW_RENDER = 'flow:render',
-  FLOW_UPDATE = 'flow:component-did-update'
+interface BlockEvents<P = any> {
+  init: []
+  'flow:component-did-mount': []
+  'flow:component-did-update': [P, P]
+  'flow:render': []
 }
 
-export default abstract class Block<P extends BlockProps> {
-  readonly eventBus: IEventBus
-  id: string
-  protected readonly _meta: BlockMeta<P>
-  protected readonly props: P
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  protected state: any
-  protected refs: Record<string, HTMLElement> = {}
+export type Props<P extends Record<string, unknown> = any> = {
+  events?: Record<string, () => void>
+} & P
 
-  protected children: Record<string, Block<P>> = {}
-  protected template = ''
-  protected options: {} | null = {}
+export default abstract class Block<P extends Record<string, unknown> = any> {
+  static EVENTS = {
+    INIT: 'init',
+    FLOW_CDM: 'flow:component-did-mount',
+    FLOW_CDU: 'flow:component-did-update',
+    FLOW_RENDER: 'flow:render'
+  } as const
 
-  protected constructor (props: any = {}) {
-    this._meta = {
-      props,
-      tagName: 'div'
-    }
+  public id = nanoid(6)
 
-    this.eventBus = new EventBus()
-    this.getStateFromProps(props)
+  public children: Record<string, Block | Block[]>
 
+  protected props: Props<P>
+
+  // @ts-ignore
+    private readonly eventBus: () => EventBus<BlockEvents<Props<P>>>
+
+  private _element: HTMLElement | null = null
+
+  protected constructor (propsWithChildren: Props<P> = {} as Props<P>) {
+    // @ts-ignore
+      const eventBus = new EventBus<BlockEvents<Props<P>>>()
+    this.eventBus = () => eventBus
+
+    const { props, children } = this._getChildrenAndProps(propsWithChildren)
+
+    this.children = children
     this.props = this._makePropsProxy(props)
-    this.state = this._makePropsProxy(this.state)
-    this._element = null
-    this.id = Math.random().toString()
-    this._registerEvents()
-    this.eventBus.emit(EVENTS.INIT)
+
+    this._registerEvents(eventBus)
+    eventBus.emit(Block.EVENTS.INIT)
   }
 
-  private _element: HTMLElement | null
-
-  get element (): any {
+  get element () {
     return this._element
   }
 
-  setState = (nextState: unknown): void => {
-    if (!nextState) {
+  private _removeEvents () {
+    const { events } = this.props
+
+    if ((events == null) || (this._element == null)) {
       return
     }
 
-    Object.assign(this.state, nextState)
+    Object.keys(events).forEach((eventName) => {
+      this._element?.removeEventListener(eventName, events[eventName])
+    })
   }
 
-  _registerEvents (): void {
-    this.eventBus.on(EVENTS.INIT, this.init.bind(this))
-    this.eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this))
-    this.eventBus.on(
-      EVENTS.FLOW_UPDATE,
-      this._componentDidUpdate.bind(this)
-    )
-    this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
+  private _addEvents () {
+    const { events = {} } = this.props
+
+    Object.keys(events).forEach((eventName) => {
+      this._element?.addEventListener(eventName, events[eventName])
+    })
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  _componentDidMount () {
-    console.log('did mount')
+  // @ts-ignore
+    private _registerEvents (eventBus: EventBus<BlockEvents>) {
+    eventBus.on(Block.EVENTS.INIT, this._init.bind(this))
+    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
+    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
+    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
-  init (): void {
-    const { eventBus: eventBus1, props, _meta } = this
-    this._element = document.createElement(_meta.tagName)
-    // @ts-expect-error TODO
-    eventBus1.emit(EVENTS.FLOW_RENDER, props)
+  protected init () {}
+
+  private _init () {
+    this.init()
+
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER)
   }
 
-  getContent (): HTMLElement | null {
-    if (this.element.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      setTimeout(() => {
-        if (
-          this.element.parentNode.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
-        ) {
-          this.eventBus.emit(EVENTS.FLOW_CDM)
-        }
-      }, 100)
+  private _componentDidMount () {
+    this.componentDidMount()
+  }
+
+  protected componentDidMount () {}
+
+  public dispatchComponentDidMount () {
+    this.eventBus().emit(Block.EVENTS.FLOW_CDM)
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((ch) => ch.dispatchComponentDidMount())
+      } else {
+        child.dispatchComponentDidMount()
+      }
+    })
+  }
+
+  private _componentDidUpdate (oldProps: Props<P>, newProps: Props<P>) {
+    const response = this.componentDidUpdate(oldProps, newProps)
+    if (!response) {
+      return
     }
 
-    return this.element
+    this.componentDidUpdate(oldProps, newProps)
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER)
   }
 
-  protected getStateFromProps (props?: P): void {
-    if (props != null) {
-      this.state = props
+  protected componentDidUpdate (oldProps: Props<P>, newProps: Props<P>) {
+    return oldProps && newProps
+  }
+
+  public setState = (nextProps: Partial<Props<P>>) => {
+    if (!nextProps) {
+      return
     }
+
+    Object.assign(this.props, nextProps)
   }
 
-  protected _componentDidUpdate (): void {
-    this._render()
-  }
+  private _render () {
+    const block = this.render()
 
-  protected render (): string {
-    return ''
-  }
+    const newBlock = block.firstElementChild as HTMLElement
 
-  private _render (): void {
-    const fragment = this._compile()
-    this._removeEvents()
-    const newElement = fragment.firstElementChild
-    if (newElement instanceof HTMLElement) {
-      this._element?.replaceWith(newElement)
+    if (this._element != null) {
+      this._removeEvents()
+      this._element.replaceWith(newBlock)
     }
-    this._element = newElement as HTMLElement
+
+    this._element = newBlock
+
     this._addEvents()
   }
 
-  private _compile (): DocumentFragment {
-    const fragment = document.createElement('template')
-    const template = Handlebars.compile(this.render())
+  protected render (): DocumentFragment {
+    return new DocumentFragment()
+  }
 
-    fragment.innerHTML = template({
-      ...this.state,
-      ...this.props,
-      children: this.children,
-      refs: this.refs
+  protected compile (template: (context: any) => string, context: any) {
+    // все пропсы компонента
+    const contextAndStubs = { ...context }
+
+    Object.entries(this.children).forEach(([name, component]) => {
+      if (Array.isArray(component)) {
+        contextAndStubs[name] = component.map(
+          (child) => `<div data-id='${child.id}'></div>`
+        )
+      } else {
+        contextAndStubs[name] = `<div data-id='${component.id}'></div>`
+      }
     })
-    Object.entries(this.children).forEach(([id, component]) => {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      const stub = fragment.content.querySelector(`[data-id="${id}"]`)
+
+    const html = template(contextAndStubs)
+
+    const temp = document.createElement('template')
+
+    temp.innerHTML = html
+
+    const replaceStub = (component: Block) => {
+      const stub = temp.content.querySelector(`[data-id="${component.id}"]`)
 
       if (stub == null) {
         return
       }
-      const content = component.getContent()
-      if (content !== null) {
-        stub.replaceWith(content)
+
+      component.getContent()?.append(...Array.from(stub.childNodes))
+
+      stub.replaceWith(component.getContent()!)
+    }
+
+    Object.entries(this.children).forEach(([_, component]) => {
+      if (Array.isArray(component)) {
+        component.forEach(replaceStub)
+      } else {
+        replaceStub(component)
       }
     })
 
-    return fragment.content
+    return temp.content
   }
 
-  private _addEvents (): void {
-    const events: BlockEvents = this.props.events
-
-    if (!events) {
-      return
-    }
-
-    if (this.element !== null) {
-      Object.entries(events).forEach(([event, listener]) => {
-        if (this._element !== null) {
-          this._element.addEventListener(event, listener)
-        }
-      })
-    }
+  public getContent () {
+    return this.element
   }
 
-  private _removeEvents (): void {
-    const events = this.props.events
+  private _getChildrenAndProps (childrenAndProps: Props<P>): {
+    props: Props<P>
+    children: Record<string, Block>
+  } {
+    const props = {} as Record<string, unknown>
+    const children: Record<string, Block> = {}
 
-    if (events === null || this._element === null) {
-      return
-    }
-
-    Object.entries((events != null) || {}).forEach(([event, listener]) => {
-      this._element?.removeEventListener(event, listener)
+    Object.entries(childrenAndProps).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        children[key] = value
+      } else {
+        props[key] = value
+      }
     })
+
+    return { props: props as Props<P>, children }
   }
 
-  private _makePropsProxy (props: P): P {
+  private _makePropsProxy (props: Props<P>) {
+    const self = this
+
     return new Proxy(props, {
-      get (target: P, name: string) {
-        const value = target[name as keyof P]
+      get (target, prop) {
+        const value = target[prop as string]
         return typeof value === 'function' ? value.bind(target) : value
       },
+      set (target, prop, value) {
+        const oldTarget = { ...target }
 
-      set: (target: P, name: string, value: typeof target[keyof P]) => {
-        target[name as keyof P] = value
-        this.eventBus.emit(EVENTS.FLOW_UPDATE)
+        target[prop as keyof Props<P>] = value
+
+        // Запускаем обновление компоненты
+        // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target)
+
         return true
       },
       deleteProperty () {
-        throw new Error('Отказано в доступе')
+        throw new Error('Нет доступа')
       }
     })
+  }
+
+  public show () {
+    this.getContent()!.style.display = 'block'
+  }
+
+  public hide () {
+    this.getContent()!.style.display = 'none'
   }
 }
